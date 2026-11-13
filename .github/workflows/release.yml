@@ -21,7 +21,7 @@ jobs:
   automatic:
     if: github.event.repository.private == false && github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.operation == 'automatic')
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     concurrency:
       group: npm-release-planner
       cancel-in-progress: false
@@ -92,7 +92,17 @@ jobs:
       - name: 检查全部包
         run: bun run check
       - name: 按依赖顺序发布未发布版本
-        run: bun run release
+        run: |
+          for attempt in 1 2 3; do
+            set +e
+            node scripts/release.mjs
+            status=$?
+            set -e
+            if [ "$status" -eq 0 ]; then exit 0; fi
+            if [ "$status" -ne 75 ] || [ "$attempt" -eq 3 ]; then exit "$status"; fi
+            echo "npm 分发暂时不可用，30 秒后复用当前版本自动继续（第 $attempt 次）。"
+            sleep 30
+          done
       - name: 登记已完成的发布快照
         env:
           GH_TOKEN: ${{ github.token }}

@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { setTimeout as pauseDownload } from "node:timers/promises";
@@ -103,7 +103,10 @@ function retryAfterDelay(value, now) {
 }
 
 async function downloadOnce(url, fetchImpl, timeout, now) {
-  const response = await fetchImpl(url, { redirect: "error", signal: AbortSignal.timeout(timeout) });
+  const response = await fetchImpl(url, {
+    redirect: "error", signal: AbortSignal.timeout(timeout),
+    headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+  });
   if (!response.ok) {
     const error = new Error(`下载已发布制品失败：HTTP ${response.status}`);
     error.retryableDownload = response.status === 404 || response.status === 429 || (response.status >= 500 && response.status < 600);
@@ -123,20 +126,30 @@ async function downloadOnce(url, fetchImpl, timeout, now) {
 }
 
 async function downloadArchive(url, fetchImpl, {
-  attempts = 61, timeoutMs = 300000, requestTimeoutMs = 30000, pause = pauseDownload, now = Date.now,
+  attempts = 181, timeoutMs = 900000, requestTimeoutMs = 30000, pause = pauseDownload, now = Date.now,
+  report = console.log,
 } = {}) {
   if (![attempts, timeoutMs, requestTimeoutMs].every((value) => Number.isSafeInteger(value) && value > 0)
-    || attempts > 61 || timeoutMs > 300000 || requestTimeoutMs > 30000) throw new Error("制品下载重试参数超出允许范围。");
-  const deadline = now() + timeoutMs;
+    || attempts > 181 || timeoutMs > 900000 || requestTimeoutMs > 30000) throw new Error("制品下载重试参数超出允许范围。");
+  const started = now();
+  const deadline = started + timeoutMs;
+  let lastReport = started;
   let lastError;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     const remaining = deadline - now();
     if (remaining <= 0) break;
     try {
-      return await downloadOnce(url, fetchImpl, Math.min(requestTimeoutMs, remaining), now);
+      // canonical 地址先尝试一次；后续请求使用无身份信息的随机值刷新 CDN 负缓存。
+      const requestUrl = new URL(url);
+      if (attempt > 0) requestUrl.searchParams.set("_iquji_retry", randomUUID());
+      return await downloadOnce(requestUrl, fetchImpl, Math.min(requestTimeoutMs, remaining), now);
     } catch (error) {
       if (!error?.retryableDownload && !temporaryNetworkError(error)) throw error;
       lastError = error;
+      if (now() - lastReport >= 60000) {
+        report(`等待 npm 制品下载节点同步：${url.pathname}，已等待 ${Math.floor((now() - started) / 1000)} 秒。`);
+        lastReport = now();
+      }
       if (attempt + 1 === attempts) break;
       const wait = error.retryDelay ?? 5000;
       if (wait >= deadline - now()) break;
@@ -144,7 +157,9 @@ async function downloadArchive(url, fetchImpl, {
       await pause(wait);
     }
   }
-  throw new Error(`下载已发布制品在有界重试后仍不可用：${lastError?.message ?? "等待超时"}`, { cause: lastError });
+  const unavailable = new Error(`下载已发布制品在有界重试后仍不可用：${lastError?.message ?? "等待超时"}`, { cause: lastError });
+  unavailable.retryableRelease = true;
+  throw unavailable;
 }
 
 export async function verifyPublishedArtifact(item, published, fetchImpl = fetch, downloadOptions = {}) {

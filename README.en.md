@@ -120,6 +120,12 @@ icons, theme, motion, i18n, query, network (independent leaf packages)
 
 ---
 
+## Automatic publishing
+
+A push to `main` automatically increments the patch version, checks every package, and publishes all eight npm packages. Versions live in a separate `vX.Y.Z` release snapshot; `main` keeps its development baseline. No manual version edit or tag push is required. Rapid pushes may be combined into one release of the latest source.
+
+Temporary registry or download cache failures receive bounded retries using the same version, uploading only missing packages. Existing packages must pass integrity and file content checks; published versions are never overwritten. A formal GitHub Release is created only after all packages pass verification. Rerunning the same completed source does not create another version. Permission, integrity, or content errors stop publication and require a fix before rerunning from Actions.
+
 ## Contributing & License
 
 - Issues and Pull Requests are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md).

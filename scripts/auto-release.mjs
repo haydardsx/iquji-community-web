@@ -10,7 +10,7 @@ const REPOSITORY = "haydardsx/iquji-community-web";
 const REMOTE = `https://github.com/${REPOSITORY}.git`;
 const BOT_NAME = "github-actions[bot]";
 const BOT_EMAIL = "41898282+github-actions[bot]@users.noreply.github.com";
-const WAIT_TIMEOUT = 60 * 60 * 1000;
+const WAIT_TIMEOUT = 120 * 60 * 1000;
 const VERSION_FILES = new Set([
   "package.json", "preview/package.json", "preview/bun.lock",
   ...packages.flatMap((name) => [`${name}/package.json`, `${name}/bun.lock`]),

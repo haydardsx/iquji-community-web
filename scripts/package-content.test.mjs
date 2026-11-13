@@ -111,29 +111,64 @@ test("拒绝身份不匹配、外部下载地址和下载错误", async () => {
   } finally { fixture.cleanup(); }
 });
 
-function downloadClock(timeoutMs = 300000) {
+function downloadClock(timeoutMs = 900000) {
   let time = Date.parse("2026-11-13T10:00:00Z");
   const waits = [];
   return {
     waits,
-    options: { timeoutMs, now: () => time, pause: async (ms) => { waits.push(ms); time += ms; } },
+    options: { timeoutMs, now: () => time, pause: async (ms) => { waits.push(ms); time += ms; }, report: () => {} },
     advance: (ms) => { time += ms; },
   };
 }
 
-test("CDN暂时404后重试实际tarball，元数据与内容验证保持严格", async () => {
+test("首次使用canonical地址，重试刷新CDN负缓存且每次URL唯一", async () => {
   const fixture = packageFixture();
   const clock = downloadClock();
-  let requests = 0;
+  const requestedUrls = [];
   try {
     const remote = archive();
-    const count = await verifyPublishedArtifact(fixture.item, metadata(remote), async () => {
-      requests += 1;
-      return requests === 1 ? new Response("", { status: 404 }) : new Response(remote);
+    const published = metadata(remote);
+    const count = await verifyPublishedArtifact(fixture.item, published, async (url, options) => {
+      const address = new URL(url);
+      requestedUrls.push(address.href);
+      assert.equal(address.origin, "https://registry.npmjs.org");
+      assert.equal(address.pathname, new URL(published.dist.tarball).pathname);
+      assert.deepEqual(options.headers, { "Cache-Control": "no-cache", Pragma: "no-cache" });
+      // canonical 持续负缓存；第一次刷新仍在分发，第二次刷新才可读。
+      return !address.searchParams.has("_iquji_retry") || requestedUrls.length < 3
+        ? new Response("", { status: 404 }) : new Response(remote);
     }, clock.options);
     assert.equal(count, 3);
-    assert.equal(requests, 2);
-    assert.deepEqual(clock.waits, [5000]);
+    assert.equal(requestedUrls[0], published.dist.tarball);
+    assert.equal(requestedUrls.length, 3);
+    assert.equal(new Set(requestedUrls).size, 3);
+    for (const url of requestedUrls.slice(1)) {
+      const nonce = new URL(url).searchParams.get("_iquji_retry");
+      assert.match(nonce, /^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/);
+    }
+    assert.deepEqual(clock.waits, [5000, 5000]);
+  } finally { fixture.cleanup(); }
+});
+
+test("分发超过五分钟仍可恢复，并且最多每分钟报告一次等待状态", async () => {
+  const fixture = packageFixture();
+  const clock = downloadClock();
+  const remote = archive();
+  const reports = [];
+  const started = clock.options.now();
+  let requests = 0;
+  try {
+    const count = await verifyPublishedArtifact(fixture.item, metadata(remote), async () => {
+      requests += 1;
+      return clock.options.now() - started < 310000 ? new Response("", { status: 404 }) : new Response(remote);
+    }, { ...clock.options, report: (message) => reports.push({ time: clock.options.now(), message }) });
+    assert.equal(count, 3);
+    assert.equal(clock.options.now() - started, 310000);
+    assert.equal(requests, 63);
+    assert.equal(reports.length, 5);
+    for (let index = 1; index < reports.length; index += 1) {
+      assert.ok(reports[index].time - reports[index - 1].time >= 60000);
+    }
   } finally { fixture.cleanup(); }
 });
 
@@ -160,7 +195,7 @@ test("限流和服务端错误遵循有上限的Retry-After，临时网络错误
   } finally { fixture.cleanup(); }
 });
 
-test("下载超时会重试但总预算最多五分钟，次数上限仍生效", async () => {
+test("下载超时会重试但总预算最多十五分钟，耗尽只标记为可续跑暂时故障", async () => {
   const fixture = packageFixture();
   const clock = downloadClock();
   let requests = 0;
@@ -169,16 +204,16 @@ test("下载超时会重试但总预算最多五分钟，次数上限仍生效",
     await assert.rejects(verifyPublishedArtifact(fixture.item, metadata(archive()), async (_url, options) => {
       assert.ok(options.signal instanceof AbortSignal);
       requests += 1;
-      clock.advance(Math.min(30000, 300000 - (clock.options.now() - started)));
+      clock.advance(Math.min(30000, 900000 - (clock.options.now() - started)));
       throw new DOMException("请求超时", "TimeoutError");
-    }, clock.options), /有界重试.*请求超时/);
-    assert.ok(requests > 1 && requests < 10);
-    assert.equal(clock.options.now() - started, 300000);
+    }, clock.options), (error) => error.retryableRelease === true && /有界重试.*请求超时/.test(error.message));
+    assert.ok(requests > 1 && requests < 30);
+    assert.equal(clock.options.now() - started, 900000);
     let attempts = 0;
     await assert.rejects(verifyPublishedArtifact(fixture.item, metadata(archive()), async () => {
       attempts += 1;
       return new Response("", { status: 404 });
-    }, { attempts: 2, pause: async () => {} }), /有界重试.*HTTP 404/);
+    }, { attempts: 2, pause: async () => {} }), (error) => error.retryableRelease === true && /有界重试.*HTTP 404/.test(error.message));
     assert.equal(attempts, 2);
   } finally { fixture.cleanup(); }
 });
@@ -200,7 +235,7 @@ test("权限拒绝、证书错误、完整性失败和真实内容变化立即�
         requests += 1;
         if (result instanceof Error) throw result;
         return result;
-      }, { pause: async () => { waits += 1; } }), error);
+      }, { pause: async () => { waits += 1; } }), (actual) => actual.retryableRelease !== true && error.test(actual.message));
       assert.equal(requests, 1);
       assert.equal(waits, 0);
     }
