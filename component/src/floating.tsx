@@ -239,6 +239,7 @@ export interface IqujiPopoverProps {
   onOpenChange?: ComponentProps<typeof BasePopover.Root>["onOpenChange"];
   side?: "top" | "right" | "bottom" | "left" | undefined;
   align?: "start" | "center" | "end" | undefined;
+  sideOffset?: number | undefined;
   collisionBoundary?: ComponentProps<typeof BasePopover.Positioner>["collisionBoundary"];
   collisionPadding?: ComponentProps<typeof BasePopover.Positioner>["collisionPadding"];
   collisionAvoidance?: ComponentProps<typeof BasePopover.Positioner>["collisionAvoidance"];
@@ -252,6 +253,7 @@ export function IqujiPopover({
   onOpenChange,
   side = "bottom",
   align,
+  sideOffset = 8,
   collisionBoundary,
   collisionPadding,
   collisionAvoidance,
@@ -268,7 +270,7 @@ export function IqujiPopover({
           anchor={anchor}
           side={side}
           align={align}
-          sideOffset={8}
+          sideOffset={sideOffset}
           collisionBoundary={collisionBoundary}
           collisionPadding={collisionPadding}
           collisionAvoidance={collisionAvoidance}

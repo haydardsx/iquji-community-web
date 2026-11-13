@@ -16,7 +16,7 @@ JavaScript 构建显式使用生产环境的 JSX runtime，不依赖调用方 sh
 
 ## 通知与表单
 
-应用在 `IqujiOverlayProvider` 内、路由外注册 `IqujiNotificationProvider`，传入 `closeLabel`，可通过 `label` 注入通知区域名称（默认“通知”）。`placement` 支持 `topLeft`、`topRight`、`bottomLeft`、`bottomRight`，默认右上；`duration` 单位为毫秒，默认 4500，`0` 表示常驻；`maxCount` 默认 3，超出时关闭最早的通知。悬停、键盘聚焦或窗口失焦期间暂停自动关闭。
+应用在 `IqujiOverlayProvider` 内、路由外注册 `IqujiNotificationProvider`，传入 `closeLabel`，可通过 `label` 注入通知区域名称（默认“通知”）。`placement` 支持 `topLeft`、`topRight`、`bottomLeft`、`bottomRight`，默认右上；`duration` 单位为毫秒，默认 5000，`0` 表示常驻；`maxCount` 默认 3，超出时关闭最早的通知。自动关闭通知显示剩余秒数与进度条；悬停、键盘聚焦或窗口失焦期间同步暂停自动关闭与视觉计时，重复 key 更新时重新计时。
 
 `useIqujiNotification()` 提供 `open({ key?, title, description?, tone?, duration?, actions?, onClose? })` 与 `close(key?)`。`open` 返回通知 key，重复 key 更新内容并重新计时；`tone` 沿用 `info | success | warning | danger`。不传 key 时创建独立通知，`close()` 关闭全部，`close(key)` 关闭指定通知。标题、正文与操作节点由应用提供；成功提交与实际执行结果须由应用准确区分，公共包不请求接口或宣称任务完成。
 

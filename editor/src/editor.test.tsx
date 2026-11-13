@@ -8,7 +8,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { IqujiEditorColorControl } from "./editor-color-control.js";
 import { IqujiRichTextToolbar } from "./rich-text-toolbar.js";
 import { renderEditorMarkdown } from "./markdown.js";
-import { formatEditorText } from "./presets.js";
+import { formatEditorText, IQUJI_EDITOR_PRESETS, isFormattablePreset, textPresetExtensions, tomlDiagnostics } from "./presets.js";
 import { IqujiRichTextContent } from "./rich-text-content.js";
 import { createRichTextPreset } from "./rich-text-preset.js";
 import { IqujiTextEditor } from "./text-editor.js";
@@ -88,6 +88,19 @@ test("JSON 和 YAML 格式化只接受合法源码，YAML 保留注释", () => {
   expect(() => formatEditorText("yaml", "a: [")).toThrow();
   expect(formatEditorText("yaml", "# 注释\na: 1\n")).toContain("# 注释");
   expect(formatEditorText("text", "  原文\r\n")).toBe("  原文\r\n");
+});
+
+test("TOML 提供语法高亮与诊断，且不参与格式化", () => {
+  expect(IQUJI_EDITOR_PRESETS).toContain("toml");
+  expect(textPresetExtensions("toml").length).toBeGreaterThan(0);
+  expect(isFormattablePreset("toml")).toBe(false);
+  expect(formatEditorText("toml", 'a = 1\n')).toBe('a = 1\n');
+  expect(tomlDiagnostics('serverAddr = "example.com"\nserverPort = 7000\n')).toEqual([]);
+  expect(tomlDiagnostics("")).toEqual([]);
+  const invalid = tomlDiagnostics('serverAddr = "example.com"\nserverPort = \n');
+  expect(invalid).toHaveLength(1);
+  expect(invalid[0]?.from).toBe(40);
+  expect(invalid[0]?.message.length).toBeGreaterThan(0);
 });
 
 test("富文本颜色覆盖精确选区且可撤销，拒绝 CSS 与非规范颜色", () => {

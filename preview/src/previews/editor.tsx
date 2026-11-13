@@ -10,6 +10,7 @@ import {
   editorHighlightCss,
   formatEditorText,
   IQUJI_EDITOR_PRESETS,
+  IQUJI_FORMATTABLE_PRESETS,
   IqujiEditorColorControl,
   IqujiEditorLayout,
   IqujiEditorViewport,
@@ -20,21 +21,24 @@ import {
   IqujiTextEditor,
   isEditorColor,
   isEditorHighlightColor,
+  isFormattablePreset,
   renderEditorMarkdown,
   textPresetExtensions,
+  tomlDiagnostics,
   useIqujiRichTextEditor,
   yamlDiagnostics,
 } from "@iquji-web/web-editor";
 import { useMemo, useState } from "react";
 import type { ComponentPreview } from "../catalog";
 
-const PRESETS = ["markdown", "json", "yaml", "text"] as const;
+const PRESETS = ["markdown", "json", "yaml", "toml", "text"] as const;
 type TextPreset = (typeof PRESETS)[number];
 
 const SAMPLE_VALUES: Record<TextPreset, string> = {
   markdown: "# Community editor\n\n编辑源码或切换预览，HTML 会被安全清理。",
   json: '{\n  "package": "web-editor",\n  "ready": true\n}\n',
   yaml: "package: web-editor\nready: true\n",
+  toml: 'serverAddr = "example.com"\nserverPort = 7000\n\n[[proxies]]\nname = "web"\ntype = "tcp"\nremotePort = 18080\n',
   text: "这是一个纯文本编辑器预设。",
 };
 
@@ -44,6 +48,7 @@ function EditorUtilities() {
   );
   const formatted = formatEditorText("json", '{"ready":true}');
   const diagnostics = yamlDiagnostics("ready: true\nready: false");
+  const tomlIssues = tomlDiagnostics("serverPort = \n");
   const extensions = textPresetExtensions("json");
   const validColor = isEditorColor("#1d4ed8");
   const validHighlight = isEditorHighlightColor("yellow");
@@ -71,7 +76,9 @@ function EditorUtilities() {
         文字色板 {EDITOR_TEXT_PALETTE.length} 色；合法文字色{" "}
         {String(validColor)}；合法背景色 {String(validHighlight)}； yellow
         背景色 {editorHighlightCss("yellow")}； JSON 扩展 {extensions.length}{" "}
-        个；重复 YAML 键诊断 {diagnostics.length} 条；富文本 mark：
+        个；可格式化预设 {IQUJI_FORMATTABLE_PRESETS.join("/")}；TOML 可格式化{" "}
+        {String(isFormattablePreset("toml"))}；重复 YAML 键诊断{" "}
+        {diagnostics.length} 条；TOML 诊断 {tomlIssues.length} 条；富文本 mark：
         {EditorHighlight.name}/{EditorTextColor.name}。
       </p>
       <code className="catalog-code-block">{formatted}</code>
@@ -258,8 +265,9 @@ export const editorPreviews: readonly ComponentPreview[] = [
     packageName: "@iquji-web/web-editor",
     category: "编辑器",
     description:
-      "操作源码预设和富文本，并查看宿主组合、工具栏、选区与颜色协议。",
-    keywords: "editor markdown json yaml text rich text tiptap toolbar colors",
+      "操作 markdown、json、yaml、toml 源码预设和富文本，并查看宿主组合、工具栏、选区与颜色协议。",
+    keywords:
+      "editor markdown json yaml toml text rich text tiptap toolbar colors config",
     render: () => <EditorDemo />,
   },
 ];

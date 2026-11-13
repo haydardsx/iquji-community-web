@@ -104,12 +104,104 @@ test("自动关闭、0 常驻与卸载后的定时器清理", async () => {
   // 同步提交与卸载，避免测试等待本身先触发自动关闭。
   act(() => {
     api.open({ title: "卸载前通知", duration: 35, onClose: () => closed++ });
+    root.unmount();
   });
-  act(() => root.unmount());
   await tick(60);
   expect(closed).toBe(1);
   expect(document.querySelector(".iquji-notification-viewport")).toBeNull();
 });
+
+test("同 key 更新重置倒计时与进度，常驻通知不显示计时", async () => {
+  await render();
+  await act(async () => {
+    api.open({ key: "timer", title: "计时通知", duration: 10000 });
+    api.open({ key: "stay", title: "常驻通知", duration: 0 });
+  });
+  const timed = notifications().find((node) =>
+    node.textContent?.includes("计时通知"),
+  );
+  const persistent = notifications().find((node) =>
+    node.textContent?.includes("常驻通知"),
+  );
+  const progress = timed?.querySelector(".iquji-notification__progress");
+  expect(
+    timed?.querySelector(".iquji-notification__countdown")?.textContent,
+  ).toBe("10s");
+  expect(
+    persistent?.querySelector(".iquji-notification__countdown"),
+  ).toBeNull();
+  expect(persistent?.querySelector(".iquji-notification__progress")).toBeNull();
+  await act(() => tick(1100));
+  expect(
+    Number.parseInt(
+      timed?.querySelector(".iquji-notification__countdown")?.textContent ??
+        "0",
+      10,
+    ),
+  ).toBeLessThan(10);
+  await act(async () =>
+    api.open({ key: "timer", title: "计时通知", duration: 10000 }),
+  );
+  expect(notifications()).toHaveLength(2);
+  expect(
+    timed?.querySelector(".iquji-notification__countdown")?.textContent,
+  ).toBe("10s");
+  expect(timed?.querySelector(".iquji-notification__progress")).not.toBe(
+    progress,
+  );
+});
+
+for (const reason of ["hover", "focus", "window"] as const) {
+  test(`${reason} 暂停通知关闭与视觉计时，恢复后继续倒计时`, async () => {
+    await render();
+    await act(async () => api.open({ title: "可暂停通知", duration: 1300 }));
+    const viewport = document.querySelector<HTMLElement>(
+      ".iquji-notification-viewport",
+    );
+    const notification = notifications()[0];
+    if (!viewport || !notification) throw new Error("缺少通知区域");
+    await act(async () => {
+      if (reason === "hover")
+        viewport.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      if (reason === "focus")
+        window.dispatchEvent(
+          new KeyboardEvent("keydown", { key: "F6", bubbles: true }),
+        );
+      if (reason === "window") {
+        const win = viewport.ownerDocument.defaultView;
+        const event = new FocusEvent("blur");
+        // Happy DOM 注册器把 window 映射到 globalThis，显式保留真实浏览器的事件目标。
+        Object.defineProperty(event, "target", { value: win });
+        win?.dispatchEvent(event);
+      }
+    });
+    const progress = notification.querySelector<HTMLElement>(
+      ".iquji-notification__progress",
+    );
+    expect(progress?.style.animationPlayState).toBe("paused");
+    await act(() => tick(1400));
+    expect(notifications()).toHaveLength(1);
+    expect(
+      notification.querySelector(".iquji-notification__countdown")?.textContent,
+    ).toBe("2s");
+    await act(async () => {
+      if (reason === "hover")
+        viewport.dispatchEvent(
+          new MouseEvent("mouseout", {
+            bubbles: true,
+            relatedTarget: document.body,
+          }),
+        );
+      if (reason === "focus") viewport.blur();
+      if (reason === "window")
+        document.body.dispatchEvent(new FocusEvent("focus"));
+      await tick();
+    });
+    expect(progress?.style.animationPlayState).toBe("running");
+    await act(() => tick(1400));
+    expect(notifications()).toHaveLength(0);
+  });
+}
 
 for (const kind of ["dialog", "drawer"] as const) {
   test(`${kind} 打开时通知保留输入焦点，操作可聚焦且不关闭容器`, async () => {

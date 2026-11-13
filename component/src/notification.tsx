@@ -5,9 +5,11 @@ import {
   type ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import type { IqujiTone } from "./feedback.js";
 import { IconButton } from "./index.js";
@@ -24,7 +26,7 @@ export type IqujiNotificationOptions = {
   title: ReactNode;
   description?: ReactNode;
   tone?: Exclude<IqujiTone, "neutral">;
-  /** 自动关闭时间，单位毫秒；0 表示保持显示。 */
+  /** 自动关闭时间，单位毫秒；0 表示保持显示。默认 5000ms。 */
   duration?: number;
   actions?: ReactNode;
   onClose?: () => void;
@@ -44,8 +46,9 @@ export type IqujiNotificationProviderProps = {
   maxCount?: number;
 };
 
-type NotificationData = { actions?: ReactNode };
+type NotificationData = { actions?: ReactNode; revision: number };
 const Context = createContext<IqujiNotificationApi | null>(null);
+const TimerPauseContext = createContext(false);
 const icons: Record<Exclude<IqujiTone, "neutral">, IqujiIconName> = {
   info: "circle-info",
   success: "check-circle",
@@ -58,7 +61,7 @@ export function IqujiNotificationProvider({
   closeLabel,
   label = "通知",
   placement = "topRight",
-  duration = 4500,
+  duration = 5000,
   maxCount = 3,
 }: IqujiNotificationProviderProps) {
   if (!closeLabel.trim()) throw new Error("通知必须提供 closeLabel");
@@ -95,6 +98,24 @@ function NotificationContent({
   const prefix = useId();
   const sequence = useRef(0);
   const active = useRef(new Map<string, string>());
+  const [windowFocused, setWindowFocused] = useState(true);
+  useEffect(() => {
+    const win = document.defaultView;
+    if (!win) return;
+    const handleBlur = (event: FocusEvent) => {
+      if (event.target === win) setWindowFocused(false);
+    };
+    const handleFocus = (event: FocusEvent) => {
+      if (!event.relatedTarget && event.target !== win) setWindowFocused(true);
+    };
+    // 与 Toast 的窗口焦点规则保持一致，仅暂停视觉反馈，关闭仍由 Toast 管理。
+    win.addEventListener("blur", handleBlur, true);
+    win.addEventListener("focus", handleFocus, true);
+    return () => {
+      win.removeEventListener("blur", handleBlur, true);
+      win.removeEventListener("focus", handleFocus, true);
+    };
+  }, []);
   const open = useCallback(
     (options: IqujiNotificationOptions) => {
       const timeout = options.duration ?? duration;
@@ -108,7 +129,7 @@ function NotificationContent({
         description: options.description,
         type: options.tone ?? "info",
         timeout,
-        data: { actions: options.actions },
+        data: { actions: options.actions, revision: ++sequence.current },
         onClose: () => {
           if (active.current.get(key) === id) active.current.delete(key);
           options.onClose?.();
@@ -150,9 +171,19 @@ function NotificationContent({
           aria-label={label}
           className="iquji-notification-viewport"
           data-placement={placement}
+          render={(props, state) => (
+            <div {...props}>
+              <TimerPauseContext.Provider
+                value={state.expanded || !windowFocused}
+              >
+                {props.children}
+              </TimerPauseContext.Provider>
+            </div>
+          )}
         >
           {toasts.map((toast) => {
             const tone = (toast.type ?? "info") as keyof typeof icons;
+            const timeout = toast.timeout ?? duration;
             return (
               <Toast.Root
                 className="iquji-notification"
@@ -165,12 +196,14 @@ function NotificationContent({
                 swipeDirection={[]}
                 toast={toast}
               >
-                <IqujiIcon
-                  className="iquji-notification__icon"
-                  decorative
-                  name={icons[tone]}
-                  size={21}
-                />
+                <span className="iquji-notification__icon-badge">
+                  <IqujiIcon
+                    className="iquji-notification__icon"
+                    decorative
+                    name={icons[tone]}
+                    size={14}
+                  />
+                </span>
                 <Toast.Content className="iquji-notification__content">
                   <Toast.Title className="iquji-notification__title" />
                   {toast.description != null && (
@@ -182,15 +215,10 @@ function NotificationContent({
                     </div>
                   )}
                 </Toast.Content>
-                <Toast.Close
-                  render={
-                    <IconButton
-                      compact
-                      className="iquji-notification__close"
-                      icon={<IqujiIcon decorative name="close" size={16} />}
-                      label={closeLabel}
-                    />
-                  }
+                <NotificationTimer
+                  key={toast.data?.revision}
+                  duration={timeout}
+                  closeLabel={closeLabel}
                 />
               </Toast.Root>
             );
@@ -198,6 +226,66 @@ function NotificationContent({
         </Toast.Viewport>
       </Toast.Portal>
     </Context.Provider>
+  );
+}
+
+function NotificationTimer({
+  duration,
+  closeLabel,
+}: {
+  duration: number;
+  closeLabel: string;
+}) {
+  const paused = useContext(TimerPauseContext);
+  const remaining = useRef(duration);
+  const [seconds, setSeconds] = useState(() => Math.ceil(duration / 1000));
+  useEffect(() => {
+    if (duration <= 0 || paused) return;
+    const started = Date.now();
+    const initial = remaining.current;
+    const update = () => {
+      remaining.current = Math.max(0, initial - (Date.now() - started));
+      setSeconds(Math.ceil(remaining.current / 1000));
+    };
+    const interval = setInterval(() => {
+      update();
+    }, 100);
+    return () => {
+      clearInterval(interval);
+      remaining.current = Math.max(0, initial - (Date.now() - started));
+    };
+  }, [duration, paused]);
+
+  return (
+    <>
+      <div className="iquji-notification__side">
+        {duration > 0 && (
+          <span aria-hidden="true" className="iquji-notification__countdown">
+            {seconds}s
+          </span>
+        )}
+        <Toast.Close
+          render={
+            <IconButton
+              compact
+              className="iquji-notification__close"
+              icon={<IqujiIcon decorative name="close" size={12} />}
+              label={closeLabel}
+            />
+          }
+        />
+      </div>
+      {duration > 0 && (
+        <span
+          aria-hidden="true"
+          className="iquji-notification__progress"
+          style={{
+            animationDuration: `${duration}ms`,
+            animationPlayState: paused ? "paused" : "running",
+          }}
+        />
+      )}
+    </>
   );
 }
 

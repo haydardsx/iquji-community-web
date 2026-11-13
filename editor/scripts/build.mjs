@@ -12,6 +12,8 @@ const entrypoints = [
     fs.existsSync(path.join(source, "index.tsx")) ? "index.tsx" : "index.ts",
   ),
 ];
+if (fs.existsSync(path.join(source, "text.ts")))
+  entrypoints.push(path.join(source, "text.ts"));
 if (fs.existsSync(path.join(source, "test-support.ts")))
   entrypoints.push(path.join(source, "test-support.ts"));
 const built = await Bun.build({

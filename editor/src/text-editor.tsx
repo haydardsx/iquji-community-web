@@ -32,6 +32,7 @@ import { renderEditorMarkdown } from "./markdown.js";
 import {
   formatEditorText,
   type IqujiTextPreset,
+  isFormattablePreset,
   textPresetExtensions,
 } from "./presets.js";
 
@@ -204,7 +205,7 @@ export function IqujiTextEditor(props: IqujiTextEditorProps) {
               </IqujiButton>
             </fieldset>
           )}
-          {(preset === "json" || preset === "yaml") && (
+          {isFormattablePreset(preset) && (
             <IqujiButton
               compact
               variant="ghost"

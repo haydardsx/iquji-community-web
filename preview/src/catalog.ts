@@ -106,6 +106,7 @@ export const COMMUNITY_PREVIEW_COVERAGE: CommunityPreviewCoverage = {
   },
   editor: {
     ".": ["editor-presets"],
+    "./text": ["editor-presets"],
     "./styles.css": ["editor-presets"],
   },
   i18n: { ".": ["i18n-provider"] },

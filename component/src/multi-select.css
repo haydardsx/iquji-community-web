@@ -2,18 +2,35 @@
   display: grid;
   gap: var(--iquji-space-1);
   min-width: 0;
+  width: 100%;
 }
 
 .iquji-multi-select__label {
+  align-items: baseline;
   color: var(--iquji-color-text);
+  display: flex;
   font-size: var(--iquji-font-size-body-sm);
-  font-weight: 600;
+  font-weight: 550;
+  gap: var(--iquji-space-1);
+  line-height: var(--iquji-line-height-body-sm);
 }
 
 .iquji-multi-select__trigger {
-  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px;
   min-width: 0;
   width: 100%;
+}
+
+.iquji-multi-select__indicator {
+  transition: transform var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-multi-select__indicator--open,
+.iquji-multi-select__trigger--open .iquji-multi-select__indicator {
+  transform: rotate(180deg);
 }
 
 .iquji-multi-select__value {
@@ -24,19 +41,195 @@
   white-space: nowrap;
 }
 
+.iquji-multi-select__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-multi-select__placeholder {
+  color: var(--iquji-color-subtle);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-multi-select__tags {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.iquji-multi-select__tag {
+  align-items: center;
+  background: var(--iquji-color-surface-hover);
+  border: 1px solid var(--iquji-color-border);
+  border-radius: 4px;
+  color: var(--iquji-color-text);
+  display: inline-flex;
+  font-size: var(--iquji-font-size-caption);
+  font-weight: 500;
+  height: 22px;
+  line-height: 1;
+  max-width: 140px;
+  overflow: hidden;
+  padding-inline: 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-multi-select__tag--count {
+  background: var(--iquji-color-surface-sunken);
+  color: var(--iquji-color-muted);
+  font-weight: 600;
+  padding-inline: 5px;
+}
+
+/* 浮层在触发器正下方全宽展开，视觉质感与 IqujiSelect 严格一致 */
+.iquji-floating-positioner:has(.iquji-multi-select__popup) {
+  box-sizing: border-box;
+  min-width: var(--anchor-width);
+  width: var(--anchor-width);
+}
+
+.iquji-popover-popup:has(.iquji-multi-select__popup) {
+  backdrop-filter: var(--iquji-blur-md);
+  background: var(--iquji-color-glass-surface-raised);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: var(--iquji-radius-overlay);
+  box-shadow: var(--iquji-shadow-overlay);
+  box-sizing: border-box;
+  color: var(--iquji-color-text);
+  max-height: min(320px, var(--available-height, 320px));
+  max-width: none;
+  min-width: var(--anchor-width);
+  outline: 0;
+  overflow: auto;
+  padding: var(--iquji-space-1);
+  width: var(--anchor-width);
+}
+
 .iquji-multi-select__popup {
-  display: grid;
-  gap: var(--iquji-space-2);
-  max-width: min(360px, 90vw);
-  min-width: 280px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.iquji-multi-select__search {
+  padding: var(--iquji-space-1);
 }
 
 .iquji-multi-select__options {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  outline: 0;
+  width: 100%;
+}
+
+.iquji-multi-select__item {
+  align-items: center;
+  border-radius: calc(var(--iquji-radius-control) - 2px);
+  box-sizing: border-box;
+  cursor: pointer;
   display: grid;
-  gap: var(--iquji-space-1);
-  max-height: 260px;
-  overflow-y: auto;
-  padding-block: 2px;
+  font-size: var(--iquji-font-size-body-md);
+  gap: var(--iquji-space-3);
+  grid-template-columns: minmax(0, 1fr) 16px;
+  line-height: var(--iquji-line-height-body-md);
+  min-height: var(--iquji-control-height-compact);
+  outline: 0;
+  padding: 7px var(--iquji-space-2);
+  transition: background var(--iquji-motion-fast) var(--iquji-ease-standard);
+  user-select: none;
+  width: 100%;
+}
+
+.iquji-multi-select__item:hover:not(.iquji-multi-select__item--disabled) {
+  background: var(--iquji-color-surface-hover);
+}
+
+.iquji-multi-select__item--selected {
+  color: var(--iquji-color-accent-strong);
+  font-weight: 650;
+}
+
+.iquji-multi-select__item--disabled,
+.iquji-multi-select__item[data-disabled] {
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.iquji-multi-select__item-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.iquji-multi-select__item-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-multi-select__item-desc {
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-caption);
+  line-height: var(--iquji-line-height-caption);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-multi-select__item-indicator {
+  align-items: center;
+  color: var(--iquji-color-accent-strong);
+  display: inline-flex;
+  flex: 0 0 16px;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+/* 复选框样式兼容模式 */
+.iquji-multi-select__item:has(.iquji-multi-select__checkbox) {
+  grid-template-columns: 16px minmax(0, 1fr);
+}
+
+.iquji-multi-select__checkbox {
+  align-items: center;
+  background: var(--iquji-color-surface);
+  border: 1.5px solid var(--iquji-color-control-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 16px;
+  height: 16px;
+  justify-content: center;
+  transition:
+    background var(--iquji-motion-fast) var(--iquji-ease-standard),
+    border-color var(--iquji-motion-fast) var(--iquji-ease-standard);
+  width: 16px;
+}
+
+.iquji-multi-select__checkbox--checked {
+  background: var(--iquji-color-accent-strong);
+  border-color: var(--iquji-color-accent-strong);
+  color: #ffffff;
 }
 
 .iquji-multi-select__empty {
@@ -48,9 +241,11 @@
 }
 
 .iquji-multi-select__actions {
+  align-items: center;
   border-top: 1px solid var(--iquji-color-border);
   display: flex;
   gap: var(--iquji-space-1);
   justify-content: flex-end;
+  margin-top: var(--iquji-space-1);
   padding-top: var(--iquji-space-1);
 }
