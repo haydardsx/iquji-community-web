@@ -81,7 +81,6 @@ const COMPONENT_PREVIEW_IDS = [
   "overlay-scope",
   "page-header",
   "table-frame",
-  "data-table",
   "scroll-area",
   "workbench-layout",
   "settings-layout",
@@ -125,10 +124,12 @@ export const COMMUNITY_PREVIEW_COVERAGE: CommunityPreviewCoverage = {
 export type ComponentPreview = {
   id: string;
   name: string;
+  nameEn?: string;
   category: ComponentCategory;
   packageId?: CommunityPackage;
   packageName?: string;
   description: string;
+  descriptionEn?: string;
   keywords: string;
   render: () => ReactNode;
 };

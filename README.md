@@ -2,43 +2,125 @@
 
 简体中文 | [English](README.en.md)
 
-公开 Web 基础包，提供组件、编辑器、主题、图标、动效、国际化、查询状态和 HTTP 传输。每个正式包都能从本仓独立安装、检查、构建并产出本地 tarball；包和文档不得依赖 Enterprise 或消费仓源码。
+现代、模块化、高可访问性的 Web 前端基础工具与组件库套件。提供独立解耦的 UI 组件、富文本/代码编辑器、设计主题变量、矢量图标、动效原语、国际化、数据查询状态与 HTTP 传输能力。
 
-| 包 | 能力 |
-| --- | --- |
-| [component](component/README.md) | 表单、布局、桌面壳、三栏工作台、设置页、分页、浮层和组件样式 |
-| [theme](theme/README.md) | 主题、偏好、首帧脚本和语义样式变量 |
-| [icons](icons/README.md) | 图标与可访问性属性 |
-| [motion](motion/README.md) | 通用动效与 reduced-motion |
-| [i18n](i18n/README.md) | 应用注入词典的国际化状态 |
-| [query](query/README.md) | QueryClient、查询与重试策略 |
-| [network](network/README.md) | 原始 HTTP 传输、可注入 fetch、超时、取消与 JSON 适配器 |
-| [editor](editor/README.md) | 富文本与 Markdown/JSON/YAML/TXT 源码预设 |
+> **在线预览**: 访问 [community-web.iquji.com](https://community-web.iquji.com) 体验交互式组件目录与全量能力总览。
 
-使用 Bun 1.3.14。在目标包目录运行 `bun install --frozen-lockfile` 安装，再运行 `bun run build` 构建，或运行 `bun run check` 完成构建、类型检查与功能测试。
+---
 
-component 使用公开的 icons 和 theme。首次开发 component 时，先分别在 icons 和 theme 中安装并构建，再安装并构建 component。editor 使用公开的 component、icons 和 theme；其余包可独立使用。Community 包之间的依赖必须保持在公开 Community 闭包内。
+## 核心特性
 
-[preview](preview/README.md) 是公开能力目录和交互示例，不属于 npm 正式包，通过 GitHub Pages 提供[在线能力预览](https://community-web.iquji.com)。它必须覆盖每个正式包的公开 JavaScript、类型和 CSS 出口；示例使用本地状态或注入替身，不访问真实服务。测试支持出口、测试文件、构建脚本和生成产物不要求单独做页面，但新增正式出口必须同步覆盖清单和示例。
+- 🧩 **模块化架构**：8 个正式公开 npm 包，各包按需独立安装与使用，无多余捆绑。
+- ♿ **高可访问性优先**：基于 Base UI 底座与 WAI-ARIA 规范构建，内建完善的键盘导航与读屏支持。
+- 🎨 **灵活的主题系统**：语义化 CSS Tokens，原生支持浅色 / 深色主题平滑过渡与首帧防闪。
+- 🌐 **完备的国际化与动效**：解耦的词典注入机制与遵守 `prefers-reduced-motion` 的流畅动效。
+- ⚡ **现代工程化标准**：采用 Bun 1.3.14 构建、严格 TypeScript 类型声明及 Biome 代码规范。
 
-正式包入口导出 `dist` 中的 JavaScript、类型声明及必要 CSS。主题样式由 `@iquji-web/web-theme/tokens.css` 提供，组件样式由 `@iquji-web/web-component/styles.css` 提供，应用按此顺序显式导入。可见文案、词典、存储键和业务回调由应用传入。
+---
 
-本仓“工作区”指各包或预览应用的构建工作区，不代表消费产品的项目身份、项目关联或应用工作目录。
+## 软件包概览
 
-本项目采用 MIT License。代码与文档贡献须遵循[贡献指南](CONTRIBUTING.md)；八个正式包发布到 npm，preview 与仓库工具保持私有包标记。`bun run check` 和 CI 会验证包目录清单、preview 覆盖与临时 tarball 产出；tarball 只写入临时目录，不进入仓库。
+| 软件包 | 说明 | 文档 |
+| :--- | :--- | :--- |
+| **`@iquji-web/web-component`** | 表单、布局、三栏工作台、桌面壳、浮层对话框等核心 UI 组件 | [中文](component/README.md) · [EN](component/README.en.md) |
+| **`@iquji-web/web-theme`** | 主题 Provider、深浅色模式切换、首帧防闪脚本与设计 Tokens | [中文](theme/README.md) · [EN](theme/README.en.md) |
+| **`@iquji-web/web-icons`** | 矢量图标库、无障碍标签与装饰语义支持 | [中文](icons/README.md) · [EN](icons/README.en.md) |
+| **`@iquji-web/web-motion`** | 页面进场动效原语与系统动效偏好适配 | [中文](motion/README.md) · [EN](motion/README.en.md) |
+| **`@iquji-web/web-i18n`** | 应用级轻量国际化 Provider、语言持久化与插值翻译 | [中文](i18n/README.md) · [EN](i18n/README.en.md) |
+| **`@iquji-web/web-query`** | 基于 React Query 的标准化查询客户端与重试策略 | [中文](query/README.md) · [EN](query/README.en.md) |
+| **`@iquji-web/web-network`** | 原生 HTTP 传输抽象、可注入 Fetch、超时与取消控制 | [中文](network/README.md) · [EN](network/README.en.md) |
+| **`@iquji-web/web-editor`** | Markdown / JSON / YAML / TOML 源码与富文本编辑器预设 | [中文](editor/README.md) · [EN](editor/README.en.md) |
+| **`@iquji-web/web-preview`** | 全量组件与公开能力的交互式预览应用 (私有应用) | [中文](preview/README.md) · [EN](preview/README.en.md) |
 
-[editor](editor/README.md) 提供富文本与源码预设；组件层 `IqujiColorPicker` 可独立用于其他颜色字段。
+---
 
-## 安装与发布
+## 快速上手
 
-使用 npm、pnpm、Yarn 或 Bun 安装 `@iquji-web/web-*` 正式包，例如 `npm install @iquji-web/web-component`。React 等 peerDependencies 由应用提供；样式按上文顺序导入。
+### 1. 安装核心包
 
-仓根 `bun run check` 检查全部正式包与 preview，并验证发布包；`bun run pack -- <空输出目录>` 生成不带开发依赖、源码脚本或本地 overrides 的 tarball。
+使用你喜爱的包管理器安装所需包（以 `@iquji-web/web-component` 为例）：
 
-每次 push 到 `main` 都会触发自动发布规划，检查最新 `main` 源码快照，给八个包统一递增 patch 版本，并同步包间依赖与锁文件。版本提交保存在独立的 `vX.Y.Z` 标签中，不回写 `main`；开发分支中的版本是基线，正式版本、对应源码和完成状态以标签及 GitHub Release 为准。快速连续推送可能合并为最新源码快照，不为中间提交逐一发版。自动发布只从启用后的更新开始，不回放旧历史。
+```bash
+# npm
+npm install @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
 
-同一源码快照重跑复用原标签；存在未完成版本时，先补齐该版本再规划最新源码。已发布包先校验注册表完整性，再逐文件核对内容和可执行权限，一致时跳过，缺失时补发；不会覆盖旧版本或把不同内容当作成功。只有八个包都可从 npm 读取且内容一致，才登记 GitHub Release 和成功部署。
+# pnpm
+pnpm add @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
 
-可信发布限定仓库 `haydardsx/iquji-community-web`、工作流 `release.yml`、环境 `npm`。自动规划使用 GitHub 的短期工作流凭据创建版本标签并调度标签发布；上传 npm 使用 OIDC，无需长期 npm token。手动运行 `release.yml` 时，`automatic` 在 main 恢复自动流程，`publish` 在版本标签恢复发布，`verify` 只读核验所选修订；也可在发布标签检出后运行 `bun run release -- --verify-published`。
+# Bun
+bun add @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
+```
 
-Pages 从通过检查的 main 部署，仅上传 preview 的静态构建目录。自定义域名由 GitHub Pages 设置管理；构建使用 Pages 提供的 base path，同时支持项目子路径和独立域名。
+> **注意**：`react` 与 `react-dom` (>= 19) 作为 peerDependencies，请确保宿主项目中已安装。
+
+### 2. 引入样式
+
+在应用入口处按顺序引入主题变量与组件基础样式：
+
+```tsx
+// 必须优先引入 theme tokens，然后再引入 component 样式
+import "@iquji-web/web-theme/tokens.css";
+import "@iquji-web/web-component/styles.css";
+```
+
+### 3. 基础使用示例
+
+```tsx
+import { IqujiThemeProvider } from "@iquji-web/web-theme";
+import { IqujiOverlayProvider, IqujiButton, IqujiField, IqujiInput } from "@iquji-web/web-component";
+import { IqujiIcon } from "@iquji-web/web-icons";
+
+export function App() {
+  return (
+    <IqujiThemeProvider defaultMode="system" storageKey="app.theme">
+      <IqujiOverlayProvider>
+        <div style={{ padding: 24, maxWidth: 480 }}>
+          <IqujiField label="服务器名称" required>
+            <IqujiInput placeholder="请输入生产服务节点" />
+          </IqujiField>
+          <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+            <IqujiButton>保存配置</IqujiButton>
+            <IqujiButton variant="secondary">取消</IqujiButton>
+          </div>
+        </div>
+      </IqujiOverlayProvider>
+    </IqujiThemeProvider>
+  );
+}
+```
+
+---
+
+## 本地开发与测试
+
+本项目要求使用 **Bun 1.3.14** 进行构建与包管理。
+
+```bash
+# 安装根依赖与校验环境
+bun install
+
+# 执行全局自动化检查（类型检查、单元测试、Linter、打包完整性校验）
+bun run check
+
+# 启动组件交互式预览应用 (监听 http://127.0.0.1:5175)
+cd preview && bun run dev
+
+# 打包各正式包产物
+bun run pack -- <output-directory>
+```
+
+### 模块依赖关系
+
+```
+icons, theme, motion, i18n, query, network (无内部交叉依赖)
+    └── component (依赖 icons 与 theme)
+          └── editor (依赖 component, icons, theme)
+                └── preview (全量集成演示)
+```
+
+---
+
+## 贡献与许可
+
+- 欢迎提交 Issue 与 Pull Request，详情请查阅 [CONTRIBUTING.md](CONTRIBUTING.md)。
+- 本项目采用 [MIT License](LICENSE) 开源协议。

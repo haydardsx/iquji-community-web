@@ -2,51 +2,125 @@
 
 [简体中文](README.md) | English
 
-Public Web foundation packages for components, editors, themes, icons, motion, internationalization, query state, and HTTP transport. Each release package can be installed, checked, built, and packed into a local tarball from this repository. Packages and documentation must not depend on Enterprise code or source code from consuming repositories.
+A modern, modular, accessible Web UI toolkit and foundation suite. Provides decoupled UI components, rich-text and code editors, design theme tokens, vector icons, motion primitives, internationalization, query state management, and HTTP transport.
 
-| Package | Features |
-| --- | --- |
-| [component](component/README.md) | Forms, layouts, desktop shells, three-pane workbenches, settings pages, pagination, overlays, and component styles |
-| [theme](theme/README.md) | Themes, preferences, first-paint scripts, and semantic CSS variables |
-| [icons](icons/README.md) | Icons and accessibility attributes |
-| [motion](motion/README.md) | Shared motion primitives and reduced-motion support |
-| [i18n](i18n/README.md) | Internationalization state with application-provided dictionaries |
-| [query](query/README.md) | QueryClient, queries, and retry policies |
-| [network](network/README.md) | Raw HTTP transport, injectable fetch, timeouts, cancellation, and JSON adapters |
-| [editor](editor/README.md) | Rich text and Markdown/JSON/YAML/TXT source presets |
+> **Live Preview**: Visit [community-web.iquji.com](https://community-web.iquji.com) to explore the interactive component catalog and capabilities overview.
 
-## Development
+---
 
-Use Bun `1.3.14`. In the package directory, run `bun install --frozen-lockfile`, then `bun run build` to build or `bun run check` to build, check types, and run functional tests.
+## Key Features
 
-`component` depends on the public `icons` and `theme` packages. When setting it up for the first time, install and build `icons` and `theme` before installing and building `component`. `editor` depends on the public `component`, `icons`, and `theme` packages; the remaining packages can be used independently. Dependencies between Community packages must stay within the public Community packages.
+- 🧩 **Modular Architecture**: 8 standalone public npm packages. Install and consume only what you need without bloat.
+- ♿ **Accessibility First**: Built on Base UI primitives and WAI-ARIA standards, providing robust keyboard navigation and screen-reader support.
+- 🎨 **Adaptive Theming**: Semantic CSS tokens with seamless light / dark theme transitions and zero-flash first-paint execution.
+- 🌐 **Comprehensive i18n & Motion**: Decoupled dictionary injection and smooth animations that honor `prefers-reduced-motion`.
+- ⚡ **Modern Tooling**: Powered by Bun 1.3.14, strict TypeScript declarations, and Biome linting.
 
-The [preview](preview/README.md) is a public feature catalog with interactive examples, available through [GitHub Pages](https://community-web.iquji.com). It is not an npm release package. It must cover every public JavaScript, type, and CSS export of every release package. Examples use local state or injected substitutes and do not access real services. Test-support exports, test files, build scripts, and generated artifacts do not need individual pages; new release exports must be added to both the coverage inventory and examples.
+---
 
-Release package entry points export JavaScript, type declarations, and required CSS from `dist`. Applications must explicitly import `@iquji-web/web-theme/tokens.css` before `@iquji-web/web-component/styles.css`. Applications supply visible text, dictionaries, storage keys, and business callbacks. The component-level `IqujiColorPicker` can also be used independently for other color fields.
+## Package Directory
 
-In this repository, “workspace” means a package or preview application's build workspace. It does not refer to a consuming product's project identity, project association, or application working directory.
+| Package | Description | Documentation |
+| :--- | :--- | :--- |
+| **`@iquji-web/web-component`** | Core UI components: forms, layouts, workbenches, desktop shells, overlays | [Chinese](component/README.md) · [English](component/README.en.md) |
+| **`@iquji-web/web-theme`** | Theme provider, light/dark switching, prepaint script, and design tokens | [Chinese](theme/README.md) · [English](theme/README.en.md) |
+| **`@iquji-web/web-icons`** | Vector icon library with semantic accessibility and decorative support | [Chinese](icons/README.md) · [English](icons/README.en.md) |
+| **`@iquji-web/web-motion`** | Route entrance animations and reduced-motion adaptation | [Chinese](motion/README.md) · [English](motion/README.en.md) |
+| **`@iquji-web/web-i18n`** | Lightweight i18n provider, locale persistence, and template interpolation | [Chinese](i18n/README.md) · [English](i18n/README.en.md) |
+| **`@iquji-web/web-query`** | React Query client configuration and robust retry policies | [Chinese](query/README.md) · [English](query/README.en.md) |
+| **`@iquji-web/web-network`** | Raw HTTP transport abstractions, injectable fetch, timeouts, and cancellation | [Chinese](network/README.md) · [English](network/README.en.md) |
+| **`@iquji-web/web-editor`** | Markdown / JSON / YAML / TOML source and rich text editor presets | [Chinese](editor/README.md) · [English](editor/README.en.md) |
+| **`@iquji-web/web-preview`** | Interactive component catalog and capability showcase (private package) | [Chinese](preview/README.md) · [English](preview/README.en.md) |
 
-## Installation and releases
+---
 
-Install the `@iquji-web/web-*` release packages with npm, pnpm, Yarn, or Bun, for example:
+## Quick Start
 
-```sh
-npm install @iquji-web/web-component
+### 1. Installation
+
+Install the required packages using your package manager of choice (e.g. `@iquji-web/web-component`):
+
+```bash
+# npm
+npm install @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
+
+# pnpm
+pnpm add @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
+
+# Bun
+bun add @iquji-web/web-component @iquji-web/web-theme @iquji-web/web-icons
 ```
 
-The application provides React and other `peerDependencies`. Import styles in the order described above.
+> **Note**: `react` and `react-dom` (>= 19) are peerDependencies provided by the consuming application.
 
-At the repository root, `bun run check` checks all release packages and the preview, including the release archives. Run `bun run pack -- <empty-output-directory>` to create tarballs without development dependencies, source scripts, or local overrides. Checks write temporary tarballs outside the repository.
+### 2. Import Styles
 
-Every push to `main` starts automatic release planning. The workflow checks the latest source snapshot, increments the shared patch version for all eight packages, and updates internal dependencies and lockfiles. Version changes live in an independent `vX.Y.Z` release snapshot and are not written back to `main`. Versions on the development branch are baselines; release tags and GitHub Releases identify published versions and their source. Rapid pushes may be combined into the latest snapshot instead of producing a release for every intermediate commit. Earlier history is not replayed.
+Import theme tokens first, followed by component styles at your application's entry point:
 
-Rerunning the same source snapshot reuses its tag. An unfinished version is completed before a new version is planned. Existing packages are checked against registry integrity and compared file by file, including executable permissions; matching packages are skipped and missing packages are published. Releases are never overwritten, and changed contents are rejected. The workflow records a GitHub Release and successful deployment only after all eight packages are readable from npm with matching contents.
+```tsx
+// Must import theme tokens before component styles
+import "@iquji-web/web-theme/tokens.css";
+import "@iquji-web/web-component/styles.css";
+```
 
-Trusted publishing is restricted to repository `haydardsx/iquji-community-web`, workflow `release.yml`, and environment `npm`. Planning uses GitHub's short-lived workflow token to create version tags and dispatch their publication; npm uploads use OIDC without a long-lived npm token. For manual runs of `release.yml`, choose `automatic` on main to resume planning, `publish` on a version tag to resume publishing, or `verify` for read-only verification of the selected revision. You can also check out a release tag and run `bun run release -- --verify-published`.
+### 3. Basic Usage
 
-Pages deploys from `main` after checks pass and uploads only the preview's static build directory. Manage the custom domain in GitHub Pages settings. The build uses the base path supplied by Pages and supports both project subpaths and standalone domains.
+```tsx
+import { IqujiThemeProvider } from "@iquji-web/web-theme";
+import { IqujiOverlayProvider, IqujiButton, IqujiField, IqujiInput } from "@iquji-web/web-component";
+import { IqujiIcon } from "@iquji-web/web-icons";
 
-## Contributing and license
+export function App() {
+  return (
+    <IqujiThemeProvider defaultMode="system" storageKey="app.theme">
+      <IqujiOverlayProvider>
+        <div style={{ padding: 24, maxWidth: 480 }}>
+          <IqujiField label="Server Name" required>
+            <IqujiInput placeholder="Enter production host" />
+          </IqujiField>
+          <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
+            <IqujiButton>Save Changes</IqujiButton>
+            <IqujiButton variant="secondary">Cancel</IqujiButton>
+          </div>
+        </div>
+      </IqujiOverlayProvider>
+    </IqujiThemeProvider>
+  );
+}
+```
 
-This project uses the [MIT License](LICENSE). Code and documentation contributions must follow the [contribution guide](CONTRIBUTING.md). The eight release packages are published to npm; the preview and repository tooling retain their private-package markers. `bun run check` and CI verify the package inventory, preview coverage, and temporary tarball output.
+---
+
+## Development & Testing
+
+This project requires **Bun 1.3.14** for package management and building.
+
+```bash
+# Install root dependencies
+bun install
+
+# Run global automated checks (typecheck, tests, linter, packaging integrity)
+bun run check
+
+# Start interactive preview development server (listens on http://127.0.0.1:5175)
+cd preview && bun run dev
+
+# Pack release tarballs
+bun run pack -- <output-directory>
+```
+
+### Dependency Architecture
+
+```
+icons, theme, motion, i18n, query, network (independent leaf packages)
+    └── component (depends on icons, theme)
+          └── editor (depends on component, icons, theme)
+                └── preview (integrates all packages)
+```
+
+---
+
+## Contributing & License
+
+- Issues and Pull Requests are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+- Licensed under the [MIT License](LICENSE).

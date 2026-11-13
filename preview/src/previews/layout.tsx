@@ -1,6 +1,5 @@
 import {
   IqujiButton,
-  IqujiDataTable,
   IqujiDesktopAccount,
   IqujiDesktopAccountCard,
   IqujiDesktopRail,
@@ -100,38 +99,6 @@ export const layoutPreviews: readonly ComponentPreview[] = [
           </tbody>
         </table>
       </IqujiTableFrame>
-    ),
-  },
-  {
-    id: "data-table",
-    name: "IqujiDataTable",
-    category: "布局与桌面",
-    description: "使用列定义与真实数据渲染统一的数据表。",
-    keywords: "data table 列定义 数据表",
-    render: () => (
-      <IqujiDataTable
-        columns={[
-          { accessorKey: "name", header: "服务器名称" },
-          { accessorKey: "host", header: "连接地址" },
-          { accessorKey: "status", header: "状态" },
-        ]}
-        data={[
-          {
-            id: "server-one",
-            name: "生产节点",
-            host: "192.0.2.10",
-            status: "已连接",
-          },
-          {
-            id: "server-two",
-            name: "构建节点",
-            host: "192.0.2.11",
-            status: "待探测",
-          },
-        ]}
-        label="示例服务器列表"
-        rowKey={(row) => row.id}
-      />
     ),
   },
   {

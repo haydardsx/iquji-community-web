@@ -1,9 +1,82 @@
-# Web theme
+# @iquji-web/web-theme
 
-`@iquji-web/web-theme` 只提供通用 theme 能力，JavaScript、类型声明、必要样式及功能测试随源码交付。
+简体中文 | [English](README.en.md)
 
-安装使用本目录锁文件，运行 `bun install --frozen-lockfile` 和 `bun run check`。正式入口只导出 `dist` 中的 JavaScript、类型声明和独立 CSS，不要求消费者编译本包源码。
+Iquji Web 设计系统与主题机制，提供语义化 CSS Tokens、明暗主题与密度切换、持久化上下文 Provider 以及首帧无闪烁防闪脚本。
 
-`--iquji-color-action-primary`、`--iquji-color-action-danger` 及各自的 `-hover` 变量提供填充操作背景，`--iquji-color-action-contrast` 提供白色前景；它们独立于阅读用强调色和状态提醒色。应用覆盖操作变量时仍须保持明暗主题的可读对比度，不用状态提醒的浅色文字充当红底按钮背景。禁用操作使用 `--iquji-color-disabled-fill` 和 `--iquji-color-disabled-text`。
+---
 
-输入类控件使用独立的 `--iquji-color-control-border`、`--iquji-color-control-hover-border`、`--iquji-color-control-focus-border` 和 `--iquji-control-focus-shadow`。默认以明暗主题的中性描边与 1px 柔和外晕标识聚焦；品牌色覆盖不会生成粗色环。按钮、导航等键盘入口仍使用 `--iquji-focus-ring`，高对比度模式保留系统可见焦点。
+## 安装
+
+```bash
+npm install @iquji-web/web-theme
+```
+
+---
+
+## 引入 Tokens 样式
+
+在你的应用入口（如 `main.tsx` 或 `index.html`）优先引入：
+
+```tsx
+import "@iquji-web/web-theme/tokens.css";
+```
+
+CSS Tokens 支持通过 `[data-theme="light"]` 与 `[data-theme="dark"]` 动态适配：
+- 基础颜色：`--iquji-color-canvas`, `--iquji-color-surface`, `--iquji-color-border`, `--iquji-color-text`, `--iquji-color-muted`
+- 交互强调：`--iquji-color-accent`, `--iquji-color-action-primary`, `--iquji-color-action-danger`
+- 间距与字号：`--iquji-space-1` 至 `--iquji-space-16`, `--iquji-font-size-*`
+- 圆角与投影：`--iquji-radius-*`, `--iquji-shadow-*`
+
+---
+
+## 主题 Provider 与 Hook
+
+```tsx
+import { IqujiThemeProvider, useIqujiTheme } from "@iquji-web/web-theme";
+
+export function App() {
+  return (
+    <IqujiThemeProvider defaultMode="system" storageKey="app.theme">
+      <ThemeToggle />
+    </IqujiThemeProvider>
+  );
+}
+
+function ThemeToggle() {
+  const { mode, resolvedTheme, setMode } = useIqujiTheme();
+
+  return (
+    <button onClick={() => setMode(resolvedTheme === "dark" ? "light" : "dark")}>
+      当前主题: {resolvedTheme} (模式: {mode})
+    </button>
+  );
+}
+```
+
+---
+
+## 首帧防闪脚本 (Prepaint Script)
+
+在服务端渲染 (SSR) 或 HTML `<head>` 注入 `IqujiThemePrepaintScript`，在 React 水合和页面首帧渲染前同步读取主题，彻底避免深色模式下的白色闪屏：
+
+```tsx
+import { IqujiThemePrepaintScript } from "@iquji-web/web-theme";
+
+// 在 HTML <head> 中尽早执行
+<head>
+  <IqujiThemePrepaintScript storageKey="app.theme" defaultMode="system" />
+</head>
+```
+
+---
+
+## 开发与构建
+
+```bash
+bun install --frozen-lockfile
+bun run build       # 编译打包到 dist/
+bun run typecheck   # 类型检查
+bun run test        # 单元测试
+bun run check       # 完整检查
+```
