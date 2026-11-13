@@ -10,6 +10,7 @@ export async function release({ verifyOnly = false, dryRun = false, fetchImpl = 
   const output = mkdtempSync(join(tmpdir(), "iquji-web-release-"));
   try {
     const artifacts = pack(output);
+    const uploaded = [];
     if (tag && artifacts.some((item) => tag !== `v${item.version}`)) throw new Error("标签必须与全部正式包版本一致。");
     async function lookup(item, attempts = 1) {
       for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -34,13 +35,17 @@ export async function release({ verifyOnly = false, dryRun = false, fetchImpl = 
       if (dryRun) args.push("--dry-run");
       if (process.env.GITHUB_ACTIONS === "true") args.push("--provenance");
       publish("npm", args, { stdio: "inherit" });
-      if (!dryRun) {
-        const uploaded = await lookup(item, registryAttempts);
-        if (!uploaded) throw new Error(`发布请求已提交，但注册表尚不可读取：${item.name}@${item.version}，重跑会复用此版本。`);
-        const count = await verifyPublishedArtifact(item, uploaded, fetchImpl);
-        console.log(`已发布并核验 ${count} 个文件：${item.name}@${item.version}`);
-      }
+      if (!dryRun) uploaded.push(item);
     }
+    // 按依赖顺序完成上传后，同时等待各包分发，避免把注册表传播延迟逐包累加。
+    const verified = await Promise.allSettled(uploaded.map(async (item) => {
+      const published = await lookup(item, registryAttempts);
+      if (!published) throw new Error(`发布请求已提交，但注册表尚不可读取：${item.name}@${item.version}，重跑会复用此版本。`);
+      const count = await verifyPublishedArtifact(item, published, fetchImpl);
+      console.log(`已发布并核验 ${count} 个文件：${item.name}@${item.version}`);
+    }));
+    const failed = verified.filter((result) => result.status === "rejected");
+    if (failed.length) throw new AggregateError(failed.map((result) => result.reason), "部分已上传制品暂未通过核验，重跑会复用此版本。");
   } finally {
     rmSync(output, { recursive: true, force: true });
   }

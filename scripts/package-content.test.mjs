@@ -107,7 +107,103 @@ test("拒绝身份不匹配、外部下载地址和下载错误", async () => {
     const published = metadata(archive());
     await assert.rejects(verifyPublishedArtifact(fixture.item, { ...published, version: "0.2.0" }), /身份或版本不匹配/);
     await assert.rejects(verifyPublishedArtifact(fixture.item, { ...published, dist: { ...published.dist, tarball: "https://example.invalid/package.tgz" } }), /公开 npm/);
-    await assert.rejects(verifyPublishedArtifact(fixture.item, published, async () => new Response("", { status: 503 })), /HTTP 503/);
+    await assert.rejects(verifyPublishedArtifact(fixture.item, published, async () => new Response("", { status: 503 }), { attempts: 1 }), /HTTP 503/);
+  } finally { fixture.cleanup(); }
+});
+
+function downloadClock(timeoutMs = 300000) {
+  let time = Date.parse("2026-11-13T10:00:00Z");
+  const waits = [];
+  return {
+    waits,
+    options: { timeoutMs, now: () => time, pause: async (ms) => { waits.push(ms); time += ms; } },
+    advance: (ms) => { time += ms; },
+  };
+}
+
+test("CDN暂时404后重试实际tarball，元数据与内容验证保持严格", async () => {
+  const fixture = packageFixture();
+  const clock = downloadClock();
+  let requests = 0;
+  try {
+    const remote = archive();
+    const count = await verifyPublishedArtifact(fixture.item, metadata(remote), async () => {
+      requests += 1;
+      return requests === 1 ? new Response("", { status: 404 }) : new Response(remote);
+    }, clock.options);
+    assert.equal(count, 3);
+    assert.equal(requests, 2);
+    assert.deepEqual(clock.waits, [5000]);
+  } finally { fixture.cleanup(); }
+});
+
+test("限流和服务端错误遵循有上限的Retry-After，临时网络错误可恢复", async () => {
+  const fixture = packageFixture();
+  const clock = downloadClock();
+  const remote = archive();
+  let requests = 0;
+  try {
+    const outcomes = [
+      new Response("", { status: 429, headers: { "retry-after": "12" } }),
+      new Response("", { status: 503, headers: { "retry-after": "Fri, 13 Nov 2026 10:00:32 GMT" } }),
+      new Response("", { status: 502, headers: { "retry-after": "99999" } }),
+      new TypeError("fetch failed", { cause: { code: "ECONNRESET" } }),
+      new Response(remote),
+    ];
+    await verifyPublishedArtifact(fixture.item, metadata(remote), async () => {
+      const result = outcomes[requests++];
+      if (result instanceof Error) throw result;
+      return result;
+    }, clock.options);
+    assert.equal(requests, 5);
+    assert.deepEqual(clock.waits, [12000, 20000, 60000, 5000]);
+  } finally { fixture.cleanup(); }
+});
+
+test("下载超时会重试但总预算最多五分钟，次数上限仍生效", async () => {
+  const fixture = packageFixture();
+  const clock = downloadClock();
+  let requests = 0;
+  const started = clock.options.now();
+  try {
+    await assert.rejects(verifyPublishedArtifact(fixture.item, metadata(archive()), async (_url, options) => {
+      assert.ok(options.signal instanceof AbortSignal);
+      requests += 1;
+      clock.advance(Math.min(30000, 300000 - (clock.options.now() - started)));
+      throw new DOMException("请求超时", "TimeoutError");
+    }, clock.options), /有界重试.*请求超时/);
+    assert.ok(requests > 1 && requests < 10);
+    assert.equal(clock.options.now() - started, 300000);
+    let attempts = 0;
+    await assert.rejects(verifyPublishedArtifact(fixture.item, metadata(archive()), async () => {
+      attempts += 1;
+      return new Response("", { status: 404 });
+    }, { attempts: 2, pause: async () => {} }), /有界重试.*HTTP 404/);
+    assert.equal(attempts, 2);
+  } finally { fixture.cleanup(); }
+});
+
+test("权限拒绝、证书错误、完整性失败和真实内容变化立即失败且不重试", async () => {
+  const fixture = packageFixture();
+  const remote = archive();
+  const changed = archive(entries.map((entry, index) => index === 1 ? { ...entry, content: "changed" } : entry));
+  try {
+    for (const { result, published, error } of [
+      { result: new Response("", { status: 403 }), published: metadata(remote), error: /HTTP 403/ },
+      { result: new TypeError("fetch failed", { cause: { code: "CERT_HAS_EXPIRED" } }), published: metadata(remote), error: /fetch failed/ },
+      { result: new Response(changed), published: metadata(remote), error: /完整性校验失败/ },
+      { result: new Response(changed), published: metadata(changed), error: /文件内容不同/ },
+    ]) {
+      let requests = 0;
+      let waits = 0;
+      await assert.rejects(verifyPublishedArtifact(fixture.item, published, async () => {
+        requests += 1;
+        if (result instanceof Error) throw result;
+        return result;
+      }, { pause: async () => { waits += 1; } }), error);
+      assert.equal(requests, 1);
+      assert.equal(waits, 0);
+    }
   } finally { fixture.cleanup(); }
 });
 
@@ -161,6 +257,6 @@ test("发布后等待注册表可读并核验实际文件，超时不会登记�
       tag: null, pack: () => [fixture.item], registryAttempts: 2,
       publish: () => {}, pause: async () => {},
       fetchImpl: async () => new Response("", { status: 404 }),
-    }), /注册表尚不可读取/);
+    }), (error) => error instanceof AggregateError && error.errors.some((cause) => /注册表尚不可读取/.test(cause.message)));
   } finally { fixture.cleanup(); }
 });

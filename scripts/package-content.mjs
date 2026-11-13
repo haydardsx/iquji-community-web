@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
+import { setTimeout as pauseDownload } from "node:timers/promises";
 
 const MAX_ARCHIVE_BYTES = 32 * 1024 * 1024;
 const MAX_UNPACKED_BYTES = 128 * 1024 * 1024;
@@ -85,9 +86,31 @@ export function comparePackageContents(localArchive, publishedArchive) {
   return local.size;
 }
 
-async function downloadArchive(url, fetchImpl) {
-  const response = await fetchImpl(url, { redirect: "error", signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`下载已发布制品失败：HTTP ${response.status}`);
+function temporaryNetworkError(error) {
+  if (["AbortError", "TimeoutError"].includes(error?.name)) return true;
+  const code = error?.cause?.code ?? error?.code;
+  if (typeof code === "string") return new Set([
+    "ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "EAI_AGAIN", "ENETUNREACH", "EHOSTUNREACH",
+    "UND_ERR_CONNECT_TIMEOUT", "UND_ERR_HEADERS_TIMEOUT", "UND_ERR_BODY_TIMEOUT", "UND_ERR_SOCKET",
+  ]).has(code);
+  return error instanceof TypeError && error.message === "fetch failed" && !error.cause;
+}
+
+function retryAfterDelay(value, now) {
+  if (!value) return 5000;
+  const requested = /^\d+$/.test(value.trim()) ? Number(value) * 1000 : Date.parse(value) - now;
+  return Number.isFinite(requested) ? Math.max(5000, Math.min(requested, 60000)) : 5000;
+}
+
+async function downloadOnce(url, fetchImpl, timeout, now) {
+  const response = await fetchImpl(url, { redirect: "error", signal: AbortSignal.timeout(timeout) });
+  if (!response.ok) {
+    const error = new Error(`下载已发布制品失败：HTTP ${response.status}`);
+    error.retryableDownload = response.status === 404 || response.status === 429 || (response.status >= 500 && response.status < 600);
+    error.retryDelay = retryAfterDelay(response.headers.get("retry-after"), now());
+    await response.body?.cancel().catch(() => {});
+    throw error;
+  }
   if (Number(response.headers.get("content-length")) > MAX_ARCHIVE_BYTES) throw new Error("制品下载体积超出检查上限。");
   const chunks = [];
   let size = 0;
@@ -99,13 +122,38 @@ async function downloadArchive(url, fetchImpl) {
   return Buffer.concat(chunks);
 }
 
-export async function verifyPublishedArtifact(item, published, fetchImpl = fetch) {
+async function downloadArchive(url, fetchImpl, {
+  attempts = 61, timeoutMs = 300000, requestTimeoutMs = 30000, pause = pauseDownload, now = Date.now,
+} = {}) {
+  if (![attempts, timeoutMs, requestTimeoutMs].every((value) => Number.isSafeInteger(value) && value > 0)
+    || attempts > 61 || timeoutMs > 300000 || requestTimeoutMs > 30000) throw new Error("制品下载重试参数超出允许范围。");
+  const deadline = now() + timeoutMs;
+  let lastError;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const remaining = deadline - now();
+    if (remaining <= 0) break;
+    try {
+      return await downloadOnce(url, fetchImpl, Math.min(requestTimeoutMs, remaining), now);
+    } catch (error) {
+      if (!error?.retryableDownload && !temporaryNetworkError(error)) throw error;
+      lastError = error;
+      if (attempt + 1 === attempts) break;
+      const wait = error.retryDelay ?? 5000;
+      if (wait >= deadline - now()) break;
+      // 元数据可见后 CDN 仍可能暂时返回 404；重试仅覆盖下载，不重复完整性或内容判断。
+      await pause(wait);
+    }
+  }
+  throw new Error(`下载已发布制品在有界重试后仍不可用：${lastError?.message ?? "等待超时"}`, { cause: lastError });
+}
+
+export async function verifyPublishedArtifact(item, published, fetchImpl = fetch, downloadOptions = {}) {
   if (published.name !== item.name || published.version !== item.version) throw new Error("注册表返回的包身份或版本不匹配。");
   const url = new URL(published.dist?.tarball);
   if (url.origin !== "https://registry.npmjs.org" || url.username || url.password || url.hash) {
     throw new Error("已发布制品必须来自公开 npm 注册表。");
   }
-  const archive = await downloadArchive(url, fetchImpl);
+  const archive = await downloadArchive(url, fetchImpl, downloadOptions);
   const integrity = `sha512-${createHash("sha512").update(archive).digest("base64")}`;
   if (!published.dist?.integrity?.split(/\s+/).includes(integrity)) throw new Error("已发布制品的完整性校验失败。");
   return comparePackageContents(readFileSync(item.filename), archive);
