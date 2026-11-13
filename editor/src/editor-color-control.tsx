@@ -1,7 +1,7 @@
 import {
   IqujiColorPicker,
   type IqujiColorPickerProps,
-} from "@iquji-cloud/web-component";
+} from "@iquji-web/web-component";
 import type { Editor } from "@tiptap/core";
 import type { EditorState } from "@tiptap/pm/state";
 import { useEditorState } from "@tiptap/react";

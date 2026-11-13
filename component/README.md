@@ -1,6 +1,6 @@
 # Web component
 
-`@iquji-cloud/web-component` 只提供通用 component 能力，JavaScript、类型声明、必要样式及功能测试随源码交付。
+`@iquji-web/web-component` 只提供通用 component 能力，JavaScript、类型声明、必要样式及功能测试随源码交付。
 
 安装使用本目录锁文件，运行 `bun install --frozen-lockfile` 和 `bun run check`。正式入口只导出 `dist` 中的 JavaScript、类型声明和独立 CSS，不要求消费者编译本包源码。
 
@@ -10,7 +10,7 @@ JavaScript 构建显式使用生产环境的 JSX runtime，不依赖调用方 sh
 
 `AppShell` 可用 `navigationGroups` 将链接按工作区分组。每组提供稳定的 `id`、可见标题和 `items`；组内项目继续使用 `AppNavigationItem` 的链接、图标、禁用和当前页状态。未提供分组时继续显示 `navigation` 平铺项目。侧栏标题使用真实分组标题，调用方不需要伪造分隔链接。
 
-运行消费者需提供正式 icons、theme 与 React、Base UI 依赖，显式先导入 `@iquji-cloud/web-theme/tokens.css`，再导入 `@iquji-cloud/web-component/styles.css`；组件样式不隐式设置全局主题。当前源码开发的 icons 和 theme 使用相邻已构建工作区，其他叶子不进入本包闭包。
+运行消费者需提供正式 icons、theme 与 React、Base UI 依赖，显式先导入 `@iquji-web/web-theme/tokens.css`，再导入 `@iquji-web/web-component/styles.css`；组件样式不隐式设置全局主题。当前源码开发的 icons 和 theme 使用相邻已构建工作区，其他叶子不进入本包闭包。
 
 正式 component 产物通过精确 dependencies 声明 icons 与 theme；源码工作区使用明确的本地 overrides 定位相邻已构建工作区。这些本地安装映射不替代包消费者自己的正式依赖解析。
 

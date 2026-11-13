@@ -18,7 +18,7 @@ const { mock } = await import("bun:test");
 const React = await import("react");
 const { dirname } = await import("node:path");
 const componentEntry = Bun.resolveSync(
-  "@iquji-cloud/web-component",
+  "@iquji-web/web-component",
   import.meta.dir,
 );
 mock.module(Bun.resolveSync("react", dirname(componentEntry)), () => React);

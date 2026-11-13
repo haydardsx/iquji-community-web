@@ -3,8 +3,8 @@ import {
   IqujiButton,
   IqujiInput,
   IqujiPageHeader,
-} from "@iquji-cloud/web-component";
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+} from "@iquji-web/web-component";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { useMemo, useState } from "react";
 import { CATEGORIES } from "./catalog";
 import { componentPreviews } from "./previews";
@@ -128,7 +128,7 @@ export function App() {
           <span>Web Community 能力</span>
           <span className="catalog-topbar__package">
             <code>
-              {activePreview?.packageName ?? "@iquji-cloud/web-component"}
+              {activePreview?.packageName ?? "@iquji-web/web-component"}
             </code>
           </span>
         </header>

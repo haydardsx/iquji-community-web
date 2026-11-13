@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@iquji-cloud/web-theme",
+      "name": "@iquji-web/web-theme",
       "devDependencies": {
         "@biomejs/biome": "2.4.12",
         "@happy-dom/global-registrator": "20.11.6",

@@ -130,8 +130,8 @@ test("页签受控值暂时不可用时仍可进入首个可用项，组合输�
 
 test("正式样式中的分段页签按内容收紧，选中项不带下划线且禁用状态清晰", async () => {
   for (const path of [
-    "@iquji-cloud/web-theme/tokens.css",
-    "@iquji-cloud/web-component/styles.css",
+    "@iquji-web/web-theme/tokens.css",
+    "@iquji-web/web-component/styles.css",
   ]) {
     const result = await Bun.build({
       entrypoints: [fileURLToPath(import.meta.resolve(path))],

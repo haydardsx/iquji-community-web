@@ -1,4 +1,4 @@
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { FormDialogResize } from "./form-dialog-resize.js";
 import { IconButton } from "./index.js";
 import { IqujiDialog, type IqujiDialogProps } from "./overlays.js";

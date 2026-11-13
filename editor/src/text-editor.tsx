@@ -25,7 +25,7 @@ import {
   keymap,
   lineNumbers,
 } from "@codemirror/view";
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { IqujiEditorLayout } from "./editor-layout.js";
 import { renderEditorMarkdown } from "./markdown.js";

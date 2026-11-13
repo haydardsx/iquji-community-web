@@ -1,4 +1,4 @@
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { type ReactElement, type ReactNode, useId, useState } from "react";
 import { IqujiPopover } from "./floating.js";
 import { classNames } from "./utils.js";

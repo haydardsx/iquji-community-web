@@ -1,5 +1,5 @@
 {
-  "name": "@iquji-cloud/web-editor",
+  "name": "@iquji-web/web-editor",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -61,9 +61,9 @@
     "@codemirror/search": "6.7.2",
     "@codemirror/state": "6.7.6",
     "@codemirror/view": "6.43.15",
-    "@iquji-cloud/web-component": "0.1.0",
-    "@iquji-cloud/web-icons": "0.1.0",
-    "@iquji-cloud/web-theme": "0.1.0",
+    "@iquji-web/web-component": "0.1.0",
+    "@iquji-web/web-icons": "0.1.0",
+    "@iquji-web/web-theme": "0.1.0",
     "@tiptap/extension-text-align": "2.27.2",
     "@tiptap/extension-underline": "2.27.2",
     "dompurify": "3.4.17",
@@ -72,9 +72,9 @@
     "@tiptap/starter-kit": "2.27.2"
   },
   "overrides": {
-    "@iquji-cloud/web-icons": "file:../icons",
-    "@iquji-cloud/web-theme": "file:../theme",
-    "@iquji-cloud/web-component": "file:../component"
+    "@iquji-web/web-icons": "file:../icons",
+    "@iquji-web/web-theme": "file:../theme",
+    "@iquji-web/web-component": "file:../component"
   },
   "description": "可装配富文本与源码编辑器。",
   "publishConfig": {

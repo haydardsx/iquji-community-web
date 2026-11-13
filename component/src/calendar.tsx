@@ -1,4 +1,4 @@
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { classNames } from "./utils.js";
 

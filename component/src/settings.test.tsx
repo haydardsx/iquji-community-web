@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { act, type ReactNode, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";

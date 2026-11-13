@@ -1,5 +1,5 @@
 {
-  "name": "@iquji-cloud/web-component",
+  "name": "@iquji-web/web-component",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
@@ -46,13 +46,13 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@iquji-cloud/web-icons": "0.1.0",
-    "@iquji-cloud/web-theme": "0.1.0",
+    "@iquji-web/web-icons": "0.1.0",
+    "@iquji-web/web-theme": "0.1.0",
     "@tanstack/react-table": "8.21.3"
   },
   "overrides": {
-    "@iquji-cloud/web-icons": "file:../icons",
-    "@iquji-cloud/web-theme": "file:../theme"
+    "@iquji-web/web-icons": "file:../icons",
+    "@iquji-web/web-theme": "file:../theme"
   },
   "description": "React 通用交互组件与布局。",
   "publishConfig": {

@@ -1,11 +1,11 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   createIqujiQueryClient,
   IqujiQueryProvider,
   iqujiQueryClientDefaults,
   isAuthorizationQueryError,
   shouldRetryIqujiQuery,
-} from "@iquji-cloud/web-query";
+} from "@iquji-web/web-query";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import type { ComponentPreview } from "../catalog";
@@ -93,7 +93,7 @@ export const queryPreviews: readonly ComponentPreview[] = [
     id: "query-client",
     name: "查询客户端与重试",
     packageId: "query",
-    packageName: "@iquji-cloud/web-query",
+    packageName: "@iquji-web/web-query",
     category: "查询",
     description: "使用本地 queryFn 操作成功、临时故障重试与不重试的授权错误。",
     keywords: "query client provider retry cache authorization local",

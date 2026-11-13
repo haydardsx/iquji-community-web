@@ -4,8 +4,8 @@ import {
   IqujiPagination,
   IqujiSettingsNav,
   IqujiTabs,
-} from "@iquji-cloud/web-component";
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+} from "@iquji-web/web-component";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { useState } from "react";
 import type { ComponentPreview } from "../catalog";
 

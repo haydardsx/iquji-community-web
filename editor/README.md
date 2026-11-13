@@ -1,6 +1,6 @@
 # Web Editor
 
-`@iquji-cloud/web-editor` 是 React 编辑器公共实现，统一通过 `dist` 导出。导入 `@iquji-cloud/web-editor/styles.css` 装配基础样式。
+`@iquji-web/web-editor` 是 React 编辑器公共实现，统一通过 `dist` 导出。导入 `@iquji-web/web-editor/styles.css` 装配基础样式。
 
 - `IqujiTextEditor`：`markdown`、`json`、`yaml`、`text` 源码预设，CodeMirror 6 管理输入、选区、历史和语法诊断。Markdown 预览不改变源码；JSON/YAML 格式化由显式操作触发，非法源码仍可编辑。
 - `IqujiRichTextEditor`、`useIqujiRichTextEditor`：Tiptap 富文本装配。`createRichTextPreset()` 提供基础 schema；宿主也可直接注入自己的 extensions 和 serialize。

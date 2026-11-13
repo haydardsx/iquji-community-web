@@ -37,7 +37,7 @@ async function applyStyles(specifier: string) {
 }
 
 test("组件样式出口不再隐式设置全局主题 token", async () => {
-  await applyStyles("@iquji-cloud/web-component/styles.css");
+  await applyStyles("@iquji-web/web-component/styles.css");
   const computed = getComputedStyle(document.documentElement);
   expect(computed.getPropertyValue("--iquji-color-canvas")).toBe("");
   expect(computed.getPropertyValue("--iquji-motion-control")).toBe("");
@@ -45,8 +45,8 @@ test("组件样式出口不再隐式设置全局主题 token", async () => {
 
 test("主题与组件显式组合后，减少动态效果会停止真实DOM中的加载动画", async () => {
   device.prefersReducedMotion = "reduce";
-  await applyStyles("@iquji-cloud/web-theme/tokens.css");
-  await applyStyles("@iquji-cloud/web-component/styles.css");
+  await applyStyles("@iquji-web/web-theme/tokens.css");
+  await applyStyles("@iquji-web/web-component/styles.css");
   const spinner = document.createElement("span");
   spinner.className = "iquji-button__spinner";
   document.body.append(spinner);
@@ -54,8 +54,8 @@ test("主题与组件显式组合后，减少动态效果会停止真实DOM中�
 });
 
 test("图标栏分隔线可隐藏和恢复，保持宽度与导航行为", async () => {
-  await applyStyles("@iquji-cloud/web-theme/tokens.css");
-  await applyStyles("@iquji-cloud/web-component/styles.css");
+  await applyStyles("@iquji-web/web-theme/tokens.css");
+  await applyStyles("@iquji-web/web-component/styles.css");
   const host = document.createElement("div");
   document.body.append(host);
   const root = createRoot(host);
@@ -113,8 +113,8 @@ test("图标栏分隔线可隐藏和恢复，保持宽度与导航行为", async
 
 for (const kind of ["抽屉", "对话框"] as const) {
   test(`${kind}保留挂载时，实际样式在退出完成后隐藏容器并在重开后恢复`, async () => {
-    await applyStyles("@iquji-cloud/web-theme/tokens.css");
-    await applyStyles("@iquji-cloud/web-component/styles.css");
+    await applyStyles("@iquji-web/web-theme/tokens.css");
+    await applyStyles("@iquji-web/web-component/styles.css");
     const host = document.createElement("div");
     document.body.append(host);
     const root = createRoot(host);

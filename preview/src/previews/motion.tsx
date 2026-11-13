@@ -1,4 +1,4 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   IqujiMotion,
   IqujiMotionProvider,
@@ -6,7 +6,7 @@ import {
   iqujiMotionEasing,
   iqujiMotionPresets,
   iqujiMotionVariants,
-} from "@iquji-cloud/web-motion";
+} from "@iquji-web/web-motion";
 import { useState } from "react";
 import type { ComponentPreview } from "../catalog";
 
@@ -48,7 +48,7 @@ export const motionPreviews: readonly ComponentPreview[] = [
     id: "motion-provider",
     name: "动效与 reduced-motion",
     packageId: "motion",
-    packageName: "@iquji-cloud/web-motion",
+    packageName: "@iquji-web/web-motion",
     category: "动效",
     description: "使用统一动效 Provider 和 motion 组件切换进入状态。",
     keywords: "motion animation reduced motion provider",

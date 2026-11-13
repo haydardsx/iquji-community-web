@@ -1,8 +1,8 @@
-import { IqujiOverlayProvider } from "@iquji-cloud/web-component";
-import { IqujiThemeProvider } from "@iquji-cloud/web-theme";
-import "@iquji-cloud/web-theme/tokens.css";
-import "@iquji-cloud/web-component/styles.css";
-import "@iquji-cloud/web-editor/styles.css";
+import { IqujiOverlayProvider } from "@iquji-web/web-component";
+import { IqujiThemeProvider } from "@iquji-web/web-theme";
+import "@iquji-web/web-theme/tokens.css";
+import "@iquji-web/web-component/styles.css";
+import "@iquji-web/web-editor/styles.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";

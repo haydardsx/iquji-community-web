@@ -1,4 +1,4 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   createRichTextPreset,
   EDITOR_ALIGNMENT_TOOLS,
@@ -24,7 +24,7 @@ import {
   textPresetExtensions,
   useIqujiRichTextEditor,
   yamlDiagnostics,
-} from "@iquji-cloud/web-editor";
+} from "@iquji-web/web-editor";
 import { useMemo, useState } from "react";
 import type { ComponentPreview } from "../catalog";
 
@@ -255,7 +255,7 @@ export const editorPreviews: readonly ComponentPreview[] = [
     id: "editor-presets",
     name: "源码与富文本编辑器",
     packageId: "editor",
-    packageName: "@iquji-cloud/web-editor",
+    packageName: "@iquji-web/web-editor",
     category: "编辑器",
     description:
       "操作源码预设和富文本，并查看宿主组合、工具栏、选区与颜色协议。",

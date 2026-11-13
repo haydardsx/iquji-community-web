@@ -172,8 +172,8 @@ test("仅确认被禁用时仍可取消并保留附加保存动作，等待语�
 
 test("正式确认样式隐藏空正文，取消与危险操作按满宽纵向排列", async () => {
   for (const path of [
-    "@iquji-cloud/web-theme/tokens.css",
-    "@iquji-cloud/web-component/styles.css",
+    "@iquji-web/web-theme/tokens.css",
+    "@iquji-web/web-component/styles.css",
   ]) {
     const result = await Bun.build({
       entrypoints: [fileURLToPath(import.meta.resolve(path))],

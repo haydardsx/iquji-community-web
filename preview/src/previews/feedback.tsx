@@ -5,7 +5,7 @@ import {
   IqujiProgressBar,
   IqujiSkeleton,
   IqujiTimeline,
-} from "@iquji-cloud/web-component";
+} from "@iquji-web/web-component";
 import type { ComponentPreview } from "../catalog";
 
 export const feedbackPreviews: readonly ComponentPreview[] = [

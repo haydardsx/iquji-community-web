@@ -17,13 +17,13 @@ export default defineConfig(({ command }) => ({
       command === "serve"
         ? [
             {
-              find: /^@iquji-cloud\/web-component$/,
+              find: /^@iquji-web\/web-component$/,
               replacement: fileURLToPath(
                 new URL("../component/src/index.tsx", import.meta.url),
               ),
             },
             {
-              find: /^@iquji-cloud\/web-component\/styles\.css$/,
+              find: /^@iquji-web\/web-component\/styles\.css$/,
               replacement: fileURLToPath(
                 new URL("../component/src/styles.css", import.meta.url),
               ),

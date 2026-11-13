@@ -1,4 +1,4 @@
-import { IqujiIcon, type IqujiIconName } from "@iquji-cloud/web-icons";
+import { IqujiIcon, type IqujiIconName } from "@iquji-web/web-icons";
 import type { ComponentPreview } from "../catalog";
 
 const ICON_NAMES: readonly IqujiIconName[] = [
@@ -119,7 +119,7 @@ export const iconPreviews: readonly ComponentPreview[] = [
     id: "icons-gallery",
     name: "图标与可访问性",
     packageId: "icons",
-    packageName: "@iquji-cloud/web-icons",
+    packageName: "@iquji-web/web-icons",
     category: "图标",
     description: "展示统一图标名称、尺寸和非装饰图标的可访问标签。",
     keywords: "icons svg aria label accessibility",

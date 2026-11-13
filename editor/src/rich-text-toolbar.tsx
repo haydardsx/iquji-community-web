@@ -2,7 +2,7 @@ import {
   IconButton,
   IqujiButton,
   IqujiSelect,
-} from "@iquji-cloud/web-component";
+} from "@iquji-web/web-component";
 import type { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
 import type { ReactNode } from "react";

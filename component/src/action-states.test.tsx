@@ -118,8 +118,8 @@ test.each([
 for (const theme of ["light", "dark"]) {
   test(`${theme} 主题的填充操作保持白色前景和可读对比度，禁用时使用灰色`, async () => {
     document.documentElement.dataset.theme = theme;
-    await applyStyles("@iquji-cloud/web-theme/tokens.css");
-    await applyStyles("@iquji-cloud/web-component/styles.css");
+    await applyStyles("@iquji-web/web-theme/tokens.css");
+    await applyStyles("@iquji-web/web-component/styles.css");
     const { host, root } = mount();
     host.style.color = "gray";
     await act(async () => {

@@ -1,4 +1,4 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   createThemePrepaintScript,
   IQUJI_THEME_MODES,
@@ -6,7 +6,7 @@ import {
   parseThemeMode,
   resolveThemeMode,
   useIqujiTheme,
-} from "@iquji-cloud/web-theme";
+} from "@iquji-web/web-theme";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { ComponentPreview } from "../catalog";
 
@@ -52,7 +52,7 @@ export const themePreviews: readonly ComponentPreview[] = [
     id: "theme-preferences",
     name: "主题与首帧脚本",
     packageId: "theme",
-    packageName: "@iquji-cloud/web-theme",
+    packageName: "@iquji-web/web-theme",
     category: "主题",
     description: "切换主题模式并查看主题首帧脚本和密度状态。",
     keywords: "theme dark light system prepaint density",

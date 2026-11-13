@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   AppShell,

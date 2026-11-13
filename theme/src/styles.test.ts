@@ -29,7 +29,7 @@ async function applyStyles(specifier: string) {
 }
 
 test("浅色主题辅助文字在画布上保持可读对比度", async () => {
-  await applyStyles("@iquji-cloud/web-theme/tokens.css");
+  await applyStyles("@iquji-web/web-theme/tokens.css");
   const computed = getComputedStyle(document.documentElement);
   const luminance = (value: string) => {
     const channels = value
@@ -55,7 +55,7 @@ test.each([
   "reduce",
 ])("主题独立出口按 %s 提供通用动效时长", async (preference) => {
   device.prefersReducedMotion = preference;
-  await applyStyles("@iquji-cloud/web-theme/tokens.css");
+  await applyStyles("@iquji-web/web-theme/tokens.css");
   const computed = getComputedStyle(document.documentElement);
   expect(computed.getPropertyValue("--iquji-color-canvas")).not.toBe("");
   const durations = ["control", "overlay", "route"].map((name) =>

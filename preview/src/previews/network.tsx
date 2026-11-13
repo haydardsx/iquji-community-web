@@ -1,11 +1,11 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   createHttpTransport,
   createJsonTransport,
   type FetchImplementation,
   HttpTimeoutError,
   JsonTransportError,
-} from "@iquji-cloud/web-network";
+} from "@iquji-web/web-network";
 import { useState } from "react";
 import type { ComponentPreview } from "../catalog";
 
@@ -156,7 +156,7 @@ export const networkPreviews: readonly ComponentPreview[] = [
     id: "network-transport",
     name: "HTTP 与 JSON 传输",
     packageId: "network",
-    packageName: "@iquji-cloud/web-network",
+    packageName: "@iquji-web/web-network",
     category: "网络",
     description: "用可注入 fetch 体验原始响应、JSON 错误、超时和调用方取消。",
     keywords: "network http json fetch timeout abort transport",

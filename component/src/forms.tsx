@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
-import { IqujiIcon } from "@iquji-cloud/web-icons";
+import { IqujiIcon } from "@iquji-web/web-icons";
 import {
   type ButtonHTMLAttributes,
   cloneElement,

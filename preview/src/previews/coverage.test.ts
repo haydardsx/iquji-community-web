@@ -255,7 +255,7 @@ test("Community 正式包的本地依赖闭包不越过公开仓边界", () => {
     const manifest = readPackageManifest(packageId);
     for (const field of dependencyFields) {
       for (const [name, version] of Object.entries(manifest[field] ?? {})) {
-        if (name.startsWith("@iquji-cloud/web-")) {
+        if (name.startsWith("@iquji-web/web-")) {
           expect(packageNames.has(name)).toBe(true);
         }
         if (version.startsWith("file:")) {
@@ -321,7 +321,7 @@ test("Community 源码导入只指向本包或登记的公开 Community 包", ()
           modulePath = node.arguments[0].text;
         }
 
-        if (modulePath?.startsWith("@iquji-cloud/")) {
+        if (modulePath?.startsWith("@iquji-web/")) {
           const [scope, packageName] = modulePath.split("/");
           const dependencyName = `${scope}/${packageName}`;
           expect(

@@ -21,7 +21,7 @@ component 使用公开的 icons 和 theme。首次开发 component 时，先分�
 
 [preview](preview/README.md) 是公开能力目录和交互示例，不属于 npm 正式包，通过 GitHub Pages 提供[在线能力预览](https://community-web.iquji.com)。它必须覆盖每个正式包的公开 JavaScript、类型和 CSS 出口；示例使用本地状态或注入替身，不访问真实服务。测试支持出口、测试文件、构建脚本和生成产物不要求单独做页面，但新增正式出口必须同步覆盖清单和示例。
 
-正式包入口导出 `dist` 中的 JavaScript、类型声明及必要 CSS。主题样式由 `@iquji-cloud/web-theme/tokens.css` 提供，组件样式由 `@iquji-cloud/web-component/styles.css` 提供，应用按此顺序显式导入。可见文案、词典、存储键和业务回调由应用传入。
+正式包入口导出 `dist` 中的 JavaScript、类型声明及必要 CSS。主题样式由 `@iquji-web/web-theme/tokens.css` 提供，组件样式由 `@iquji-web/web-component/styles.css` 提供，应用按此顺序显式导入。可见文案、词典、存储键和业务回调由应用传入。
 
 本仓“工作区”指各包或预览应用的构建工作区，不代表消费产品的项目身份、项目关联或应用工作目录。
 
@@ -31,7 +31,7 @@ component 使用公开的 icons 和 theme。首次开发 component 时，先分�
 
 ## 安装与发布
 
-使用 npm、pnpm、Yarn 或 Bun 安装 `@iquji-cloud/web-*` 正式包，例如 `npm install @iquji-cloud/web-component`。React 等 peerDependencies 由应用提供；样式按上文顺序导入。
+使用 npm、pnpm、Yarn 或 Bun 安装 `@iquji-web/web-*` 正式包，例如 `npm install @iquji-web/web-component`。React 等 peerDependencies 由应用提供；样式按上文顺序导入。
 
 仓根 `bun run check` 检查全部正式包与 preview，并验证发布包；`bun run pack -- <空输出目录>` 生成不带开发依赖、源码脚本或本地 overrides 的 tarball。`v0.1.0` 等版本标签触发发布，标签版本必须与全部正式包一致。首次发布由维护者完成 npm 登录授权，后续在每个包设置 GitHub Actions 可信发布：仓库 `haydardsx/iquji-community-web`、工作流 `release.yml`、环境 `npm`。已发布版本不覆盖，重跑仅继续发布内容一致的缺失版本。
 

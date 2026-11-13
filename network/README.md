@@ -1,13 +1,13 @@
 # Web network
 
-`@iquji-cloud/web-network` 提供通用 HTTP 传输，不包含认证、业务错误、重试或响应数据协议。它由 Community Web 子仓维护，包名与正式出口保持稳定。
+`@iquji-web/web-network` 提供通用 HTTP 传输，不包含认证、业务错误、重试或响应数据协议。它由 Community Web 子仓维护，包名与正式出口保持稳定。
 
 安装使用本目录锁文件，运行 `bun install --frozen-lockfile` 和 `bun run check`。正式入口只导出 `dist` 中的 JavaScript、类型声明，不要求消费者编译本包源码。
 
-`@iquji-cloud/web-network/test-support` 单独提供可注入 FetchRecorder，不从生产主入口导出。
+`@iquji-web/web-network/test-support` 单独提供可注入 FetchRecorder，不从生产主入口导出。
 
 ```ts
-import { createHttpTransport } from "@iquji-cloud/web-network";
+import { createHttpTransport } from "@iquji-web/web-network";
 
 const request = createHttpTransport({ timeoutMs: 15_000 });
 const controller = new AbortController();

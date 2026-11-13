@@ -1,5 +1,5 @@
 {
-  "name": "@iquji-cloud/web-preview",
+  "name": "@iquji-web/web-preview",
   "description": "Community Web 正式包公开能力的交互预览。",
   "private": true,
   "version": "0.1.0",
@@ -20,14 +20,14 @@
   },
   "dependencies": {
     "@base-ui/react": "1.3.0",
-    "@iquji-cloud/web-component": "file:../component",
-    "@iquji-cloud/web-editor": "file:../editor",
-    "@iquji-cloud/web-i18n": "file:../i18n",
-    "@iquji-cloud/web-icons": "file:../icons",
-    "@iquji-cloud/web-motion": "file:../motion",
-    "@iquji-cloud/web-network": "file:../network",
-    "@iquji-cloud/web-query": "file:../query",
-    "@iquji-cloud/web-theme": "file:../theme",
+    "@iquji-web/web-component": "file:../component",
+    "@iquji-web/web-editor": "file:../editor",
+    "@iquji-web/web-i18n": "file:../i18n",
+    "@iquji-web/web-icons": "file:../icons",
+    "@iquji-web/web-motion": "file:../motion",
+    "@iquji-web/web-network": "file:../network",
+    "@iquji-web/web-query": "file:../query",
+    "@iquji-web/web-theme": "file:../theme",
     "@tanstack/react-query": "5.99.2",
     "framer-motion": "12.34.0",
     "react": "19.2.4",
@@ -43,13 +43,13 @@
     "vite": "8.0.5"
   },
   "overrides": {
-    "@iquji-cloud/web-component": "file:../component",
-    "@iquji-cloud/web-editor": "file:../editor",
-    "@iquji-cloud/web-i18n": "file:../i18n",
-    "@iquji-cloud/web-icons": "file:../icons",
-    "@iquji-cloud/web-motion": "file:../motion",
-    "@iquji-cloud/web-network": "file:../network",
-    "@iquji-cloud/web-query": "file:../query",
-    "@iquji-cloud/web-theme": "file:../theme"
+    "@iquji-web/web-component": "file:../component",
+    "@iquji-web/web-editor": "file:../editor",
+    "@iquji-web/web-i18n": "file:../i18n",
+    "@iquji-web/web-icons": "file:../icons",
+    "@iquji-web/web-motion": "file:../motion",
+    "@iquji-web/web-network": "file:../network",
+    "@iquji-web/web-query": "file:../query",
+    "@iquji-web/web-theme": "file:../theme"
   }
 }

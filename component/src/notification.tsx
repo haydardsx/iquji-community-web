@@ -1,5 +1,5 @@
 import { Toast } from "@base-ui/react/toast";
-import { IqujiIcon, type IqujiIconName } from "@iquji-cloud/web-icons";
+import { IqujiIcon, type IqujiIconName } from "@iquji-web/web-icons";
 import {
   createContext,
   type ReactNode,

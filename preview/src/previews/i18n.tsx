@@ -1,11 +1,11 @@
-import { IqujiButton } from "@iquji-cloud/web-component";
+import { IqujiButton } from "@iquji-web/web-component";
 import {
   createTranslator,
   IQUJI_LOCALES,
   IqujiLocaleProvider,
   parseLocale,
   useIqujiLocale,
-} from "@iquji-cloud/web-i18n";
+} from "@iquji-web/web-i18n";
 import { useMemo } from "react";
 import type { ComponentPreview } from "../catalog";
 
@@ -54,7 +54,7 @@ export const i18nPreviews: readonly ComponentPreview[] = [
     id: "i18n-provider",
     name: "国际化状态",
     packageId: "i18n",
-    packageName: "@iquji-cloud/web-i18n",
+    packageName: "@iquji-web/web-i18n",
     category: "国际化",
     description: "切换 locale 并验证词典插值与 Provider 状态。",
     keywords: "i18n locale catalog translate interpolation",

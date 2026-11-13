@@ -15,7 +15,7 @@ import {
   IqujiTextarea,
   normalizeIqujiColor,
   parseCalendarDate,
-} from "@iquji-cloud/web-component";
+} from "@iquji-web/web-component";
 import { useState } from "react";
 import type { ComponentPreview } from "../catalog";
 

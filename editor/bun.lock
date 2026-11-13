@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@iquji-cloud/web-editor",
+      "name": "@iquji-web/web-editor",
       "dependencies": {
         "@codemirror/commands": "6.11.1",
         "@codemirror/lang-json": "6.0.2",
@@ -14,9 +14,9 @@
         "@codemirror/search": "6.7.2",
         "@codemirror/state": "6.7.6",
         "@codemirror/view": "6.43.15",
-        "@iquji-cloud/web-component": "0.1.0",
-        "@iquji-cloud/web-icons": "0.1.0",
-        "@iquji-cloud/web-theme": "0.1.0",
+        "@iquji-web/web-component": "0.1.0",
+        "@iquji-web/web-icons": "0.1.0",
+        "@iquji-web/web-theme": "0.1.0",
         "@tiptap/extension-text-align": "2.27.2",
         "@tiptap/extension-underline": "2.27.2",
         "@tiptap/starter-kit": "2.27.2",
@@ -50,9 +50,9 @@
     },
   },
   "overrides": {
-    "@iquji-cloud/web-component": "file:../component",
-    "@iquji-cloud/web-icons": "file:../icons",
-    "@iquji-cloud/web-theme": "file:../theme",
+    "@iquji-web/web-component": "file:../component",
+    "@iquji-web/web-icons": "file:../icons",
+    "@iquji-web/web-theme": "file:../theme",
   },
   "packages": {
     "@babel/runtime": ["@babel/runtime@7.29.10", "", {}, "sha512-NpugTzbKgGrNe45Ui32cN8vCFFMxVtP/9rtfwv0nP5FRDAjvYBxJcLVpYA9mr1jxP6cnIT7x9LUzuDTbWYYNRA=="],
@@ -117,11 +117,11 @@
 
     "@happy-dom/global-registrator": ["@happy-dom/global-registrator@20.11.6", "", { "dependencies": { "@types/node": ">=20.0.0", "happy-dom": "^20.11.6" } }, "sha512-ZQ47qUTeNbGhHkCGExJ1oZhruoxKRaxO44RgFETl3T4c1rRxIBlAOnM3SAH4XHu7Ue2owJXP+jOx1vOuKuxcSg=="],
 
-    "@iquji-cloud/web-component": ["@iquji-cloud/web-component@file:../component", { "dependencies": { "@iquji-cloud/web-icons": "0.1.0", "@iquji-cloud/web-theme": "0.1.0" }, "devDependencies": { "@base-ui/react": "1.3.0", "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "@base-ui/react": "1.3.0", "react": "19.2.4" } }],
+    "@iquji-web/web-component": ["@iquji-web/web-component@file:../component", { "dependencies": { "@iquji-web/web-icons": "0.1.0", "@iquji-web/web-theme": "0.1.0" }, "devDependencies": { "@base-ui/react": "1.3.0", "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "@base-ui/react": "1.3.0", "react": "19.2.4" } }],
 
-    "@iquji-cloud/web-icons": ["@iquji-cloud/web-icons@file:../icons", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "lucide-react": "0.468.0", "react": "19.2.4" } }],
+    "@iquji-web/web-icons": ["@iquji-web/web-icons@file:../icons", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "lucide-react": "0.468.0", "react": "19.2.4" } }],
 
-    "@iquji-cloud/web-theme": ["@iquji-cloud/web-theme@file:../theme", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "react": "19.2.4" } }],
+    "@iquji-web/web-theme": ["@iquji-web/web-theme@file:../theme", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "react": "19.2.4" } }],
 
     "@lezer/common": ["@lezer/common@1.5.4", "", {}, "sha512-xt3Q4z64xM+xhg4M7NXqw1N//1O74bUFo5kz6fwMeC4qwxSuRdwkYSmjcqCEEKYkNw5e67f2hcNqBoNERAEU0w=="],
 
@@ -325,9 +325,9 @@
 
     "yaml": ["yaml@2.9.1", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw=="],
 
-    "@iquji-cloud/web-component/@iquji-cloud/web-icons": ["@iquji-cloud/web-icons@file:../icons", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "lucide-react": "0.468.0", "react": "19.2.4" } }],
+    "@iquji-web/web-component/@iquji-web/web-icons": ["@iquji-web/web-icons@file:../icons", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "lucide-react": "0.468.0", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "lucide-react": "0.468.0", "react": "19.2.4" } }],
 
-    "@iquji-cloud/web-component/@iquji-cloud/web-theme": ["@iquji-cloud/web-theme@file:../theme", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "react": "19.2.4" } }],
+    "@iquji-web/web-component/@iquji-web/web-theme": ["@iquji-web/web-theme@file:../theme", { "devDependencies": { "@biomejs/biome": "2.4.12", "@happy-dom/global-registrator": "20.11.6", "@types/bun": "1.3.14", "@types/react": "19.2.13", "@types/react-dom": "19.2.3", "react": "19.2.4", "react-dom": "19.2.4", "typescript": "5.9.3" }, "peerDependencies": { "react": "19.2.4" } }],
 
     "markdown-it/entities": ["entities@4.5.0", "", {}, "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw=="],
   }

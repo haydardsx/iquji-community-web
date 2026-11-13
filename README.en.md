@@ -23,16 +23,16 @@ Use Bun `1.3.14`. In the package directory, run `bun install --frozen-lockfile`,
 
 The [preview](preview/README.md) is a public feature catalog with interactive examples, available through [GitHub Pages](https://community-web.iquji.com). It is not an npm release package. It must cover every public JavaScript, type, and CSS export of every release package. Examples use local state or injected substitutes and do not access real services. Test-support exports, test files, build scripts, and generated artifacts do not need individual pages; new release exports must be added to both the coverage inventory and examples.
 
-Release package entry points export JavaScript, type declarations, and required CSS from `dist`. Applications must explicitly import `@iquji-cloud/web-theme/tokens.css` before `@iquji-cloud/web-component/styles.css`. Applications supply visible text, dictionaries, storage keys, and business callbacks. The component-level `IqujiColorPicker` can also be used independently for other color fields.
+Release package entry points export JavaScript, type declarations, and required CSS from `dist`. Applications must explicitly import `@iquji-web/web-theme/tokens.css` before `@iquji-web/web-component/styles.css`. Applications supply visible text, dictionaries, storage keys, and business callbacks. The component-level `IqujiColorPicker` can also be used independently for other color fields.
 
 In this repository, “workspace” means a package or preview application's build workspace. It does not refer to a consuming product's project identity, project association, or application working directory.
 
 ## Installation and releases
 
-Install the `@iquji-cloud/web-*` release packages with npm, pnpm, Yarn, or Bun, for example:
+Install the `@iquji-web/web-*` release packages with npm, pnpm, Yarn, or Bun, for example:
 
 ```sh
-npm install @iquji-cloud/web-component
+npm install @iquji-web/web-component
 ```
 
 The application provides React and other `peerDependencies`. Import styles in the order described above.

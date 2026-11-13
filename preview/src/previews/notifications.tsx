@@ -5,7 +5,7 @@ import {
   IqujiInput,
   IqujiNotificationProvider,
   useIqujiNotification,
-} from "@iquji-cloud/web-component";
+} from "@iquji-web/web-component";
 import { useState } from "react";
 import type { ComponentPreview } from "../catalog";
 

@@ -10,8 +10,8 @@ test("正式出口可被生产版 React 渲染，不依赖开发 JSX runtime", (
         import assert from "node:assert/strict";
         import { createElement } from "react";
         import { renderToStaticMarkup } from "react-dom/server";
-        import { IqujiButton, IqujiDesktopTabStrip, IqujiDesktopTitleBar, IqujiField, IqujiInput, IqujiSettingsContent, IqujiSettingsLayout, IqujiSettingsSection, IqujiSettingsSwitchRow, IqujiWorkbenchLayout } from "@iquji-cloud/web-component";
-        import { IqujiIcon } from "@iquji-cloud/web-icons";
+        import { IqujiButton, IqujiDesktopTabStrip, IqujiDesktopTitleBar, IqujiField, IqujiInput, IqujiSettingsContent, IqujiSettingsLayout, IqujiSettingsSection, IqujiSettingsSwitchRow, IqujiWorkbenchLayout } from "@iquji-web/web-component";
+        import { IqujiIcon } from "@iquji-web/web-icons";
         const markup = renderToStaticMarkup(createElement("form", null,
           createElement(IqujiField, { label: "名称", required: true },
             createElement(IqujiInput, { id: "production-name" })),
