@@ -1,5 +1,7 @@
 # Iquji Web
 
+简体中文 | [English](README.en.md)
+
 公开 Web 基础包，提供组件、编辑器、主题、图标、动效、国际化、查询状态和 HTTP 传输。每个正式包都能从本仓独立安装、检查、构建并产出本地 tarball；包和文档不得依赖 Enterprise 或消费仓源码。
 
 | 包 | 能力 |
