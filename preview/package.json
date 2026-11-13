@@ -2,7 +2,7 @@
   "name": "@iquji-web/web-preview",
   "description": "Community Web 正式包公开能力的交互预览。",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.4",
   "license": "MIT",
   "type": "module",
   "packageManager": "bun@1.3.14",

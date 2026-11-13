@@ -1,6 +1,6 @@
 {
   "name": "@iquji-web/web-editor",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -67,9 +67,9 @@
     "@codemirror/search": "6.7.2",
     "@codemirror/state": "6.7.6",
     "@codemirror/view": "6.43.15",
-    "@iquji-web/web-component": "0.1.0",
-    "@iquji-web/web-icons": "0.1.0",
-    "@iquji-web/web-theme": "0.1.0",
+    "@iquji-web/web-component": "0.1.4",
+    "@iquji-web/web-icons": "0.1.4",
+    "@iquji-web/web-theme": "0.1.4",
     "@tiptap/extension-text-align": "2.27.2",
     "@tiptap/extension-underline": "2.27.2",
     "@tiptap/starter-kit": "2.27.2",

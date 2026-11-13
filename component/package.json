@@ -1,6 +1,6 @@
 {
   "name": "@iquji-web/web-component",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -46,8 +46,8 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@iquji-web/web-icons": "0.1.0",
-    "@iquji-web/web-theme": "0.1.0",
+    "@iquji-web/web-icons": "0.1.4",
+    "@iquji-web/web-theme": "0.1.4",
     "@tanstack/react-table": "8.21.3"
   },
   "overrides": {
