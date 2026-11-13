@@ -1,20 +1,53 @@
 name: Community Web npm
+run-name: npm / ${{ inputs.operation || (startsWith(github.ref, 'refs/tags/') && 'publish' || 'automatic') }} / ${{ github.ref_name }}
 
 on:
   push:
+    branches: [main]
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      operation:
+        description: main 自动规划发布、标签发布或已发布快照只读核验
+        required: true
+        type: choice
+        default: automatic
+        options: [automatic, publish, verify]
 
 permissions:
   contents: read
 
-concurrency:
-  group: npm-release
-  cancel-in-progress: false
-
 jobs:
+  automatic:
+    if: github.event.repository.private == false && github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.operation == 'automatic')
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    concurrency:
+      group: npm-release-planner
+      cancel-in-progress: false
+      queue: max
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: 使用支持可信发布的 npm
+        run: npm install --global npm@11
+      - name: 规划版本快照并等待可信发布完成
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/auto-release.mjs
   verify-published:
-    if: github.event_name == 'workflow_dispatch' && github.event.repository.private == false && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.operation == 'verify' && github.event.repository.private == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,11 +66,16 @@ jobs:
       - name: 只读核验已发布版本
         run: bun run release -- --verify-published
   publish:
-    if: github.event_name == 'push' && github.event.repository.private == false && startsWith(github.ref, 'refs/tags/v')
+    if: github.event.repository.private == false && startsWith(github.ref, 'refs/tags/v') && (github.event_name == 'push' || inputs.operation == 'publish')
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     environment: npm
+    concurrency:
+      group: npm-release-publisher
+      cancel-in-progress: false
+      queue: max
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -55,3 +93,17 @@ jobs:
         run: bun run check
       - name: 按依赖顺序发布未发布版本
         run: bun run release
+      - name: 登记已完成的发布快照
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease > "$RUNNER_TEMP/npm-release.json"; then
+            node --input-type=module - "$RUNNER_TEMP/npm-release.json" <<'JS'
+          import { readFileSync } from "node:fs";
+          const release = JSON.parse(readFileSync(process.argv[2], "utf8"));
+          if (release.isDraft || release.isPrerelease) throw new Error("同名 GitHub Release 不是正式完成标记，请先处理该发布记录。");
+          JS
+          else
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag \
+              --title "$GITHUB_REF_NAME" --notes "八个公共 Web 包已发布到 npm，版本与此标签一致。"
+          fi

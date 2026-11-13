@@ -138,3 +138,29 @@ test("发布模式仍仅将缺失版本交给npm，dry-run标志不丢失", asyn
     assert.ok(calls[0][1].includes("--dry-run"));
   } finally { fixture.cleanup(); }
 });
+
+test("发布后等待注册表可读并核验实际文件，超时不会登记成功", async () => {
+  const fixture = packageFixture();
+  try {
+    let requests = 0;
+    let publishes = 0;
+    let waits = 0;
+    const remote = archive();
+    await release({
+      tag: null, pack: () => [fixture.item], registryAttempts: 2,
+      publish: () => { publishes += 1; }, pause: async () => { waits += 1; },
+      fetchImpl: async (url) => {
+        if (String(url).endsWith(".tgz")) return new Response(remote);
+        requests += 1;
+        return requests < 3 ? new Response("", { status: 404 }) : Response.json(metadata(remote));
+      },
+    });
+    assert.equal(publishes, 1);
+    assert.equal(waits, 1);
+    await assert.rejects(release({
+      tag: null, pack: () => [fixture.item], registryAttempts: 2,
+      publish: () => {}, pause: async () => {},
+      fetchImpl: async () => new Response("", { status: 404 }),
+    }), /注册表尚不可读取/);
+  } finally { fixture.cleanup(); }
+});
