@@ -33,6 +33,6 @@ component 使用公开的 icons 和 theme。首次开发 component 时，先分�
 
 使用 npm、pnpm、Yarn 或 Bun 安装 `@iquji-web/web-*` 正式包，例如 `npm install @iquji-web/web-component`。React 等 peerDependencies 由应用提供；样式按上文顺序导入。
 
-仓根 `bun run check` 检查全部正式包与 preview，并验证发布包；`bun run pack -- <空输出目录>` 生成不带开发依赖、源码脚本或本地 overrides 的 tarball。`v0.1.0` 等版本标签触发发布，标签版本必须与全部正式包一致。首次发布由维护者完成 npm 登录授权，后续在每个包设置 GitHub Actions 可信发布：仓库 `haydardsx/iquji-community-web`、工作流 `release.yml`、环境 `npm`。已发布版本不覆盖，重跑仅继续发布内容一致的缺失版本。
+仓根 `bun run check` 检查全部正式包与 preview，并验证发布包；`bun run pack -- <空输出目录>` 生成不带开发依赖、源码脚本或本地 overrides 的 tarball。`v0.1.0` 等版本标签触发发布，标签版本必须与全部正式包一致。首次发布由维护者完成 npm 登录授权，后续在每个包设置 GitHub Actions 可信发布：仓库 `haydardsx/iquji-community-web`、工作流 `release.yml`、环境 `npm`。已发布版本逐文件核对内容和可执行权限，一致时跳过，不覆盖旧版本；重跑只继续发布缺失版本。`bun run release -- --verify-published` 只读核验全部版本已经发布且内容一致；手动运行 `release.yml` 的 main 分支也只执行检查与该核验，不发布新内容。
 
 Pages 从通过检查的 main 部署，仅上传 preview 的静态构建目录。自定义域名由 GitHub Pages 设置管理；构建使用 Pages 提供的 base path，同时支持项目子路径和独立域名。

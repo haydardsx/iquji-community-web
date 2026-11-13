@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { packPackages, packages, root } from "./package.mjs";
 
 const timeout = process.env.IQUJI_TEST_TIMEOUT_MS || "30000";
+execFileSync("node", ["--test", join(root, "scripts/package-content.test.mjs")], { cwd: root, stdio: "inherit" });
 for (const directory of [...packages, "preview"]) {
   const cwd = join(root, directory);
   execFileSync("bun", ["install", "--frozen-lockfile"], { cwd, stdio: "inherit" });
