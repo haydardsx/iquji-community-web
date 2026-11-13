@@ -1,0 +1,12 @@
+{
+  "name": "@iquji-cloud/community-web-tooling",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "bun@1.3.14",
+  "scripts": {
+    "check": "bun scripts/check.mjs",
+    "pack": "node scripts/package.mjs",
+    "release": "node scripts/release.mjs"
+  }
+}

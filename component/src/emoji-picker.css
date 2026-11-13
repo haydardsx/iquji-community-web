@@ -1,0 +1,5 @@
+.iquji-emoji-picker { display: grid; gap: var(--iquji-space-2); padding: var(--iquji-space-3); width: 280px; max-width: 80vw; }
+.iquji-emoji-picker__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--iquji-space-1); max-height: 240px; overflow-y: auto; }
+.iquji-emoji-picker__grid button { font-size: 22px; padding: var(--iquji-space-1); }
+.iquji-emoji-picker__categories { display: flex; gap: var(--iquji-space-1); flex-wrap: wrap; }
+.iquji-emoji-picker button[aria-pressed="true"] { background: var(--color-brand-soft); }

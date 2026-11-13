@@ -1,0 +1,305 @@
+.iquji-desktop-shell {
+  background: var(--iquji-color-canvas);
+  color: var(--iquji-color-text);
+  display: grid;
+  font-family: var(--iquji-font-sans);
+  grid-template-rows: minmax(0, 1fr);
+  height: 100dvh;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.iquji-desktop-shell[data-has-window-bar="true"] {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.iquji-desktop-shell__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.iquji-desktop-shell__body[data-has-rail="true"] {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.iquji-desktop-shell__content {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.iquji-desktop-shell__content:focus-visible {
+  outline: none;
+}
+
+.iquji-desktop-titlebar {
+  align-items: center;
+  background: var(--iquji-color-canvas);
+  border-bottom: 1px solid var(--iquji-color-border);
+  color: var(--iquji-color-text);
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--iquji-space-2);
+  height: 44px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 var(--iquji-space-2);
+  position: relative;
+  user-select: none;
+  z-index: 20;
+}
+
+.iquji-desktop-titlebar__window-controls,
+.iquji-desktop-titlebar__leading,
+.iquji-desktop-titlebar__actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--iquji-space-1);
+}
+
+.iquji-desktop-titlebar__center {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.iquji-desktop-titlebar[data-iquji-drag-region="true"] {
+  -webkit-app-region: drag;
+}
+
+.iquji-desktop-titlebar[data-iquji-drag-region="true"] button,
+.iquji-desktop-titlebar[data-iquji-drag-region="true"] a,
+.iquji-desktop-titlebar[data-iquji-drag-region="true"] input,
+.iquji-desktop-titlebar[data-iquji-drag-region="true"] [role="separator"],
+.iquji-desktop-titlebar[data-iquji-drag-region="true"]
+  .iquji-desktop-titlebar__window-controls,
+.iquji-desktop-titlebar[data-iquji-drag-region="true"]
+  .iquji-desktop-titlebar__leading,
+.iquji-desktop-titlebar[data-iquji-drag-region="true"]
+  .iquji-desktop-titlebar__actions {
+  -webkit-app-region: no-drag;
+}
+
+.iquji-desktop-tabstrip {
+  align-items: center;
+  display: flex;
+  gap: var(--iquji-space-1);
+  min-width: 0;
+  width: 100%;
+}
+
+.iquji-desktop-tabstrip__list {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--iquji-space-1);
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.iquji-desktop-tabstrip__list::-webkit-scrollbar {
+  display: none;
+}
+
+.iquji-desktop-tabstrip__add,
+.iquji-desktop-tabstrip__actions {
+  flex: 0 0 auto;
+}
+
+.iquji-desktop-tab {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--iquji-radius-control);
+  display: flex;
+  flex: 0 0 auto;
+  height: var(--iquji-control-height-compact);
+  max-width: 240px;
+  min-width: 120px;
+}
+
+.iquji-desktop-tab:hover {
+  background: var(--iquji-color-surface-muted);
+}
+
+.iquji-desktop-tab[data-active="true"] {
+  background: var(--iquji-color-surface);
+  border-color: var(--iquji-color-border);
+  box-shadow: var(--iquji-shadow-surface);
+}
+
+.iquji-desktop-tab__select {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  display: flex;
+  flex: 1 1 auto;
+  font: inherit;
+  font-size: var(--iquji-font-size-body-sm);
+  gap: var(--iquji-space-2);
+  height: 100%;
+  min-width: 0;
+  padding: 0 var(--iquji-space-2);
+  text-align: left;
+}
+
+.iquji-desktop-tab__select:disabled {
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+}
+
+.iquji-desktop-tab__select:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+.iquji-desktop-tab[data-active="true"] .iquji-desktop-tab__select {
+  color: var(--iquji-color-text);
+}
+
+.iquji-desktop-tab__icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 16px;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+.iquji-desktop-tab__icon > svg {
+  height: 15px;
+  width: 15px;
+}
+
+.iquji-desktop-tab__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-desktop-tab__dirty {
+  background: var(--iquji-color-accent);
+  border-radius: 50%;
+  flex: 0 0 6px;
+  height: 6px;
+  width: 6px;
+}
+
+.iquji-desktop-tab__close {
+  flex: 0 0 auto;
+}
+
+.iquji-desktop-rail {
+  background: var(--iquji-color-canvas);
+  border-right: 1px solid var(--iquji-color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--iquji-space-2);
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+  padding: var(--iquji-space-2) 6px;
+  width: 56px;
+}
+
+.iquji-desktop-rail[data-show-divider="false"] {
+  border-right-color: transparent;
+}
+
+.iquji-desktop-rail__nav {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--iquji-space-1);
+  min-height: 0;
+  overflow: visible;
+}
+
+.iquji-desktop-rail__nav .iquji-tooltip {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.iquji-desktop-rail__item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iquji-radius-overlay);
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  text-decoration: none;
+  width: 44px;
+}
+
+.iquji-desktop-rail__item:hover:not(:disabled) {
+  background: var(--iquji-color-surface-hover);
+  color: var(--iquji-color-text);
+}
+
+.iquji-desktop-rail__item[data-active="true"] {
+  background: var(--iquji-color-surface);
+  box-shadow: var(--iquji-shadow-surface);
+  color: var(--iquji-color-text);
+}
+
+.iquji-desktop-rail__item:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+.iquji-desktop-rail__item:disabled {
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+}
+
+.iquji-desktop-rail__icon {
+  align-items: center;
+  display: inline-flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.iquji-desktop-rail__icon > svg {
+  height: 19px;
+  width: 19px;
+}
+
+.iquji-desktop-rail__badge {
+  background: var(--iquji-color-accent);
+  border-radius: 999px;
+  color: var(--iquji-color-accent-contrast);
+  font-size: var(--iquji-font-size-micro);
+  line-height: 1;
+  min-width: 14px;
+  padding: 2px 4px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+
+.iquji-desktop-rail__footer {
+  align-items: center;
+  border-top: 1px solid var(--iquji-color-border);
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding-top: var(--iquji-space-2);
+}

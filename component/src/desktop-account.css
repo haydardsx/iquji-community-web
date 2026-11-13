@@ -1,0 +1,257 @@
+.iquji-desktop-account__trigger {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  width: 40px;
+}
+
+.iquji-desktop-account__trigger:hover {
+  background: var(--iquji-color-surface-muted);
+}
+
+.iquji-desktop-account__trigger:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+.iquji-desktop-account__trigger-avatar,
+.iquji-desktop-account-card__avatar {
+  align-items: center;
+  background: var(--iquji-color-accent-soft);
+  border-radius: 50%;
+  color: var(--iquji-color-accent-strong);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-weight: 700;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.iquji-desktop-account__trigger-avatar {
+  font-size: var(--iquji-font-size-caption);
+  height: 28px;
+  width: 28px;
+}
+
+.iquji-desktop-account-card {
+  color: var(--iquji-color-text);
+  display: flex;
+  flex-direction: column;
+  gap: var(--iquji-space-3);
+  width: 280px;
+}
+
+.iquji-desktop-account-card__header {
+  align-items: center;
+  display: flex;
+  gap: var(--iquji-space-3);
+  min-width: 0;
+}
+
+.iquji-desktop-account-card__avatar {
+  font-size: var(--iquji-font-size-body-md);
+  height: 38px;
+  width: 38px;
+}
+
+.iquji-desktop-account__trigger-avatar[data-tone="positive"],
+.iquji-desktop-account-card__avatar[data-tone="positive"] {
+  background: var(--iquji-color-positive-fill);
+  color: var(--iquji-color-positive-text);
+}
+
+.iquji-desktop-account__trigger-avatar[data-tone="neutral"],
+.iquji-desktop-account-card__avatar[data-tone="neutral"] {
+  background: var(--iquji-color-surface-muted);
+  color: var(--iquji-color-muted);
+}
+
+.iquji-desktop-account__trigger-avatar > img,
+.iquji-desktop-account-card__avatar > img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.iquji-desktop-account-card__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.iquji-desktop-account-card__name {
+  font-size: var(--iquji-font-size-body-md);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-desktop-account-card__secondary {
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-body-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-desktop-account-card__badge {
+  align-self: flex-start;
+  background: var(--iquji-color-surface-muted);
+  border-radius: 999px;
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-caption);
+  padding: 1px 6px;
+}
+
+.iquji-desktop-account-card__usage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iquji-space-1);
+}
+
+.iquji-desktop-account-card__usage-copy {
+  color: var(--iquji-color-muted);
+  display: flex;
+  font-size: var(--iquji-font-size-caption);
+  gap: var(--iquji-space-2);
+  justify-content: space-between;
+}
+
+.iquji-desktop-account-card__meter {
+  background: var(--iquji-color-surface-muted);
+  border-radius: 999px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.iquji-desktop-account-card__meter-fill {
+  background: var(--iquji-color-accent);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.iquji-desktop-account-card__meter[data-tone="positive"]
+  .iquji-desktop-account-card__meter-fill {
+  background: var(--iquji-color-positive-text);
+}
+
+.iquji-desktop-account-card__meter[data-tone="warning"]
+  .iquji-desktop-account-card__meter-fill {
+  background: var(--iquji-color-warning-text);
+}
+
+.iquji-desktop-account-card__meter[data-tone="critical"]
+  .iquji-desktop-account-card__meter-fill {
+  background: var(--iquji-color-critical-text);
+}
+
+.iquji-desktop-account-card__meter[data-tone="neutral"]
+  .iquji-desktop-account-card__meter-fill {
+  background: var(--iquji-color-muted);
+}
+
+.iquji-desktop-account-card__sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iquji-space-2);
+}
+
+.iquji-desktop-account-card__section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.iquji-desktop-account-card__section
+  + .iquji-desktop-account-card__section {
+  border-top: 1px solid var(--iquji-color-border);
+  padding-top: var(--iquji-space-2);
+}
+
+.iquji-desktop-account-card__item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-text);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: var(--iquji-font-size-body-md);
+  gap: var(--iquji-space-2);
+  min-height: 40px;
+  padding: 0 var(--iquji-space-2);
+  text-align: left;
+  width: 100%;
+}
+
+.iquji-desktop-account-card__item:hover:not(:disabled) {
+  background: var(--iquji-color-surface-muted);
+}
+
+.iquji-desktop-account-card__item:focus-visible {
+  outline: 2px solid var(--iquji-color-border-strong);
+  outline-offset: -2px;
+}
+
+.iquji-desktop-account-card__item[data-tone="danger"] {
+  color: var(--iquji-color-critical-text);
+}
+
+.iquji-desktop-account-card__item[data-tone="danger"]:hover:not(:disabled) {
+  background: var(--iquji-color-critical-fill);
+}
+
+.iquji-desktop-account-card__item:disabled {
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+}
+
+.iquji-desktop-account-card__item-icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 16px;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+.iquji-desktop-account-card__item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-desktop-account-card__item-shortcut {
+  color: var(--iquji-color-subtle);
+  font-size: var(--iquji-font-size-caption);
+}
+
+.iquji-desktop-account-card__item-trailing {
+  color: var(--iquji-color-subtle);
+  display: inline-flex;
+}
+
+.iquji-desktop-account-card__footer {
+  border-top: 1px solid var(--iquji-color-border);
+  padding-top: var(--iquji-space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iquji-desktop-tab,
+  .iquji-desktop-rail__item {
+    transition: none;
+  }
+}

@@ -1,0 +1,32 @@
+.iquji-tabs--segmented {
+  background: var(--iquji-color-surface-muted);
+  border: 1px solid var(--iquji-color-border);
+  border-radius: var(--iquji-radius-control);
+  display: inline-flex;
+  gap: 2px;
+  max-width: 100%;
+  padding: 3px;
+  scrollbar-width: thin;
+  width: fit-content;
+}
+
+.iquji-tabs--segmented button {
+  border: 0;
+  border-radius: calc(var(--iquji-radius-control) - 3px);
+  font-weight: 500;
+  min-height: calc(var(--iquji-control-height-compact) - 4px);
+  padding: var(--iquji-space-1) var(--iquji-space-2);
+  white-space: nowrap;
+}
+
+.iquji-tabs--segmented button[aria-selected="true"] {
+  background: var(--iquji-color-surface);
+  box-shadow: 0 1px 3px rgb(24 27 33 / 8%);
+  color: var(--iquji-color-text);
+}
+
+.iquji-tabs--segmented button:disabled {
+  background: transparent;
+  box-shadow: none;
+  color: var(--iquji-color-disabled-text);
+}

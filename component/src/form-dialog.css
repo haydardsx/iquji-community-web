@@ -1,0 +1,77 @@
+.iquji-dialog-backdrop:has(
+    + .iquji-overlay-floating-layer
+      + .iquji-dialog-positioner
+      > .iquji-form-dialog
+  ) {
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--iquji-color-overlay) 60%, transparent);
+}
+
+.iquji-form-dialog .iquji-dialog__surface {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: min(48dvh, 420px);
+  overflow: hidden;
+}
+
+.iquji-form-dialog .iquji-dialog__header {
+  align-items: center;
+  border-bottom: 0;
+  flex: 0 0 auto;
+  padding: var(--iquji-space-5);
+}
+
+.iquji-form-dialog .iquji-dialog__header-actions {
+  gap: var(--iquji-space-2);
+}
+
+.iquji-form-dialog .iquji-dialog__header-actions > .iquji-icon-button {
+  border: 0;
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-muted);
+  height: var(--iquji-control-height-compact);
+  transition: background var(--iquji-motion-control) var(--iquji-ease-standard);
+  width: var(--iquji-control-height-compact);
+}
+
+.iquji-form-dialog
+  .iquji-dialog__header-actions
+  > .iquji-icon-button
+  .iquji-icon-button__icon {
+  flex-basis: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.iquji-form-dialog
+  .iquji-dialog__header-actions
+  > .iquji-icon-button:hover:not(:disabled) {
+  background: var(--iquji-color-surface-muted);
+  color: var(--iquji-color-text);
+}
+
+.iquji-form-dialog .iquji-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.iquji-form-dialog .iquji-dialog__actions {
+  flex: 0 0 auto;
+}
+
+.iquji-form-dialog--expanded {
+  height: calc(100dvh - 64px);
+  max-height: calc(100dvh - 64px);
+}
+
+@media (max-width: 480px) {
+  .iquji-form-dialog .iquji-dialog__header,
+  .iquji-form-dialog .iquji-dialog__body,
+  .iquji-form-dialog .iquji-dialog__actions {
+    padding: var(--iquji-space-4);
+  }
+}

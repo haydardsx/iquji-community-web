@@ -1,0 +1,277 @@
+.iquji-status-badge {
+  align-items: center;
+  background: var(--iquji-color-neutral-fill);
+  border-radius: 999px;
+  color: var(--iquji-color-neutral-text);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: var(--iquji-font-size-caption);
+  line-height: var(--iquji-line-height-caption);
+  padding: 2px 8px;
+}
+
+.iquji-status-badge[data-tone="positive"] {
+  background: var(--iquji-color-positive-fill);
+  color: var(--iquji-color-positive-text);
+}
+
+.iquji-status-badge[data-tone="warning"] {
+  background: var(--iquji-color-warning-fill);
+  color: var(--iquji-color-warning-text);
+}
+
+.iquji-status-badge[data-tone="critical"] {
+  background: var(--iquji-color-critical-fill);
+  color: var(--iquji-color-critical-text);
+}
+
+.iquji-button,
+.iquji-button-link {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--iquji-radius-control);
+  display: inline-flex;
+  font-family: inherit;
+  font-size: var(--iquji-font-size-body-md);
+  font-weight: 500;
+  gap: 8px;
+  justify-content: center;
+  min-height: var(--iquji-control-height);
+  padding: 0 18px;
+  white-space: nowrap;
+  /* 前景与底色同时切换，恢复可用时也不能经过红底灰字的中间态。 */
+  transition: border-color var(--iquji-motion-control)
+    var(--iquji-ease-standard);
+}
+
+.iquji-button {
+  cursor: pointer;
+}
+
+.iquji-button-link {
+  text-decoration: none;
+}
+
+.iquji-button--primary,
+.iquji-button-link--primary {
+  background: var(--iquji-color-action-primary);
+  color: var(--iquji-color-action-contrast);
+}
+
+.iquji-button--primary:not(:disabled):hover,
+.iquji-button-link--primary:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-action-primary-hover);
+}
+
+.iquji-button--secondary,
+.iquji-button-link--secondary {
+  background: var(--iquji-color-surface);
+  border-color: var(--iquji-color-border);
+  color: var(--iquji-color-text);
+}
+
+.iquji-button--secondary:not(:disabled):hover,
+.iquji-button-link--secondary:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-surface-muted);
+  border-color: var(--iquji-color-border-strong);
+}
+
+.iquji-button--ghost,
+.iquji-button-link--ghost {
+  background: transparent;
+  color: var(--iquji-color-text);
+}
+
+.iquji-button--ghost:not(:disabled):hover,
+.iquji-button-link--ghost:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-surface-hover);
+}
+
+.iquji-button--text,
+.iquji-button-link--text {
+  background: transparent;
+  color: var(--iquji-color-accent-strong);
+}
+
+.iquji-button--text:not(:disabled):hover,
+.iquji-button-link--text:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-accent-soft);
+}
+
+.iquji-button--inverse,
+.iquji-button-link--inverse {
+  background: var(--iquji-color-inverse-text);
+  color: var(--iquji-color-accent-strong);
+}
+
+.iquji-button--inverse:not(:disabled):hover,
+.iquji-button-link--inverse:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-accent-soft);
+}
+
+.iquji-button--danger,
+.iquji-button-link--danger {
+  background: var(--iquji-color-action-danger);
+  color: var(--iquji-color-action-contrast);
+}
+
+.iquji-button--danger:not(:disabled):hover,
+.iquji-button-link--danger:not([aria-disabled="true"]):hover {
+  background: var(--iquji-color-action-danger-hover);
+}
+
+.iquji-button:disabled,
+.iquji-button-link[aria-disabled="true"] {
+  background: var(--iquji-color-disabled-fill);
+  border-color: transparent;
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+  opacity: 1;
+  /* 禁用配色立即切换，避免前景与红色背景过渡时出现短暂红底灰字。 */
+  transition: none;
+}
+
+.iquji-button--compact,
+.iquji-button-link--compact {
+  min-height: var(--iquji-control-height-compact);
+  padding-inline: 14px;
+}
+
+.iquji-button--block,
+.iquji-button-link--block {
+  width: 100%;
+}
+
+.iquji-button--allow-label-wrap,
+.iquji-button-link--allow-label-wrap {
+  white-space: normal;
+}
+
+.iquji-button__icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.iquji-button__label {
+  min-width: 0;
+}
+
+.iquji-button--allow-label-wrap .iquji-button__label,
+.iquji-button-link--allow-label-wrap .iquji-button__label {
+  overflow-wrap: anywhere;
+}
+
+.iquji-button__spinner {
+  animation: iquji-loading-spin 800ms linear infinite;
+  border: 2px solid currentcolor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  flex: 0 0 auto;
+  height: 16px;
+  width: 16px;
+}
+
+.iquji-button:focus-visible,
+.iquji-button-link:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+/* 图标按钮和文字按钮属于同一族控件，规则放在一起：尺寸只由
+   --iquji-control-height 决定，接入方不要在本地样式里另写宽高，
+   否则同一个共享组件会在各应用的工具栏里长出不同的高度。 */
+.iquji-icon-button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font: inherit;
+  height: var(--iquji-control-height);
+  justify-content: center;
+  padding: 0;
+  transition: border-color var(--iquji-motion-control)
+    var(--iquji-ease-standard);
+  width: var(--iquji-control-height);
+}
+
+.iquji-icon-button--compact {
+  height: var(--iquji-control-height-compact);
+  width: var(--iquji-control-height-compact);
+}
+
+.iquji-icon-button--secondary {
+  background: var(--iquji-color-surface);
+  border-color: var(--iquji-color-border);
+  color: var(--iquji-color-text);
+}
+
+.iquji-icon-button--primary {
+  background: var(--iquji-color-action-primary);
+  color: var(--iquji-color-action-contrast);
+}
+
+.iquji-icon-button--danger {
+  background: var(--iquji-color-action-danger);
+  color: var(--iquji-color-action-contrast);
+}
+
+/* 图标框固定 16px 并居中，图标本身撑满这个框。缺了这一层，
+   不同 viewBox 的图标在按钮里会各自偏一点，看起来就是没对齐。 */
+.iquji-icon-button__icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 16px;
+  height: 16px;
+  justify-content: center;
+  line-height: 1;
+  width: 16px;
+}
+
+.iquji-icon-button__icon > svg,
+.iquji-icon-button__icon > span,
+.iquji-icon-button__icon > span > svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.iquji-icon-button:hover:not(:disabled) {
+  background: var(--iquji-color-surface-hover);
+  color: var(--iquji-color-text);
+}
+
+.iquji-icon-button--primary:hover:not(:disabled) {
+  background: var(--iquji-color-action-primary-hover);
+  color: var(--iquji-color-action-contrast);
+}
+
+.iquji-icon-button--danger:hover:not(:disabled) {
+  background: var(--iquji-color-action-danger-hover);
+  color: var(--iquji-color-action-contrast);
+}
+
+.iquji-icon-button:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+  opacity: 1;
+  transition: none;
+}
+
+/* 有色变体保留禁用填充；ghost 图标按钮只降低前景色，避免工具栏出现灰底药丸。 */
+.iquji-icon-button--secondary:disabled,
+.iquji-icon-button--primary:disabled,
+.iquji-icon-button--danger:disabled {
+  background: var(--iquji-color-disabled-fill);
+}
+
+.iquji-icon-button:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}

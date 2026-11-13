@@ -1,0 +1,70 @@
+.iquji-editor-format-toolbar {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-width: 0;
+  gap: var(--iquji-space-1);
+  font-size: var(--font-size-text-body-sm);
+  padding: var(--iquji-space-2);
+  background: var(--iquji-color-surface);
+  border-bottom: 1px solid var(--iquji-color-border);
+}
+.iquji-editor-tool-row,
+.iquji-editor-tool-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.iquji-editor-tool-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--iquji-space-2) 0;
+  min-width: 0;
+}
+.iquji-editor-tool-row + .iquji-editor-tool-row {
+  border-top: 1px solid var(--iquji-color-border);
+  padding-top: var(--iquji-space-1);
+}
+.iquji-editor-tool-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--iquji-space-1);
+  white-space: nowrap;
+  padding-inline: var(--iquji-space-2);
+}
+.iquji-editor-tool-group + .iquji-editor-tool-group {
+  border-inline-start: 1px solid var(--iquji-color-border-strong);
+}
+.iquji-editor-format-toolbar button svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.8;
+}
+.iquji-editor-format-toolbar .iquji-icon-button--compact {
+  height: 28px;
+  width: 28px;
+}
+.iquji-editor-tool-group > span {
+  display: inline-flex;
+}
+.iquji-editor-format-toolbar
+  button[aria-pressed="true"]:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--iquji-color-surface-muted);
+  color: var(--iquji-color-accent-strong);
+}
+.iquji-editor-zoom {
+  min-width: 5ch;
+  padding-inline: var(--iquji-space-1);
+  font-variant-numeric: tabular-nums;
+}
+.iquji-editor-view-tools {
+  gap: 0;
+}
+.iquji-editor-format-toolbar button,
+.iquji-editor-format-toolbar [role="combobox"] {
+  font-size: var(--font-size-text-body-sm);
+}

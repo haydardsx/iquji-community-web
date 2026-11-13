@@ -1,0 +1,94 @@
+.iquji-workbench {
+  --iquji-workbench-left-width: 240px;
+  --iquji-workbench-right-width: 420px;
+  --iquji-workbench-center-min-width: 480px;
+  background: var(--iquji-color-surface);
+  display: grid;
+  grid-template-columns:
+    minmax(0, var(--iquji-workbench-left-width))
+    minmax(var(--iquji-workbench-center-min-width), 1fr)
+    minmax(0, var(--iquji-workbench-right-width));
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.iquji-workbench[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.iquji-workbench__pane {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.iquji-workbench__pane--left {
+  background: var(--iquji-color-surface);
+  grid-column: 1;
+}
+
+.iquji-workbench__pane--center {
+  background: var(--iquji-color-surface);
+  grid-column: 2;
+}
+
+.iquji-workbench__pane--right {
+  background: var(--iquji-color-surface);
+  grid-column: 3;
+}
+
+.iquji-workbench__resizer {
+  align-items: center;
+  bottom: 0;
+  cursor: col-resize;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  touch-action: none;
+  width: 10px;
+  z-index: 10;
+}
+
+.iquji-workbench__resizer--left {
+  justify-content: flex-end;
+  right: 0;
+}
+
+.iquji-workbench__resizer--right {
+  justify-content: flex-start;
+  left: 0;
+}
+
+.iquji-workbench__resizer::after {
+  background: var(--iquji-color-border);
+  content: "";
+  height: 100%;
+  transition:
+    background var(--iquji-motion-control) var(--iquji-ease-standard),
+    width var(--iquji-motion-control) var(--iquji-ease-standard);
+  width: 1px;
+}
+
+/* 分隔线本身就是拖拽命中区，悬停/拖动时只加粗同一条线，不再向内偏移。 */
+.iquji-workbench__resizer:hover::after,
+.iquji-workbench__resizer:focus-visible::after,
+.iquji-workbench[data-resizing] .iquji-workbench__resizer::after {
+  background: var(--iquji-color-border-strong);
+  width: 2px;
+}
+
+.iquji-workbench__resizer:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iquji-workbench__resizer::after {
+    transition: none;
+  }
+}

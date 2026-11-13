@@ -1,0 +1,132 @@
+@import "./rich-text-toolbar.css";
+.iquji-editor {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: var(--iquji-color-surface, #fff);
+  color: var(--iquji-color-text-primary, #171717);
+}
+.iquji-editor-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--iquji-color-border, #e5e5e5);
+}
+.iquji-editor-body {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+.iquji-editor-footer {
+  flex: none;
+  position: sticky;
+  bottom: 0;
+  background: inherit;
+  border-top: none;
+}
+.iquji-text-editor .cm-editor {
+  min-height: 360px;
+  background: transparent;
+}
+.iquji-text-editor .cm-scroller {
+  font:
+    13px / 1.7 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+.iquji-text-editor .cm-gutters {
+  background: var(--iquji-color-surface-subtle, #f5f5f5);
+  color: var(--iquji-color-text-secondary, #666);
+  border-right: none;
+}
+.iquji-text-editor .cm-content {
+  padding: 16px 0;
+}
+.iquji-text-editor[hidden] {
+  display: none;
+}
+.iquji-editor-preview,
+.iquji-rich-editor {
+  padding: 24px;
+  min-height: 360px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.iquji-editor-preview pre {
+  overflow: auto;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--iquji-color-surface-subtle, #f5f5f5);
+}
+.iquji-editor-preview table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.iquji-editor-preview td,
+.iquji-editor-preview th {
+  border: 1px solid var(--iquji-color-border, #ddd);
+  padding: 6px 10px;
+}
+.iquji-editor-error {
+  padding: 8px 16px;
+  color: var(--iquji-color-text-danger, #b91c1c);
+}
+
+.ProseMirror mark {
+  color: inherit;
+  box-decoration-break: clone;
+}
+.ProseMirror mark:not([data-editor-highlight]),
+[data-editor-highlight="yellow"] {
+  background-color: var(--iquji-color-warning-fill, #fef08a);
+}
+[data-editor-highlight="green"] {
+  background-color: var(--iquji-color-positive-fill, #bbf7d0);
+}
+[data-editor-highlight="blue"] {
+  background-color: var(--iquji-color-info-fill, #bfdbfe);
+}
+[data-editor-highlight="purple"] {
+  background-color: #ddd6fe;
+}
+[data-editor-highlight="pink"] {
+  background-color: var(--iquji-color-accent-soft, #fbcfe8);
+}
+.iquji-editor-workspace {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.iquji-editor-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.iquji-editor-scroll {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+.iquji-editor-page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.iquji-editor-footer {
+  flex: none;
+}
+
+.iquji-editor-modes {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 4px;
+}

@@ -1,0 +1,201 @@
+.iquji-dialog-positioner:has(> .iquji-search-dialog) {
+  align-items: flex-start;
+  padding-top: clamp(56px, 16dvh, 160px);
+}
+
+.iquji-dialog-backdrop:has(
+    + .iquji-overlay-floating-layer
+      + .iquji-dialog-positioner
+      > .iquji-search-dialog
+  ) {
+  background: color-mix(in srgb, var(--iquji-color-overlay) 55%, transparent);
+}
+
+.iquji-search-dialog {
+  max-height: min(72dvh, 560px);
+}
+
+.iquji-search-dialog .iquji-dialog__surface {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.iquji-search-dialog .iquji-dialog__header {
+  border: 0;
+  display: block;
+  height: 0;
+  inset: 0 0 auto;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.iquji-search-dialog .iquji-dialog__heading {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.iquji-search-dialog .iquji-dialog__header-actions {
+  position: absolute;
+  right: var(--iquji-space-3);
+  top: var(--iquji-space-3);
+}
+
+.iquji-search-dialog .iquji-dialog__header-actions > button {
+  height: var(--iquji-control-height-compact);
+  min-height: var(--iquji-control-height-compact);
+  width: var(--iquji-control-height-compact);
+}
+
+.iquji-search-dialog .iquji-dialog__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.iquji-search-dialog__query {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--iquji-space-3);
+  min-height: 60px;
+  padding: var(--iquji-space-3) calc(var(--iquji-space-4) * 4)
+    var(--iquji-space-3) var(--iquji-space-5);
+}
+
+.iquji-search-dialog__query > svg {
+  color: var(--iquji-color-muted);
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
+}
+
+.iquji-search-dialog__query > input {
+  background: transparent;
+  border: 0;
+  color: var(--iquji-color-text);
+  flex: 1 1 auto;
+  font: inherit;
+  min-width: 0;
+  outline: none;
+  padding: 0;
+}
+
+.iquji-search-dialog__query > input::placeholder {
+  color: var(--iquji-color-muted);
+}
+
+.iquji-search-dialog__results {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--iquji-space-2) var(--iquji-space-3);
+}
+
+.iquji-search-dialog__group {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.iquji-search-dialog__group + .iquji-search-dialog__group {
+  margin-top: var(--iquji-space-3);
+}
+
+.iquji-search-dialog__group-label {
+  background: var(--iquji-color-surface);
+  box-sizing: border-box;
+  color: var(--iquji-color-muted);
+  display: block;
+  font-size: var(--iquji-font-size-caption);
+  padding: var(--iquji-space-2) var(--iquji-space-3);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.iquji-search-dialog__option {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iquji-radius-control);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  gap: var(--iquji-space-2);
+  font: inherit;
+  min-height: 36px;
+  min-width: 0;
+  padding: var(--iquji-space-1) var(--iquji-space-3);
+  scroll-margin-top: 34px;
+  text-align: left;
+  width: 100%;
+}
+
+.iquji-search-dialog__option[aria-selected="true"] {
+  background: var(--iquji-color-surface-muted);
+}
+
+.iquji-search-dialog__option[aria-disabled="true"] {
+  color: var(--iquji-color-muted);
+  cursor: default;
+}
+
+.iquji-search-dialog__icon {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.iquji-search-dialog__item-content {
+  align-items: baseline;
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--iquji-space-2);
+  min-width: 0;
+}
+
+.iquji-search-dialog__item-title,
+.iquji-search-dialog__description,
+.iquji-search-dialog__metadata {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-search-dialog__item-title {
+  font-size: var(--iquji-font-size-body-md);
+  font-weight: 500;
+  min-width: 0;
+}
+
+.iquji-search-dialog__description {
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-caption);
+  min-width: 0;
+}
+
+.iquji-search-dialog__metadata {
+  color: var(--iquji-color-muted);
+  flex: 0 0 auto;
+  font-size: var(--iquji-font-size-caption);
+  margin-left: auto;
+  max-width: 35%;
+}
+
+.iquji-search-dialog__empty {
+  color: var(--iquji-color-muted);
+  margin: 0;
+  padding: var(--iquji-space-5) var(--iquji-space-3);
+}
