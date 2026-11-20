@@ -1,0 +1,284 @@
+.iquji-date-picker__control {
+  min-width: 0;
+  position: relative;
+  width: 100%;
+}
+
+.iquji-date-picker {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  gap: var(--iquji-space-2);
+  grid-template-columns: minmax(0, 1fr) auto;
+  line-height: var(--iquji-line-height-body-md);
+  text-align: left;
+}
+
+.iquji-date-picker:has(.iquji-date-picker__start-icon) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.iquji-date-picker--compact {
+  height: var(--iquji-control-height-compact);
+  padding-inline: 10px;
+}
+
+.iquji-date-picker__start-icon,
+.iquji-date-picker__indicator,
+.iquji-date-picker__clear-btn {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+}
+
+.iquji-date-picker__start-icon,
+.iquji-date-picker__indicator {
+  color: var(--iquji-color-muted);
+}
+
+.iquji-date-picker__start-icon,
+.iquji-date-picker__indicator,
+.iquji-date-picker__clear-btn {
+  height: 16px;
+  width: 16px;
+}
+
+.iquji-date-picker__actions {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--iquji-space-1);
+}
+
+.iquji-date-picker__clear-btn {
+  background: transparent;
+  border: 0;
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  right: calc(16px + var(--iquji-space-1) + var(--iquji-space-3));
+  top: 50%;
+  transform: translateY(-50%);
+  transition: color var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-date-picker__control--compact .iquji-date-picker__clear-btn {
+  right: calc(16px + var(--iquji-space-1) + 10px);
+}
+
+.iquji-date-picker__clear-btn:hover {
+  color: var(--iquji-color-text);
+}
+
+.iquji-date-picker.has-clear .iquji-date-picker__value {
+  padding-inline-end: calc(16px + var(--iquji-space-1));
+}
+
+.iquji-date-picker__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iquji-date-picker__placeholder {
+  color: var(--iquji-color-subtle);
+}
+
+.iquji-date-picker__positioner {
+  box-sizing: border-box;
+  max-height: var(--available-height);
+  max-width: var(--available-width);
+  outline: 0;
+  z-index: 1200;
+}
+
+.iquji-date-picker__popup {
+  backdrop-filter: var(--iquji-blur-md);
+  background: var(--iquji-color-glass-surface-raised);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: var(--iquji-radius-overlay);
+  box-shadow: var(--iquji-shadow-overlay);
+  color: var(--iquji-color-text);
+  outline: 0;
+  padding: var(--iquji-space-3);
+  transform: translateY(0);
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity var(--iquji-motion-overlay) var(--iquji-ease-enter),
+    transform var(--iquji-motion-overlay) var(--iquji-ease-enter);
+}
+
+.iquji-date-picker__popup[data-starting-style],
+.iquji-date-picker__popup[data-ending-style] {
+  opacity: 0;
+  transform: translateY(-2px);
+}
+
+.iquji-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iquji-space-2);
+  user-select: none;
+  width: 252px;
+}
+
+.iquji-calendar__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.iquji-calendar__title {
+  font-size: var(--iquji-font-size-body-sm);
+  font-weight: 650;
+  line-height: var(--iquji-line-height-body-sm);
+}
+
+.iquji-calendar__nav {
+  align-items: center;
+  display: flex;
+  gap: var(--iquji-space-1);
+}
+
+.iquji-calendar__nav-btn {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard);
+  width: 24px;
+}
+
+.iquji-calendar__nav-btn:hover {
+  background: var(--iquji-color-surface-hover);
+  color: var(--iquji-color-text);
+}
+
+.iquji-calendar__weekdays {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(7, 34px);
+  text-align: center;
+}
+
+.iquji-calendar__table {
+  border-collapse: collapse;
+  display: grid;
+  gap: var(--iquji-space-2);
+  width: 100%;
+}
+
+.iquji-calendar__body {
+  display: grid;
+  gap: 2px;
+}
+
+.iquji-calendar__weekday,
+.iquji-calendar__day {
+  padding: 0;
+}
+
+.iquji-calendar__weekday {
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-caption);
+  font-weight: 400;
+  line-height: var(--iquji-line-height-caption);
+}
+
+.iquji-calendar__grid {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(7, 34px);
+}
+
+.iquji-calendar__cell {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--iquji-radius-control) - 2px);
+  color: var(--iquji-color-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--iquji-font-size-body-sm);
+  height: 30px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition:
+    background var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard);
+  width: 34px;
+}
+
+.iquji-calendar__cell:hover:not(:disabled):not(
+    .iquji-calendar__cell--selected
+  ) {
+  background: var(--iquji-color-surface-hover);
+}
+
+.iquji-calendar__cell--outside {
+  color: var(--iquji-color-subtle);
+}
+
+.iquji-calendar__cell--today:not(.iquji-calendar__cell--selected) {
+  box-shadow: inset 0 0 0 1px var(--iquji-color-accent);
+  color: var(--iquji-color-accent-strong);
+  font-weight: 650;
+}
+
+.iquji-calendar__cell--selected {
+  background: var(--iquji-color-accent);
+  color: var(--iquji-color-accent-contrast);
+  font-weight: 650;
+}
+
+.iquji-calendar__cell--disabled,
+.iquji-calendar__cell:disabled {
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.iquji-calendar__footer {
+  align-items: center;
+  border-top: 1px solid var(--iquji-color-border);
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--iquji-space-1);
+  padding-top: var(--iquji-space-2);
+}
+
+.iquji-calendar__footer-btn {
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--iquji-radius-control) - 2px);
+  color: var(--iquji-color-accent-strong);
+  cursor: pointer;
+  font-size: var(--iquji-font-size-caption);
+  font-weight: 600;
+  line-height: var(--iquji-line-height-caption);
+  padding: 3px var(--iquji-space-2);
+  transition: background var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-calendar__footer-btn:hover {
+  background: var(--iquji-color-surface-hover);
+}
+
+.iquji-calendar__footer-btn--clear {
+  color: var(--iquji-color-muted);
+}
+
+.iquji-calendar__footer-btn--clear:hover {
+  color: var(--iquji-color-critical-text);
+}

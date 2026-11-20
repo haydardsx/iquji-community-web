@@ -1,0 +1,313 @@
+.mini-step-circle {
+  align-items: center;
+  background: var(--iquji-color-surface-muted);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 50%;
+  color: var(--iquji-color-muted);
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 600;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.mini-step-circle.is-done {
+  background: var(--iquji-color-positive-fill);
+  border-color: var(--iquji-color-positive-border);
+  color: var(--iquji-color-positive-text);
+}
+
+.mini-step-circle.is-active {
+  background: var(--iquji-color-accent);
+  border-color: var(--iquji-color-accent);
+  color: #fff;
+}
+
+.mini-step-line {
+  background: var(--iquji-color-border-strong);
+  height: 2px;
+  width: 20px;
+}
+
+.mini-preview--alert {
+  align-items: center;
+  background: var(--iquji-color-info-fill);
+  border-left: 3px solid var(--iquji-color-info-border);
+  border-radius: 4px;
+  color: var(--iquji-color-info-text);
+  display: flex;
+  gap: 8px;
+  padding: 6px 10px;
+  width: 180px;
+}
+
+.mini-preview--notification {
+  align-items: center;
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+  display: flex;
+  gap: 8px;
+  padding: 6px 10px;
+  width: 180px;
+}
+
+.mini-toast__dot {
+  background: var(--iquji-color-positive-text);
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.mini-preview--progress {
+  align-items: center;
+  width: 160px;
+}
+
+.mini-progress-track {
+  background: var(--iquji-color-surface-muted);
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.mini-progress-fill {
+  background: var(--iquji-color-accent);
+  border-radius: 6px;
+  height: 100%;
+}
+
+.mini-preview--skeleton {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  width: 160px;
+}
+
+.mini-sk-circle {
+  background: var(--iquji-color-border-strong);
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
+}
+
+.mini-sk-lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-sk-line {
+  background: var(--iquji-color-border-strong);
+  border-radius: 3px;
+  height: 6px;
+  width: 100%;
+}
+
+.mini-sk-line--short {
+  width: 60%;
+}
+
+.mini-preview--timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 140px;
+}
+
+.mini-tl-item {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.mini-tl-dot {
+  background: var(--iquji-color-border-strong);
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.mini-tl-dot.is-active {
+  background: var(--iquji-color-accent);
+}
+
+.mini-preview--modal {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.mini-modal-window {
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 12px;
+  width: 140px;
+}
+
+.mini-modal-bar {
+  display: flex;
+  gap: 4px;
+}
+
+.mini-modal-dot {
+  background: var(--iquji-color-border-strong);
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+.mini-preview--table {
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  width: 180px;
+}
+
+.mini-table-header {
+  align-items: center;
+  background: var(--iquji-color-surface-muted);
+  border-bottom: 1px solid var(--iquji-color-border);
+  color: var(--iquji-color-muted);
+  display: flex;
+  font-weight: 600;
+  justify-content: space-between;
+  padding: 4px 8px;
+}
+
+.mini-table-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 8px;
+}
+
+.mini-preview--workbench {
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border);
+  border-radius: 6px;
+  display: flex;
+  height: 50px;
+  overflow: hidden;
+  width: 180px;
+}
+
+.mini-wb-sidebar {
+  background: var(--iquji-color-surface-muted);
+  border-right: 1px solid var(--iquji-color-border);
+  width: 45px;
+}
+
+.mini-wb-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.mini-wb-bar {
+  background: var(--iquji-color-surface-muted);
+  border-bottom: 1px solid var(--iquji-color-border);
+  height: 12px;
+}
+
+.mini-wb-main {
+  flex: 1;
+}
+
+.mini-preview--theme {
+  border: 1px solid var(--iquji-color-border);
+  border-radius: 8px;
+  display: flex;
+  height: 48px;
+  overflow: hidden;
+  width: 120px;
+}
+
+.mini-theme-split {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.mini-theme-split.is-light {
+  background: #ffffff;
+  color: #e67e22;
+}
+
+.mini-theme-split.is-dark {
+  background: #191b20;
+  color: #f1c40f;
+}
+
+.mini-preview--icons-cluster {
+  align-items: center;
+  color: var(--iquji-color-accent);
+  display: flex;
+  gap: 12px;
+}
+
+.mini-preview--motion {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.mini-motion-card {
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 6px;
+  color: var(--iquji-color-accent);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+}
+
+.mini-preview--i18n {
+  align-items: center;
+  color: var(--iquji-color-muted);
+  display: flex;
+  gap: 8px;
+}
+
+.mini-lang-pill {
+  background: var(--iquji-color-surface-muted);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+}
+
+.mini-lang-pill.is-active {
+  background: var(--iquji-color-accent);
+  color: #fff;
+}
+
+.mini-preview--query {
+  align-items: center;
+  display: flex;
+}
+
+.mini-query-badge {
+  align-items: center;
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 6px;
+  color: var(--iquji-color-text);
+  display: flex;
+  font-size: 11px;
+  gap: 6px;
+  padding: 4px 10px;
+}

@@ -1,0 +1,133 @@
+.iquji-form-steps {
+  min-width: 0;
+  max-width: 100%;
+}
+.iquji-form-steps ol {
+  display: flex;
+  align-items: center;
+  gap: var(--iquji-space-3);
+  list-style: none;
+  margin: 0;
+  overflow-x: auto;
+  padding: var(--iquji-space-1);
+}
+.iquji-form-steps li {
+  align-items: center;
+  display: flex;
+  flex: 1 0 auto;
+  gap: var(--iquji-space-3);
+  min-width: max-content;
+}
+.iquji-form-steps li:last-child {
+  flex: 0 0 auto;
+}
+.iquji-form-steps li:not(:last-child)::after {
+  background: var(--iquji-color-border);
+  content: "";
+  flex: 1;
+  height: 1px;
+  min-width: var(--iquji-space-5);
+}
+.iquji-form-steps__step {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-muted);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  font: inherit;
+  gap: var(--iquji-space-2);
+  min-height: var(--iquji-control-height-compact);
+  padding: var(--iquji-space-1) var(--iquji-space-2);
+  text-align: start;
+}
+.iquji-form-steps__step:hover:not(:disabled) {
+  background: transparent;
+  color: var(--iquji-color-text);
+}
+.iquji-form-steps__step:hover:not(:disabled) .iquji-form-steps__marker {
+  border-color: var(--iquji-color-accent);
+}
+.iquji-form-steps__step[aria-current="step"] {
+  background: transparent;
+  color: var(--iquji-color-text);
+}
+.iquji-form-steps__step:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+.iquji-form-steps__marker {
+  align-items: center;
+  border: 1px solid var(--iquji-color-border-strong);
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 22px;
+  font-size: var(--iquji-font-size-caption);
+  height: 22px;
+  justify-content: center;
+}
+.iquji-form-steps__marker > svg {
+  height: 14px;
+  width: 14px;
+}
+.iquji-form-steps__step--completed .iquji-form-steps__marker {
+  background: var(--iquji-color-positive-fill);
+  border-color: var(--iquji-color-positive-border);
+  color: var(--iquji-color-positive-text);
+}
+.iquji-form-steps__step[aria-current="step"] .iquji-form-steps__marker {
+  background: var(--iquji-color-accent-soft);
+  border-color: var(--iquji-color-accent);
+  color: var(--iquji-color-accent);
+  font-weight: 600;
+}
+.iquji-form-steps__text {
+  display: grid;
+  flex: 0 0 auto;
+  gap: var(--iquji-space-1);
+  min-width: max-content;
+}
+.iquji-form-steps__label {
+  font-size: var(--iquji-font-size-body-sm);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.iquji-form-steps__step[aria-current="step"] .iquji-form-steps__label {
+  font-weight: 600;
+}
+.iquji-form-steps__description {
+  font-size: var(--iquji-font-size-caption);
+  white-space: nowrap;
+}
+.iquji-form-steps__step:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+}
+.iquji-form-steps__step:disabled .iquji-form-steps__marker {
+  background: transparent;
+  color: inherit;
+}
+
+@media (max-width: 520px) {
+  .iquji-form-steps ol,
+  .iquji-form-steps li {
+    gap: var(--iquji-space-2);
+  }
+  .iquji-form-steps__step {
+    gap: var(--iquji-space-1);
+    padding-inline: var(--iquji-space-1);
+  }
+}
+
+.iquji-form-steps__status {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
