@@ -9,7 +9,7 @@ from pathlib import Path
 
 SUBJECT = re.compile(
     r"(?:feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)"
-    r"(?:\((?:web|component|editor|i18n|icons|motion|network|preview|query|theme|docs|deps|release|ci|test|build)\))?"
+    r"\((?:web|component|editor|i18n|icons|motion|network|preview|query|theme|docs|deps|release|ci|test|build)\)"
     r"!?: ([^\r\n]+)"
 )
 PLACEHOLDERS = {"update", "fix", "wip", "tmp", "test", "change", "updates", "changes", "todo", "修改", "更新", "测试", "修复"}
