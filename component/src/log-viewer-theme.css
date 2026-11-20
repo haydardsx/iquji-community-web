@@ -1,0 +1,205 @@
+/* 日志查看器日间模式默认配色：复用主题表面、边框与语义文字层级，保证浅底可读性 */
+.iquji-log-viewer {
+  --iquji-log-bg: var(--iquji-color-surface, #ffffff);
+  --iquji-log-header-bg: var(--iquji-color-surface-muted, #f7f7f8);
+  --iquji-log-text: var(--iquji-color-text, #222428);
+  --iquji-log-muted: var(--iquji-color-muted, #686d76);
+  --iquji-log-border: var(--iquji-color-border-strong, #e2e5ea);
+  --iquji-log-num: var(--iquji-color-subtle, #9297a0);
+  --iquji-log-hover: var(--iquji-color-surface-hover, #f0f1f3);
+  --iquji-log-err-bg: rgba(220, 38, 38, 0.06);
+  --iquji-log-err-border: #dc2626;
+  --iquji-log-err-text: #b91c1c;
+  --iquji-log-warn-bg: rgba(217, 119, 6, 0.08);
+  --iquji-log-warn-border: #d97706;
+  --iquji-log-control-bg: var(--iquji-color-surface, #ffffff);
+  --iquji-log-control-focus-bg: var(--iquji-color-surface, #ffffff);
+  --iquji-log-control-hover-bg: var(--iquji-color-surface-hover, #eceef1);
+  --iquji-log-control-active-bg: var(--iquji-color-neutral-fill, #e5e7eb);
+  --iquji-log-control-active-text: var(--iquji-color-text, #222428);
+  --iquji-log-control-focus-border: var(--iquji-color-accent, #2563eb);
+  --iquji-log-tool-active-bg: var(--iquji-color-info-fill, #e7f0ff);
+  --iquji-log-tool-active-border: var(--iquji-color-info-border, #b8cef0);
+  --iquji-log-tool-active-text: var(--iquji-color-info-text, #174f9b);
+  --iquji-log-err-trigger-bg: var(--iquji-color-critical-fill, #ffe9e7);
+  --iquji-log-err-trigger-border: var(--iquji-color-critical-border, #e6babc);
+  --iquji-log-err-trigger-text: var(--iquji-color-critical-text, #8e2029);
+  --iquji-log-err-trigger-hover-bg: rgba(220, 38, 38, 0.14);
+  --iquji-log-err-trigger-hover-border: #dc2626;
+  --iquji-log-err-trigger-hover-text: #991b1b;
+  --iquji-log-filter-err-bg: rgba(220, 38, 38, 0.12);
+  --iquji-log-level-info-bg: rgba(2, 132, 199, 0.1);
+  --iquji-log-level-info-text: #0369a1;
+  --iquji-log-level-warn-bg: rgba(217, 119, 6, 0.12);
+  --iquji-log-level-warn-text: #b45309;
+  --iquji-log-level-err-bg: rgba(220, 38, 38, 0.12);
+  --iquji-log-level-err-text: #b91c1c;
+  --iquji-log-level-debug-bg: rgba(100, 116, 139, 0.12);
+  --iquji-log-level-debug-text: #475569;
+  --iquji-log-tag-bg: rgba(79, 70, 229, 0.08);
+  --iquji-log-tag-border: rgba(79, 70, 229, 0.22);
+  --iquji-log-tag-text: #4338ca;
+  --iquji-log-highlight-bg: rgba(250, 204, 21, 0.42);
+  --iquji-log-highlight-text: #713f12;
+}
+
+/* 夜间模式：显式深色主题与系统深色偏好均使用低眩光终端配色 */
+[data-theme="dark"] .iquji-log-viewer {
+  --iquji-log-bg: #101216;
+  --iquji-log-header-bg: #181b22;
+  --iquji-log-text: #e1e4ea;
+  --iquji-log-muted: #7a8396;
+  --iquji-log-border: #262a33;
+  --iquji-log-num: #4e5564;
+  --iquji-log-hover: #161920;
+  --iquji-log-err-bg: rgba(239, 68, 68, 0.1);
+  --iquji-log-err-border: #ef4444;
+  --iquji-log-err-text: #f87171;
+  --iquji-log-warn-bg: rgba(245, 158, 11, 0.08);
+  --iquji-log-warn-border: #f59e0b;
+  --iquji-log-control-bg: rgba(255, 255, 255, 0.05);
+  --iquji-log-control-focus-bg: rgba(255, 255, 255, 0.09);
+  --iquji-log-control-hover-bg: rgba(255, 255, 255, 0.1);
+  --iquji-log-control-active-bg: rgba(255, 255, 255, 0.12);
+  --iquji-log-control-active-text: #ffffff;
+  --iquji-log-control-focus-border: #3b82f6;
+  --iquji-log-tool-active-bg: rgba(59, 130, 246, 0.15);
+  --iquji-log-tool-active-border: #3b82f6;
+  --iquji-log-tool-active-text: #60a5fa;
+  --iquji-log-err-trigger-bg: rgba(239, 68, 68, 0.12);
+  --iquji-log-err-trigger-border: rgba(239, 68, 68, 0.35);
+  --iquji-log-err-trigger-text: #f87171;
+  --iquji-log-err-trigger-hover-bg: rgba(239, 68, 68, 0.2);
+  --iquji-log-err-trigger-hover-border: #ef4444;
+  --iquji-log-err-trigger-hover-text: #fca5a5;
+  --iquji-log-filter-err-bg: rgba(239, 68, 68, 0.2);
+  --iquji-log-level-info-bg: rgba(56, 189, 248, 0.12);
+  --iquji-log-level-info-text: #38bdf8;
+  --iquji-log-level-warn-bg: rgba(251, 191, 36, 0.15);
+  --iquji-log-level-warn-text: #fbbf24;
+  --iquji-log-level-err-bg: rgba(248, 113, 113, 0.2);
+  --iquji-log-level-err-text: #f87171;
+  --iquji-log-level-debug-bg: rgba(148, 163, 184, 0.12);
+  --iquji-log-level-debug-text: #94a3b8;
+  --iquji-log-tag-bg: rgba(99, 102, 241, 0.12);
+  --iquji-log-tag-border: rgba(99, 102, 241, 0.25);
+  --iquji-log-tag-text: #a5b4fc;
+  --iquji-log-highlight-bg: rgba(245, 158, 11, 0.35);
+  --iquji-log-highlight-text: #fef3c7;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) .iquji-log-viewer {
+    --iquji-log-bg: #101216;
+    --iquji-log-header-bg: #181b22;
+    --iquji-log-text: #e1e4ea;
+    --iquji-log-muted: #7a8396;
+    --iquji-log-border: #262a33;
+    --iquji-log-num: #4e5564;
+    --iquji-log-hover: #161920;
+    --iquji-log-err-bg: rgba(239, 68, 68, 0.1);
+    --iquji-log-err-border: #ef4444;
+    --iquji-log-err-text: #f87171;
+    --iquji-log-warn-bg: rgba(245, 158, 11, 0.08);
+    --iquji-log-warn-border: #f59e0b;
+    --iquji-log-control-bg: rgba(255, 255, 255, 0.05);
+    --iquji-log-control-focus-bg: rgba(255, 255, 255, 0.09);
+    --iquji-log-control-hover-bg: rgba(255, 255, 255, 0.1);
+    --iquji-log-control-active-bg: rgba(255, 255, 255, 0.12);
+    --iquji-log-control-active-text: #ffffff;
+    --iquji-log-control-focus-border: #3b82f6;
+    --iquji-log-tool-active-bg: rgba(59, 130, 246, 0.15);
+    --iquji-log-tool-active-border: #3b82f6;
+    --iquji-log-tool-active-text: #60a5fa;
+    --iquji-log-err-trigger-bg: rgba(239, 68, 68, 0.12);
+    --iquji-log-err-trigger-border: rgba(239, 68, 68, 0.35);
+    --iquji-log-err-trigger-text: #f87171;
+    --iquji-log-err-trigger-hover-bg: rgba(239, 68, 68, 0.2);
+    --iquji-log-err-trigger-hover-border: #ef4444;
+    --iquji-log-err-trigger-hover-text: #fca5a5;
+    --iquji-log-filter-err-bg: rgba(239, 68, 68, 0.2);
+    --iquji-log-level-info-bg: rgba(56, 189, 248, 0.12);
+    --iquji-log-level-info-text: #38bdf8;
+    --iquji-log-level-warn-bg: rgba(251, 191, 36, 0.15);
+    --iquji-log-level-warn-text: #fbbf24;
+    --iquji-log-level-err-bg: rgba(248, 113, 113, 0.2);
+    --iquji-log-level-err-text: #f87171;
+    --iquji-log-level-debug-bg: rgba(148, 163, 184, 0.12);
+    --iquji-log-level-debug-text: #94a3b8;
+    --iquji-log-tag-bg: rgba(99, 102, 241, 0.12);
+    --iquji-log-tag-border: rgba(99, 102, 241, 0.25);
+    --iquji-log-tag-text: #a5b4fc;
+    --iquji-log-highlight-bg: rgba(245, 158, 11, 0.35);
+    --iquji-log-highlight-text: #fef3c7;
+  }
+}
+
+/* 异常诊断气泡通过 Portal 挂载在日志容器外，需独立维护日间与夜间变量 */
+.iquji-log-viewer__error-popover {
+  --iquji-log-popover-bg: var(--iquji-color-surface-raised, #ffffff);
+  --iquji-log-popover-border: var(--iquji-color-border-strong, #e2e5ea);
+  --iquji-log-popover-top-border: rgba(220, 38, 38, 0.55);
+  --iquji-log-popover-shadow: var(
+    --iquji-shadow-overlay,
+    0 12px 30px -4px rgba(15, 23, 42, 0.14)
+  );
+  --iquji-log-popover-text: var(--iquji-color-text, #222428);
+  --iquji-log-popover-icon: #dc2626;
+  --iquji-log-popover-title: #b91c1c;
+  --iquji-log-popover-message: var(--iquji-color-text, #334155);
+  --iquji-log-popover-divider: var(--iquji-color-border, rgba(0, 0, 0, 0.08));
+  --iquji-log-popover-muted: var(--iquji-color-muted, #64748b);
+  --iquji-log-popover-code-bg: var(--iquji-color-surface-muted, #f4f5f7);
+  --iquji-log-popover-code-border: var(--iquji-color-border-strong, #d8dce2);
+  --iquji-log-popover-code-text: var(--iquji-color-text, #222428);
+  --iquji-log-popover-code-hover-bg: var(--iquji-color-surface-hover, #e8eaee);
+  --iquji-log-popover-code-hover-border: var(
+    --iquji-color-control-hover-border,
+    #abb1bb
+  );
+  --iquji-log-popover-code-hover-text: var(--iquji-color-text, #111827);
+}
+
+[data-theme="dark"] .iquji-log-viewer__error-popover {
+  --iquji-log-popover-bg: linear-gradient(180deg, #181b24 0%, #121419 100%);
+  --iquji-log-popover-border: rgba(255, 255, 255, 0.12);
+  --iquji-log-popover-top-border: rgba(248, 113, 113, 0.45);
+  --iquji-log-popover-shadow:
+    0 16px 36px -4px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  --iquji-log-popover-text: #e1e4ea;
+  --iquji-log-popover-icon: #f87171;
+  --iquji-log-popover-title: #fca5a5;
+  --iquji-log-popover-message: #cbd5e1;
+  --iquji-log-popover-divider: rgba(255, 255, 255, 0.08);
+  --iquji-log-popover-muted: #94a3b8;
+  --iquji-log-popover-code-bg: rgba(255, 255, 255, 0.06);
+  --iquji-log-popover-code-border: rgba(255, 255, 255, 0.12);
+  --iquji-log-popover-code-text: #e2e8f0;
+  --iquji-log-popover-code-hover-bg: rgba(255, 255, 255, 0.12);
+  --iquji-log-popover-code-hover-border: rgba(255, 255, 255, 0.25);
+  --iquji-log-popover-code-hover-text: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) .iquji-log-viewer__error-popover {
+    --iquji-log-popover-bg: linear-gradient(180deg, #181b24 0%, #121419 100%);
+    --iquji-log-popover-border: rgba(255, 255, 255, 0.12);
+    --iquji-log-popover-top-border: rgba(248, 113, 113, 0.45);
+    --iquji-log-popover-shadow:
+      0 16px 36px -4px rgba(0, 0, 0, 0.7),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    --iquji-log-popover-text: #e1e4ea;
+    --iquji-log-popover-icon: #f87171;
+    --iquji-log-popover-title: #fca5a5;
+    --iquji-log-popover-message: #cbd5e1;
+    --iquji-log-popover-divider: rgba(255, 255, 255, 0.08);
+    --iquji-log-popover-muted: #94a3b8;
+    --iquji-log-popover-code-bg: rgba(255, 255, 255, 0.06);
+    --iquji-log-popover-code-border: rgba(255, 255, 255, 0.12);
+    --iquji-log-popover-code-text: #e2e8f0;
+    --iquji-log-popover-code-hover-bg: rgba(255, 255, 255, 0.12);
+    --iquji-log-popover-code-hover-border: rgba(255, 255, 255, 0.25);
+    --iquji-log-popover-code-hover-text: #ffffff;
+  }
+}

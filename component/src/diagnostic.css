@@ -1,0 +1,118 @@
+.iquji-diagnostic-banner {
+  background: var(--iquji-color-critical-fill);
+  border: 1px solid var(--iquji-color-critical-border);
+  border-left: 3.5px solid var(--iquji-color-critical-text);
+  border-radius: var(--iquji-radius-panel);
+  color: var(--iquji-color-critical-text);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  position: relative;
+}
+
+.iquji-diagnostic-banner--compact {
+  gap: 4px;
+  padding: 6px 12px;
+}
+
+.iquji-diagnostic-banner--compact .iquji-diagnostic-banner__title {
+  font-size: var(--iquji-font-size-caption, 12px);
+}
+
+.iquji-diagnostic-banner--compact .iquji-diagnostic-banner__desc {
+  font-size: var(--iquji-font-size-caption, 12px);
+  line-height: 1.45;
+}
+
+.iquji-diagnostic-banner[data-tone="warning"] {
+  background: var(--iquji-color-warning-fill);
+  border-color: var(--iquji-color-warning-border);
+  border-left-color: var(--iquji-color-warning-text);
+  color: var(--iquji-color-warning-text);
+}
+
+.iquji-diagnostic-banner[data-tone="info"] {
+  background: var(--iquji-color-info-fill);
+  border-color: var(--iquji-color-info-border);
+  border-left-color: var(--iquji-color-info-text);
+  color: var(--iquji-color-info-text);
+}
+
+.iquji-diagnostic-banner[data-tone="success"] {
+  background: var(--iquji-color-positive-fill);
+  border-color: var(--iquji-color-positive-border);
+  border-left-color: var(--iquji-color-positive-text);
+  color: var(--iquji-color-positive-text);
+}
+
+.iquji-diagnostic-banner__header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.iquji-diagnostic-banner__lead {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.iquji-diagnostic-banner__icon {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.iquji-diagnostic-banner__title {
+  font-size: var(--iquji-font-size-body-sm);
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.iquji-diagnostic-banner__code {
+  align-items: center;
+  appearance: none;
+  background: var(--iquji-color-surface, #ffffff);
+  border: 1px solid var(--iquji-color-critical-border);
+  border-radius: var(--iquji-radius-control);
+  color: var(--iquji-color-critical-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--iquji-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  gap: 5px;
+  line-height: 1.4;
+  outline: none;
+  padding: 2px 7px;
+  transition: all 0.15s ease;
+  user-select: all;
+  -webkit-appearance: none;
+}
+
+.iquji-diagnostic-banner__code:hover {
+  background: color-mix(in srgb, var(--iquji-color-critical-fill) 40%, #ffffff);
+  border-color: var(--iquji-color-critical-text);
+}
+
+.iquji-diagnostic-banner[data-tone="warning"] .iquji-diagnostic-banner__code {
+  border-color: var(--iquji-color-warning-border);
+  color: var(--iquji-color-warning-text);
+}
+
+.iquji-diagnostic-banner[data-tone="info"] .iquji-diagnostic-banner__code {
+  border-color: var(--iquji-color-info-border);
+  color: var(--iquji-color-info-text);
+}
+
+.iquji-diagnostic-banner__desc {
+  color: var(--iquji-color-text, #1e293b);
+  font-size: var(--iquji-font-size-body-sm);
+  line-height: 1.55;
+  margin: 0;
+  opacity: 0.92;
+}

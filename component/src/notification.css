@@ -1,0 +1,363 @@
+.iquji-notification-viewport {
+  --iquji-notification-offset: max(20px, env(safe-area-inset-top));
+  box-sizing: border-box;
+  display: block;
+  max-height: calc(100dvh - 48px);
+  min-height: var(--toast-frontmost-height, 64px);
+  outline: none;
+  overflow: visible;
+  padding: 8px;
+  pointer-events: none;
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  top: var(--iquji-notification-offset);
+  width: min(360px, calc(100vw - 32px));
+  z-index: 2100;
+}
+
+.iquji-notification-viewport[data-placement$="Left"] {
+  left: max(20px, env(safe-area-inset-left));
+  right: auto;
+}
+
+.iquji-notification-viewport[data-placement^="bottom"] {
+  bottom: max(20px, env(safe-area-inset-bottom));
+  top: auto;
+}
+
+/* 通知卡片 */
+.iquji-notification {
+  --gap: 10px;
+  --peek: 10px;
+  --scale: max(0.85, calc(1 - var(--toast-index) * 0.05));
+  align-items: flex-start;
+  background: var(--iquji-color-surface-raised, #ffffff);
+  border: 1px solid var(--iquji-color-border-strong, rgba(0, 0, 0, 0.08));
+  border-radius: var(--iquji-radius-overlay, 12px);
+  box-shadow:
+    0 8px 24px -4px rgba(0, 0, 0, 0.08),
+    0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  color: var(--iquji-color-text);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  left: 0;
+  opacity: 1;
+  outline: none !important;
+  overflow: hidden;
+  padding: 12px 14px 14px 14px;
+  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform-origin: top center;
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 240ms ease,
+    box-shadow 240ms ease,
+    filter 240ms ease;
+  user-select: none;
+  width: 100%;
+  will-change: transform, opacity;
+  z-index: calc(100 - var(--toast-index));
+}
+
+/* 顶部位置（默认）折叠计算 */
+.iquji-notification-viewport[data-placement^="top"] .iquji-notification,
+.iquji-notification-viewport:not([data-placement^="bottom"]) .iquji-notification {
+  bottom: auto;
+  top: 0;
+  transform-origin: top center;
+  transform: translateY(calc(var(--toast-index) * var(--peek))) scale(var(--scale));
+}
+
+/* 底部位置折叠计算 */
+.iquji-notification-viewport[data-placement^="bottom"] .iquji-notification {
+  bottom: 0;
+  top: auto;
+  transform-origin: bottom center;
+  transform: translateY(calc(-1 * var(--toast-index) * var(--peek))) scale(var(--scale));
+}
+
+/* 折叠状态下后置卡片的微景深 */
+.iquji-notification:not([data-expanded])[data-index="1"] {
+  filter: brightness(0.97);
+}
+
+.iquji-notification:not([data-expanded])[data-index="2"] {
+  filter: brightness(0.94);
+}
+
+/* 折叠状态下，第 4 张及以上卡片隐藏，避免层叠杂乱 */
+.iquji-notification:not([data-expanded])[data-index="3"],
+.iquji-notification:not([data-expanded])[data-index="4"],
+.iquji-notification:not([data-expanded])[data-index="5"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 展开状态（悬停或焦点进入视口或卡片） */
+.iquji-notification-viewport[data-expanded][data-placement^="top"] .iquji-notification,
+.iquji-notification-viewport[data-expanded]:not([data-placement^="bottom"]) .iquji-notification,
+.iquji-notification-viewport:not([data-placement^="bottom"]) .iquji-notification[data-expanded],
+.iquji-notification[data-expanded] {
+  filter: none;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(calc(var(--toast-offset-y) + var(--toast-index) * var(--gap))) scale(1);
+}
+
+.iquji-notification-viewport[data-expanded][data-placement^="bottom"] .iquji-notification,
+.iquji-notification-viewport[data-placement^="bottom"] .iquji-notification[data-expanded] {
+  filter: none;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(calc(-1 * var(--toast-offset-y) - var(--toast-index) * var(--gap))) scale(1);
+}
+
+.iquji-notification:hover {
+  box-shadow:
+    0 12px 30px -4px rgba(0, 0, 0, 0.11),
+    0 4px 10px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* 跨卡片移动防闪烁桥接伪元素 */
+.iquji-notification::after {
+  content: "";
+  height: calc(var(--gap) + 4px);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+.iquji-notification-viewport[data-placement^="top"] .iquji-notification::after,
+.iquji-notification-viewport:not([data-placement^="bottom"]) .iquji-notification::after {
+  top: 100%;
+}
+
+.iquji-notification-viewport[data-placement^="bottom"] .iquji-notification::after {
+  bottom: 100%;
+}
+
+:is(.iquji-notification-viewport[data-expanded], .iquji-notification[data-expanded]) .iquji-notification::after {
+  pointer-events: auto;
+}
+
+/* 仅键盘导航显示焦点环。 */
+.iquji-notification:focus {
+  outline: none !important;
+}
+
+.iquji-notification:focus-visible {
+  outline: 2px solid var(--iquji-color-accent, #cf2634) !important;
+  outline-offset: 2px !important;
+}
+
+/* 进场与退场 */
+.iquji-notification[data-starting-style] {
+  opacity: 0;
+  transform: translateY(-16px) scale(0.95);
+}
+
+.iquji-notification-viewport[data-placement^="bottom"] .iquji-notification[data-starting-style] {
+  transform: translateY(16px) scale(0.95);
+}
+
+.iquji-notification[data-ending-style] {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92);
+}
+
+.iquji-notification[data-limited] {
+  display: none;
+  pointer-events: none;
+}
+
+:root[data-theme="dark"] .iquji-notification {
+  background: var(--iquji-color-surface-raised, #202228);
+  border-color: var(--iquji-color-border-strong, rgba(255, 255, 255, 0.1));
+  box-shadow:
+    0 12px 30px -4px rgba(0, 0, 0, 0.45),
+    0 4px 12px -2px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="dark"] .iquji-notification:hover {
+  box-shadow:
+    0 16px 36px -4px rgba(0, 0, 0, 0.55),
+    0 6px 16px -2px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .iquji-notification:not([data-expanded])[data-index="1"] {
+  filter: brightness(0.9);
+}
+
+:root[data-theme="dark"] .iquji-notification:not([data-expanded])[data-index="2"] {
+  filter: brightness(0.82);
+}
+
+/* 图标圆形徽章容器 */
+.iquji-notification__icon-badge {
+  align-items: center;
+  background: var(--iquji-color-info-fill, #e7f0ff);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--iquji-color-info-border, transparent);
+  display: flex;
+  flex-shrink: 0;
+  height: 28px;
+  justify-content: center;
+  margin-top: 1px;
+  width: 28px;
+}
+
+.iquji-notification__icon {
+  color: var(--iquji-color-info-text, #174f9b);
+}
+
+.iquji-notification[data-tone="success"] .iquji-notification__icon-badge {
+  background: var(--iquji-color-positive-fill, #dff2e7);
+  box-shadow: inset 0 0 0 1px var(--iquji-color-positive-border, transparent);
+}
+
+.iquji-notification[data-tone="success"] .iquji-notification__icon {
+  color: var(--iquji-color-positive-text, #17623c);
+}
+
+.iquji-notification[data-tone="warning"] .iquji-notification__icon-badge {
+  background: var(--iquji-color-warning-fill, #fff3d6);
+  box-shadow: inset 0 0 0 1px var(--iquji-color-warning-border, transparent);
+}
+
+.iquji-notification[data-tone="warning"] .iquji-notification__icon {
+  color: var(--iquji-color-warning-text, #755000);
+}
+
+.iquji-notification[data-tone="danger"] .iquji-notification__icon-badge {
+  background: var(--iquji-color-critical-fill, #ffe9e7);
+  box-shadow: inset 0 0 0 1px var(--iquji-color-critical-border, transparent);
+}
+
+.iquji-notification[data-tone="danger"] .iquji-notification__icon {
+  color: var(--iquji-color-critical-text, #8e2029);
+}
+
+/* 内容排版 */
+.iquji-notification__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding-top: 2px;
+}
+
+.iquji-notification__title {
+  color: var(--iquji-color-text);
+  font-size: var(--iquji-font-size-body-sm, 13px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 18px;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.iquji-notification__description {
+  color: var(--iquji-color-muted, #686d76);
+  font-size: var(--iquji-font-size-caption, 12px);
+  font-weight: 400;
+  line-height: 17px;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.iquji-notification__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iquji-space-2, 8px);
+  margin-top: 8px;
+}
+
+/* 右侧工具区域（关闭按钮） */
+.iquji-notification__side {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  margin-top: 1px;
+}
+
+/* 关闭按钮 */
+.iquji-notification .iquji-notification__close {
+  border-radius: var(--iquji-radius-control, 6px);
+  color: var(--iquji-color-subtle, #9297a0);
+  height: 22px;
+  min-height: 22px;
+  opacity: 0.6;
+  outline: none;
+  padding: 3px;
+  transition:
+    opacity 140ms ease,
+    background 140ms ease,
+    color 140ms ease;
+  width: 22px;
+}
+
+.iquji-notification:hover .iquji-notification__close {
+  opacity: 1;
+}
+
+.iquji-notification .iquji-notification__close:hover {
+  background: var(--iquji-color-surface-hover, rgba(0, 0, 0, 0.05));
+  color: var(--iquji-color-text);
+}
+
+.iquji-notification .iquji-notification__close:focus-visible {
+  outline: 2px solid var(--iquji-color-accent, #cf2634);
+  outline-offset: 1px;
+}
+
+.iquji-notification__progress {
+  animation: iquji-notification-progress linear forwards;
+  bottom: 0;
+  height: 2px;
+  left: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: left center;
+  width: 100%;
+}
+
+@keyframes iquji-notification-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.iquji-notification .iquji-notification__progress {
+  background: var(--iquji-color-info-text, #174f9b);
+}
+
+.iquji-notification[data-tone="success"] .iquji-notification__progress {
+  background: var(--iquji-color-positive-text, #17623c);
+}
+
+.iquji-notification[data-tone="warning"] .iquji-notification__progress {
+  background: var(--iquji-color-warning-text, #755000);
+}
+
+.iquji-notification[data-tone="danger"] .iquji-notification__progress {
+  background: var(--iquji-color-critical-text, #8e2029);
+}
+
+/* 减少动态效果支持 */
+@media (prefers-reduced-motion: reduce) {
+  .iquji-notification {
+    transition-duration: 0.01ms !important;
+  }
+}

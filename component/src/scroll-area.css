@@ -1,0 +1,38 @@
+.iquji-scroll-area {
+  max-width: 100%;
+  min-width: 0;
+  overscroll-behavior: contain;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--iquji-color-border-strong) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.iquji-scroll-area[data-orientation="horizontal"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.iquji-scroll-area[data-orientation="both"] {
+  overflow: auto;
+}
+
+.iquji-scroll-area:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+.iquji-scroll-area::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.iquji-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--iquji-color-border-strong);
+  border-radius: 999px;
+}
+
+.iquji-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
