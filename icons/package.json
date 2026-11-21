@@ -1,5 +1,9 @@
 {
   "name": "@iquji-community/web-icons",
+  "author": {
+    "name": "IQuji Community",
+    "email": "community@iqu.lol"
+  },
   "version": "0.2.0",
   "license": "MIT",
   "type": "module",
