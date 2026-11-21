@@ -44,7 +44,7 @@ NEUTRAL_DOMAINS = {"example.com", "example.net", "example.org", "example", "inva
 
 def neutral_email(value):
     host = value.rsplit("@", 1)[1].lower()
-    return value.lower() == "noreply@github.com" or host == "users.noreply.github.com" or any(
+    return value.lower() in {"noreply@github.com", "community@iqu.lol"} or host == "users.noreply.github.com" or any(
         host == domain or host.endswith("." + domain) for domain in NEUTRAL_DOMAINS)
 
 def git(repo, *args):
