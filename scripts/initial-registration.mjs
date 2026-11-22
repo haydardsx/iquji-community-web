@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { setTimeout as pause } from "node:timers/promises";
 import { execFileSync } from "node:child_process";
 import { appendFileSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -13,6 +15,7 @@ const email = "community@iqu.lol";
 
 async function lookup(name) {
   const endpoint = new URL(encodeURIComponent(name), registry);
+  endpoint.searchParams.set("verification", randomUUID());
   const response = await fetch(endpoint, {
     cache: "no-store", redirect: "error", signal: AbortSignal.timeout(30000),
   });
@@ -21,6 +24,26 @@ async function lookup(name) {
   const record = await response.json();
   if (record.name !== name || !record.versions) throw new Error("注册表返回了无效包记录。");
   return record;
+}
+
+export async function verifyRegistration(item, {read = lookup, verify = verifyPublishedArtifact, wait = pause, attempts = 60} = {}) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    const record = await read(item.name);
+    const version = record?.versions[item.version];
+    if (version) {
+      if (version.name !== item.name || version.version !== item.version || version.author?.email !== email ||
+          !record.maintainers?.length || record.maintainers.some((owner) => owner?.email !== email) ||
+          (version._npmUser !== undefined && version._npmUser?.email !== email) ||
+          (version.maintainers !== undefined && (!Array.isArray(version.maintainers) ||
+            version.maintainers.some((owner) => owner?.email !== email)))) {
+        throw new Error(`注册表中的发行身份与 ${item.name} 不符。`);
+      }
+      await verify(item, version);
+      return;
+    }
+    if (attempt + 1 < attempts) await wait(5000);
+  }
+  throw new Error(`注册表尚未返回 ${item.name}@${item.version}，可重新执行以核验已上传的版本。`);
 }
 
 export function checkRun(run, tag, commit, workflowId) {
@@ -78,16 +101,19 @@ async function register(runId, tag) {
       const manifest = readPackageFiles(readFileSync(item.filename)).get("package.json").content;
       checkManifest(item, JSON.parse(manifest));
     }
+    const registered = [];
     for (const item of items) {
       const record = await lookup(item.name);
       if (record) {
         const previous = record.versions[item.version];
-        if (previous) await verifyPublishedArtifact(item, previous);
+        if (previous) registered.push(item);
         continue;
       }
       execFileSync("npm", ["publish", item.filename, "--access", "public", "--ignore-scripts",
         "--registry", registry], {cwd: directory, stdio: "inherit"});
+      registered.push(item);
     }
+    await Promise.all(registered.map((item) => verifyRegistration(item)));
   } finally {
     rmSync(directory, {recursive: true, force: true});
   }
