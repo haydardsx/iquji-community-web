@@ -7,6 +7,7 @@ import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readPackageFiles, verifyPublishedArtifact } from "./package-content.mjs";
 import { packPackages, packages, root } from "./package.mjs";
+import { publisherEmail, verifyPublisher } from "./npm-publisher.mjs";
 import { verifyReleaseTag } from "./release-tag.mjs";
 
 const repository = "haydardsx/iquji-community-web";
@@ -31,9 +32,10 @@ export async function verifyRegistration(item, {read = lookup, verify = verifyPu
     const record = await read(item.name);
     const version = record?.versions[item.version];
     if (version) {
+      if (version._npmUser?.email === publisherEmail) await verifyPublisher(item.name, item.version, version);
       if (version.name !== item.name || version.version !== item.version || version.author?.email !== email ||
           !record.maintainers?.length || record.maintainers.some((owner) => owner?.email !== email) ||
-          (version._npmUser !== undefined && version._npmUser?.email !== email) ||
+          (version._npmUser !== undefined && version._npmUser?.email !== email && version._npmUser?.email !== publisherEmail) ||
           (version.maintainers !== undefined && (!Array.isArray(version.maintainers) ||
             version.maintainers.some((owner) => owner?.email !== email)))) {
         throw new Error(`注册表中的发行身份与 ${item.name} 不符。`);
