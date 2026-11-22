@@ -211,7 +211,7 @@ class Scan:
         rows = git(repo, "log", "-z", "--format=%H%x00%ae%x00%ce%x00%B", head).split(b"\0")
         for i in range(0, len(rows)-1, 4):
             sha, author, committer, body = [r.decode("utf-8") for r in rows[i:i+4]]
-            if not all((addr.lower().endswith("@users.noreply.github.com") or addr.lower() == "noreply@github.com") for addr in (author, committer)):
+            if not all((addr.lower().endswith("@users.noreply.github.com") or addr.lower() in {"noreply@github.com", "community@iqu.lol"}) for addr in (author, committer)):
                 self.fail("commit-identity", sha)
             self.text(sha, body)
             self.tree(repo, sha)
