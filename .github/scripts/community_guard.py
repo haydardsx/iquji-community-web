@@ -42,6 +42,8 @@ STANDARD_CIDRS = {"0.0.0.0/8", "10.0.0.0/8", "100.64.0.0/10", "127.0.0.0/8",
                   "169.254.0.0/16", "172.16.0.0/12", "192.168.0.0/16", "224.0.0.0/4", "240.0.0.0/4"}
 NEUTRAL_DOMAINS = {"example.com", "example.net", "example.org", "example", "invalid", "test"}
 
+NPM_PUBLISHER = "npm-oidc-no-reply@github.com"
+
 def neutral_email(value):
     host = value.rsplit("@", 1)[1].lower()
     return value.lower() in {"noreply@github.com", "community@iqu.lol"} or host == "users.noreply.github.com" or any(
@@ -85,7 +87,9 @@ class Scan:
             for rule, pattern in SENSITIVE.items():
                 if pattern.search(line):
                     self.fail(rule, name, line_no)
-            if not legal and any(not neutral_email(m.group()) for m in EMAIL.finditer(line)):
+            declared_publisher = (name == "scripts/npm-publisher.mjs" and line == f'export const publisherEmail = "{NPM_PUBLISHER}";'
+                                  or name == ".github/scripts/community_guard.py" and line == f'NPM_PUBLISHER = "{NPM_PUBLISHER}"')
+            if not legal and not declared_publisher and any(not neutral_email(m.group()) for m in EMAIL.finditer(line)):
                 self.fail("personal-email", name, line_no)
             for m in MAC.finditer(line):
                 value = m.group().lower()
@@ -240,22 +244,27 @@ class Scan:
                     raise ValueError("oversize site")
                 self.blob(name, path.read_bytes())
 
-    def registry(self, file):
-        doc = json.loads(Path(file).read_bytes())
+    def registry(self, file, verified=False):
+        report = json.loads(Path(file).read_bytes())
+        doc = report["record"] if verified else report
+        issuers = set(report["issuers"]) if verified else set()
         expected = os.environ.get("COMMUNITY_RELEASE_EMAIL", "").strip().lower()
         if not expected or not EMAIL.fullmatch(expected):
             raise ValueError("missing verified release identity")
-        def visit(item):
+        def visit(item, path=()):
             if isinstance(item, list):
                 for child in item:
-                    visit(child)
+                    visit(child, path + ("[]",))
             elif isinstance(item, dict):
                 for key, value in item.items():
+                    if (len(path) == 3 and path[0] == "versions" and path[1] in issuers
+                            and path[2] == "_npmUser" and key == "email" and value == NPM_PUBLISHER):
+                        continue
                     if key in {"email", "_email"} and (not isinstance(value, str) or value.lower() != expected):
                         self.fail("registry-identity", "registry.json")
-                    visit(value)
+                    visit(value, path + (key,))
             elif isinstance(item, str):
-                if any(m.group().lower() != expected and not neutral_email(m.group()) for m in EMAIL.finditer(item)):
+                if any(m.group().lower() != expected and (m.group().lower() == NPM_PUBLISHER or not neutral_email(m.group())) for m in EMAIL.finditer(item)):
                     self.fail("registry-identity", "registry.json")
         if not isinstance(doc, dict) or not doc.get("maintainers"):
             raise ValueError("incomplete registry record")
@@ -287,6 +296,7 @@ def main():
     parser.add_argument("--tree", default="HEAD")
     parser.add_argument("--history", action="store_true", help="核对选定提交的可达提交身份及说明")
     parser.add_argument("--registry", action="append", default=[])
+    parser.add_argument("--verified-registry", action="append", default=[])
     parser.add_argument("--site", action="append", default=[])
     parser.add_argument("--artifact", action="append", default=[])
     parser.add_argument("--locations", action="store_true", help="在本机显示相对文件名")
@@ -300,6 +310,8 @@ def main():
             scan.site(site)
         for registry in args.registry:
             scan.registry(registry)
+        for registry in args.verified_registry:
+            scan.registry(registry, verified=True)
         for artifact in args.artifact:
             scan.artifact(artifact)
     except (OSError, ValueError, tarfile.TarError, subprocess.SubprocessError):

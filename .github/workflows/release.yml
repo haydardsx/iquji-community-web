@@ -4,6 +4,10 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      verify_tag:
+        description: Released tag to verify
+        type: string
 
 permissions:
   contents: read
@@ -13,7 +17,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify-registry:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.verify_tag != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: 核对已发布标签与公开制品
+        env:
+          RELEASE_TAG: ${{ inputs.verify_tag }}
+          COMMUNITY_RELEASE_EMAIL: community@iqu.lol
+        run: |
+          set -eu
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git merge-base --is-ancestor "$RELEASE_TAG^{commit}" HEAD
+          git diff --exit-code "$RELEASE_TAG" HEAD -- component editor i18n icons motion network query theme >/dev/null
+          bun run check >/dev/null 2>&1
+          node scripts/release.mjs --verify-published >/dev/null 2>&1
+
   verify-tag:
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     outputs:
       registration: ${{ steps.archives.outputs.registration }}
