@@ -9,3 +9,5 @@ coverage/
 !.env.example
 
 .cache/
+preview/doc_build/
+preview/.rspress/

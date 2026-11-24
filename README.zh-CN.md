@@ -4,7 +4,11 @@
 
 Iquji Community Web 是面向管理后台和开发者工具的 React 与 TypeScript UI 组件库。八个 npm 包可按需安装，涵盖数据表格、表单、富文本与代码编辑器和交互终端。
 
-[在线试用组件](https://community-web.iquji.com/)。
+```sh
+npm install @iquji-community/web-component @iquji-community/web-theme
+```
+
+阅读[中文组件文档并试用交互示例](https://community-web.iquji.com/zh/)。
 
 | 包 | 用途 |
 | --- | --- |
