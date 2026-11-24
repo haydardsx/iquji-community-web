@@ -86,7 +86,7 @@ test("所有包运行时导出都在 Community preview 中被实际使用", () =
     filePath,
     source: readFileSync(filePath, "utf8"),
   }));
-  const appEntry = path.resolve(import.meta.dir, "../main.tsx");
+  const appEntry = path.resolve(import.meta.dir, "../LiveExample.tsx");
   previewSources.push({
     filePath: appEntry,
     source: readFileSync(appEntry, "utf8"),

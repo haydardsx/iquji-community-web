@@ -28,19 +28,17 @@ jobs:
           node-version: 24
       - uses: actions/configure-pages@v5
         id: pages
-      - name: 检查并构建预览站
-        env:
-          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+      - name: 检查并构建组件文档
         run: |
           if ! bun run check >/dev/null 2>&1; then
             echo "::error::Package or preview checks failed."
             exit 1
           fi
       - name: 检查预览站的发布文件
-        run: python3 .github/scripts/community_guard.py --repo . --tree HEAD --site preview/dist
+        run: python3 .github/scripts/community_guard.py --repo . --tree HEAD --site preview/doc_build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: preview/dist
+          path: preview/doc_build
   deploy:
     needs: build
     runs-on: ubuntu-latest
