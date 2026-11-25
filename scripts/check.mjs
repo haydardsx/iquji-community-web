@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { packPackages, packages, root } from "./package.mjs";
 
 const timeout = process.env.IQUJI_TEST_TIMEOUT_MS || "30000";
+execFileSync("python3", ["-B", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_*.py"], { cwd: root, stdio: "inherit" });
 const releaseTests = readdirSync(join(root, "scripts")).filter((file) => file.endsWith(".test.mjs")).sort();
 execFileSync("node", ["--test", ...releaseTests.map((file) => join(root, "scripts", file))], { cwd: root, stdio: "inherit" });
 for (const directory of [...packages, "preview"]) {
