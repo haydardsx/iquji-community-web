@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { packages } from "./package.mjs";
 import { verifyReleaseTag } from "./release-tag.mjs";
+import { checkMainTag } from "./tag-main.mjs";
 
 test("发布标签必须固定主线中的提交，并与八个包的版本一致", (context) => {
   const cwd = mkdtempSync(join(tmpdir(), "release-tag-"));
@@ -30,24 +31,64 @@ test("发布标签必须固定主线中的提交，并与八个包的版本一�
   assert.throws(() => verifyReleaseTag("v1.1.0",cwd));
 });
 
-test("受控身份为 CI 通过的 main 打标签，重跑复用同一提交", async () => {
-  const {tagMain} = await import("./tag-main.mjs");
-  const sha="1".repeat(40);
-  let passed=false, created=false, calls=0;
-  const request=async (url, method, body) => {
-    if (url.endsWith("/git/ref/heads/main")) return {object:{sha}};
-    if (url.includes("/git/matching-refs/")) return created ? [{ref:"refs/tags/v1.0.0",object:{type:"commit",sha}}] : [];
-    if (url.includes("/actions/workflows/")) return {workflow_runs:passed ? [{event:"push",head_sha:sha,head_branch:"main",conclusion:"success"}] : []};
-    if (url.includes("/contents/")) {
-      const item=url.split("/contents/")[1].split("/")[0];
-      return {content:Buffer.from(JSON.stringify({name:`@iquji-community/web-${item}`,version:"1.0.0"})).toString("base64")};
-    }
-    assert.equal(method,"POST");assert.deepEqual(body,{ref:"refs/tags/v1.0.0",sha});calls++;created=true;
-    return {object:{sha}};
+const revision = "1".repeat(40);
+const anotherRevision = "2".repeat(40);
+const tag = "v1.0.0";
+const ref = `refs/tags/${tag}`;
+
+function preflightFixture({ passes = true, protectedMain = true, head = revision, existing, wrongPackage, moves } = {}) {
+  const requests = [];
+  let mainReads = 0;
+  return {
+    requests,
+    async request(...args) {
+      assert.equal(args.length, 1, "预检只传入固定的读取端点");
+      const [endpoint] = args;
+      requests.push(endpoint);
+      if (endpoint.endsWith("/branches/main")) {
+        mainReads++;
+        return { protected: protectedMain, commit: { sha: moves && mainReads > 1 ? anotherRevision : head } };
+      }
+      if (endpoint.includes("/git/matching-refs/")) return existing ? [{ ref, object: existing }] : [];
+      if (endpoint.includes("/actions/workflows/")) {
+        return { workflow_runs: [{ event: passes ? "push" : "pull_request", head_sha: revision,
+          head_branch: "main", status: "completed", conclusion: "success" }] };
+      }
+      const manifest = /\/contents\/([^/]+)\/package\.json\?ref=(.+)$/.exec(endpoint);
+      assert.ok(manifest, "出现预检不支持的写入或读取端点");
+      const [, directory, sha] = manifest;
+      assert.equal(sha, revision);
+      const value = { name: `@iquji-community/web-${directory}`, version: directory === wrongPackage ? "1.0.1" : "1.0.0" };
+      return { type: "file", encoding: "base64", path: `${directory}/package.json`,
+        content: Buffer.from(JSON.stringify(value)).toString("base64") };
+    },
   };
-  await assert.rejects(tagMain("v1.0.0",request),/尚未通过 CI/);
-  passed=true;
-  assert.equal(await tagMain("v1.0.0",request),sha);
-  assert.equal(await tagMain("v1.0.0",request),sha);
-  assert.equal(calls,1);
+}
+
+test("建标预检只读取保护主线、该提交的推送检查和八个发布清单", async () => {
+  for (const existing of [undefined, { type: "commit", sha: revision }]) {
+    const { request, requests } = preflightFixture({ existing });
+    assert.equal(await checkMainTag(tag, revision, request), revision);
+    assert.equal(requests.filter((endpoint) => endpoint.includes("/contents/")).length, packages.length);
+    assert.equal(requests.filter((endpoint) => endpoint.endsWith("/branches/main")).length, 2);
+  }
+});
+
+test("建标预检遇到主线变化、检查失败和同名标签冲突时拒绝", async () => {
+  const cases = [
+    [{ head: anotherRevision }, /main 分支顶端/],
+    [{ protectedMain: false }, /main 分支顶端/],
+    [{ moves: true }, /main 分支顶端/],
+    [{ passes: false, existing: { type: "commit", sha: revision } }, /尚未通过 CI/],
+    [{ wrongPackage: "editor" }, /包身份或版本不符/],
+    [{ existing: { type: "commit", sha: anotherRevision } }, /同名标签已存在/],
+    [{ existing: { type: "tag", sha: revision } }, /同名标签已存在/],
+  ];
+  for (const [options, error] of cases) {
+    await assert.rejects(checkMainTag(tag, revision, preflightFixture(options).request), error);
+  }
+  const { request, requests } = preflightFixture();
+  await assert.rejects(checkMainTag("v1.00.0", revision, request), /需要 vX.Y.Z 标签/);
+  await assert.rejects(checkMainTag(tag, "wrong", request), /完整的主线提交号/);
+  assert.deepEqual(requests, []);
 });

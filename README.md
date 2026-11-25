@@ -21,4 +21,20 @@ From the repository root, use Bun 1.3.14, Node.js 24 and npm to build the packag
 bun run check
 ```
 
+## Submitting a change
+
+Start a branch from the latest `main`, for example `feat/interactive-terminal`. Use a change type followed by a slash and a lowercase topic with hyphens. Write commit and PR titles as `type(scope): description`, for example `fix(component): keep terminal focus after resizing`.
+
+Enable the repository's Git hooks once per clone. Each commit runs the package and preview checks against the staged files and validates the branch and commit title. To run the staged checks yourself, omit `--install`. A change enters the public development branch after candidate CI succeeds and enters `main` through a passing PR.
+
+```sh
+python3 scripts/check_staged.py --install
+```
+
+## Releases
+
+After CI succeeds on the protected `main` branch, the repository owner runs **Create Community Web release tag** from `main` with the `vX.Y.Z` tag and the full commit SHA. All eight package versions must match the tag. A retry for the same current commit reuses its matching tag. Creating the tag triggers the npm release workflow. [Create a release tag](.github/workflows/tag-main.yml)
+
+Run `node scripts/tag-main.mjs vX.Y.Z <commit-sha>` with an authenticated GitHub CLI to run the read-only preflight.
+
 Released under the [MIT License](LICENSE).

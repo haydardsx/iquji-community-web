@@ -1,0 +1,123 @@
+name: Create Community Web release tag
+run-name: Create Community Web release tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag (vX.Y.Z)
+        required: true
+        type: string
+      revision:
+        description: Exact protected main commit SHA
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: promotion-${{ github.repository_id }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    if: &authorized >-
+      github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+      github.ref_protected && github.event.repository.private == false &&
+      github.repository == 'haydardsx/iquji-community-web' &&
+      github.actor == 'haydardsx' && github.triggering_actor == 'haydardsx'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: 核对主线提交和八个包的版本
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          REVISION: ${{ inputs.revision }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$REVISION" = "$GITHUB_SHA"
+          node scripts/tag-main.mjs "$TAG" "$REVISION"
+
+  tag:
+    needs: preflight
+    if: *authorized
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: candidate-promotion
+    permissions:
+      contents: read
+      actions: read
+    env:
+      TAG: ${{ inputs.tag }}
+      REVISION: ${{ inputs.revision }}
+    steps:
+      - name: 核对待建标的主线检查与包清单
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          [[ "$REVISION" =~ ^[a-f0-9]{40}$ && "$REVISION" == "$GITHUB_SHA" ]]
+          api=repos/haydardsx/iquji-community-web
+          gh api "$api/branches/main" | jq -e --arg head "$REVISION" '
+            .protected == true and .commit.sha == $head' >/dev/null
+          gh api "$api/actions/workflows/ci.yml/runs?branch=main&event=push&status=success&head_sha=$REVISION&per_page=100" |
+            jq -e --arg head "$REVISION" 'any(.workflow_runs[];
+              .event == "push" and .head_sha == $head and .head_branch == "main" and
+              .status == "completed" and .conclusion == "success")' >/dev/null
+          for directory in icons theme motion i18n query network component editor; do
+            gh api -H 'Accept: application/vnd.github.raw+json' "$api/contents/$directory/package.json?ref=$REVISION" |
+              jq -es --arg name "@iquji-community/web-$directory" --arg version "${TAG#v}" '
+                length == 1 and (.[0] | .name == $name and .version == $version and
+                (.private == null or .private == false))' >/dev/null
+          done
+      - id: app
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.PROMOTION_APP_ID }}
+          private-key: ${{ secrets.PROMOTION_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: iquji-community-web
+          permission-contents: write
+      - name: 创建并回读受保护的版本标签
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          [[ "$REVISION" =~ ^[a-f0-9]{40}$ && "$REVISION" == "$GITHUB_SHA" ]]
+          repo=haydardsx/iquji-community-web
+          api="repos/$repo"
+          ref="refs/tags/$TAG"
+          gh api installation/repositories | jq -e --arg repo "$repo" '
+            .total_count == 1 and .repositories[0].full_name == $repo' >/dev/null
+          check_main() {
+            gh api "$api/branches/main" | jq -e --arg head "$REVISION" '
+              .protected == true and .commit.sha == $head' >/dev/null
+          }
+          read_tag() {
+            gh api "$api/git/matching-refs/tags/$TAG" | jq -c --arg ref "$ref" '
+              [.[] | select(.ref == $ref) | .object]'
+          }
+          check_main
+          tag_objects=$(read_tag)
+          if [[ "$tag_objects" == "[]" ]]; then
+            check_main
+            if ! gh api --method POST "$api/git/refs" --raw-field "ref=$ref" --raw-field "sha=$REVISION" --silent; then
+              echo "核对标签是否已由同一版本的发布流程创建。"
+            fi
+            tag_objects=$(read_tag)
+          fi
+          jq -e --arg head "$REVISION" '
+            length == 1 and .[0].type == "commit" and .[0].sha == $head' <<< "$tag_objects" >/dev/null
+          printf '%s %s\n' "$TAG" "$REVISION"

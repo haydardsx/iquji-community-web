@@ -21,4 +21,20 @@ Iquji Community Web 提供八个可单独安装的 npm 包。可以在[在线预
 bun run check
 ```
 
+## 提交改动
+
+从最新的 `main` 创建用途分支，例如 `feat/interactive-terminal`。分支名由变更类型、斜杠及小写英文主题组成，主题可用连字符分词。提交和 PR 标题使用 `类型(scope): 具体改动`，例如 `fix(component): 调整窗口后保持终端焦点`。
+
+每次克隆后运行以下命令启用 Git 钩子。提交时会针对暂存文件运行包和预览检查，并检查分支名及提交标题。省略 `--install` 可单独检查暂存内容。候选通过 CI 后才进入公开开发分支，PR 检查通过后才能合入 `main`。
+
+```sh
+python3 scripts/check_staged.py --install
+```
+
+## 发行
+
+受保护的 `main` 分支检查通过后，仓库所有者从 `main` 启动 **Create Community Web release tag**，填写 `vX.Y.Z` 标签和完整提交号。八个包的版本都须与标签一致。对当前同一提交重试会复用匹配的标签。标签创建后触发 npm 发行工作流。[建标工作流](.github/workflows/tag-main.yml)
+
+使用已登录的 GitHub CLI 执行 `node scripts/tag-main.mjs vX.Y.Z <提交号>` 可进行只读预检。
+
 本项目以 [MIT 许可证](LICENSE)发布。
