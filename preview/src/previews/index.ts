@@ -16,6 +16,7 @@ import { networkPreviews } from "./network";
 import { notificationPreviews } from "./notifications";
 import { overlayPreviews } from "./overlays";
 import { queryPreviews } from "./query";
+import { terminalPreviews } from "./terminal";
 import { themePreviews } from "./theme";
 
 export const componentPreviews: readonly ComponentPreview[] = [
@@ -31,6 +32,7 @@ export const componentPreviews: readonly ComponentPreview[] = [
   ...iconPreviews,
   ...motionPreviews,
   ...networkPreviews,
+  ...terminalPreviews,
   ...queryPreviews,
   ...themePreviews,
 ];

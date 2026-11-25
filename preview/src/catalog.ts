@@ -71,6 +71,7 @@ const COMPONENT_PREVIEW_IDS = [
   "skeleton",
   "async-state-frame",
   "log-viewer",
+  "terminal",
   "tooltip",
   "popover",
   "tour",
@@ -114,7 +115,7 @@ const previewCoverage = {
   icons: { ".": ["icons-gallery"] },
   motion: { ".": ["motion-provider"] },
   network: {
-    ".": ["network-transport"],
+    ".": ["network-transport", "terminal-connection"],
   },
   query: { ".": ["query-client"] },
   theme: {
