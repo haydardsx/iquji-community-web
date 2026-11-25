@@ -2,7 +2,9 @@
 
 [English](README.md)
 
-Iquji Community Web 提供八个可单独安装的 npm 包。可以在[在线预览](https://haydardsx.github.io/iquji-community-web/)切换语言并试用组件。
+Iquji Community Web 是面向管理后台和开发者工具的 React 与 TypeScript UI 组件库。八个 npm 包可按需安装，涵盖数据表格、表单、富文本与代码编辑器和交互终端。
+
+[在线试用组件](https://community-web.iquji.com/)。
 
 | 包 | 用途 |
 | --- | --- |
@@ -23,7 +25,7 @@ bun run check
 
 ## 提交改动
 
-从最新的 `main` 创建用途分支，例如 `feat/interactive-terminal`。分支名由变更类型、斜杠及小写英文主题组成，主题可用连字符分词。提交和 PR 标题使用 `类型(scope): 具体改动`，例如 `fix(component): 调整窗口后保持终端焦点`。
+从最新的 `main` 创建用途分支，例如 `feat/interactive-terminal`。分支名由变更类型、斜杠及小写英文主题组成，主题可用连字符分词。提交和 PR 标题使用 `类型(scope): 具体改动`，例如 `fix(component): keep terminal focus after resizing`。
 
 每次克隆后运行以下命令启用 Git 钩子。提交时会针对暂存文件运行包和预览检查，并检查分支名及提交标题。省略 `--install` 可单独检查暂存内容。候选通过 CI 后才进入公开开发分支，PR 检查通过后才能合入 `main`。
 
