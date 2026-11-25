@@ -11,6 +11,12 @@ export {
   HttpTimeoutError,
   type HttpTransportOptions,
 } from "./http-transport.js";
+export {
+  createTerminalConnection,
+  type TerminalConnection,
+  type TerminalConnectionSurface,
+  type TerminalSize,
+} from "./terminal-transport.js";
 
 export type JsonTransportOptions = HttpTransportOptions & {
   baseUrl: string;

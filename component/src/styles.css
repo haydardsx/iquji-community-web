@@ -29,3 +29,5 @@
 @import "./diagnostic.css";
 
 @import "./emoji-picker.css";
+@import "@xterm/xterm/css/xterm.css";
+@import "./terminal.css";

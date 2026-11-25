@@ -196,6 +196,11 @@ const COMPONENT_I18N: Record<ComponentPreviewId, ComponentI18nInfo> = {
     nameEn: "IqujiLogViewer",
     descEn: "Search, filter, expand, and copy text or structured log entries.",
   },
+  terminal: {
+    nameZh: "交互终端",
+    nameEn: "IqujiTerminal",
+    descEn: "Try keyboard input and local echo in the terminal component.",
+  },
   tooltip: {
     nameZh: "工具提示",
     nameEn: "IqujiTooltip",
@@ -362,6 +367,12 @@ const COMPONENT_I18N: Record<ComponentPreviewId, ComponentI18nInfo> = {
     nameZh: "网络传输",
     nameEn: "Network Transport",
     descEn: "HTTP transport, typed JSON client, timeouts, and cancellation.",
+  },
+  "terminal-connection": {
+    nameZh: "终端传输",
+    nameEn: "createTerminalConnection",
+    descEn:
+      "Connect to a same-origin terminal endpoint with a one-time ticket.",
   },
   "query-client": {
     nameZh: "查询客户端与重试",
