@@ -2,7 +2,9 @@
 
 [简体中文](README.zh-CN.md)
 
-Iquji Community Web provides eight npm packages. Explore the components and switch languages in the [live preview](https://haydardsx.github.io/iquji-community-web/).
+Iquji Community Web is a React and TypeScript UI toolkit for building admin dashboards and developer tools. Its eight npm packages include data tables, forms, rich text and code editors, and an interactive terminal.
+
+[Try the components in the live preview](https://community-web.iquji.com/).
 
 | Package | Purpose |
 | --- | --- |
