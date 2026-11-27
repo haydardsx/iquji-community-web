@@ -2,13 +2,16 @@ import {
   IqujiButton,
   IqujiField,
   IqujiInput,
-  IqujiTerminal,
-  type IqujiTerminalSurface,
 } from "@iquji-community/web-component";
 import {
   createTerminalConnection,
   type TerminalConnection,
 } from "@iquji-community/web-network";
+import {
+  IqujiTerminal,
+  type IqujiTerminalSurface,
+} from "@iquji-community/web-terminal";
+import "@iquji-community/web-terminal/styles.css";
 import { type FormEvent, useState } from "react";
 import type { ComponentPreview } from "../catalog";
 import { usePreviewText } from "../i18n/use-preview-text";
@@ -139,6 +142,8 @@ export const terminalPreviews: readonly ComponentPreview[] = [
   {
     id: "terminal",
     name: "IqujiTerminal",
+    packageId: "terminal",
+    packageName: "@iquji-community/web-terminal",
     category: "反馈",
     description: "通过本地键盘回显体验交互终端组件。",
     keywords: "终端 回显 terminal tty echo",

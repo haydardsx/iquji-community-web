@@ -1,7 +1,7 @@
 import { afterEach, expect, mock, test } from "bun:test";
 import { act, StrictMode } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { IqujiTerminal, type IqujiTerminalSurface } from "./terminal.js";
+import { IqujiTerminal, type IqujiTerminalSurface } from "./index.js";
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 

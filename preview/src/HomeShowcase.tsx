@@ -110,6 +110,7 @@ const packageIcons = {
   motion: "play",
   network: "network",
   query: "refresh",
+  terminal: "terminal",
   theme: "sun",
 } as const;
 

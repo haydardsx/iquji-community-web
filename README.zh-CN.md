@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-Iquji Community Web 是面向管理后台和开发者工具的 React 与 TypeScript UI 组件库。八个 npm 包可按需安装，涵盖数据表格、表单、富文本与代码编辑器和交互终端。
+Iquji Community Web 是面向管理后台和开发者工具的 React 与 TypeScript UI 组件库。各 npm 包可按需安装，涵盖数据表格、表单、富文本与代码编辑器和交互终端。
 
 ```sh
 npm install @iquji-community/web-component @iquji-community/web-theme
@@ -12,7 +12,8 @@ npm install @iquji-community/web-component @iquji-community/web-theme
 
 | 包 | 用途 |
 | --- | --- |
-| [`@iquji-community/web-component`](component/README.zh-CN.md) | 用于表单、表格、对话框、导航、日志和交互终端的 React 组件。 |
+| [`@iquji-community/web-component`](component/README.zh-CN.md) | 用于表单、表格、对话框、导航和日志的 React 组件。 |
+| [`@iquji-community/web-terminal`](terminal/README.zh-CN.md) | 支持注入字节流连接的 React 交互式终端。 |
 | [`@iquji-community/web-editor`](editor/README.zh-CN.md) | 适用于 React 的富文本和代码编辑器。代码编辑器支持 Markdown、JSON、YAML、TOML、Shell 和纯文本。 |
 | [`@iquji-community/web-theme`](theme/README.zh-CN.md) | 提供 CSS 主题变量和 React 主题上下文，支持浅色、深色和跟随系统。 |
 | [`@iquji-community/web-icons`](icons/README.zh-CN.md) | React 图标。装饰图标可设置 decorative，表达含义的图标可设置无障碍标签。 |
@@ -39,7 +40,7 @@ python3 scripts/check_staged.py --install
 
 ## 发行
 
-受保护的 `main` 分支检查通过后，仓库所有者从 `main` 启动 **Create Community Web release tag**，填写 `vX.Y.Z` 标签和完整提交号。八个包的版本都须与标签一致。对当前同一提交重试会复用匹配的标签。标签创建后触发 npm 发行工作流。[建标工作流](.github/workflows/tag-main.yml)
+受保护的 `main` 分支检查通过后，仓库所有者从 `main` 启动 **Create Community Web release tag**，填写 `vX.Y.Z` 标签和完整提交号。所有公开包的版本都须与标签一致。对当前同一提交重试会复用匹配的标签。标签创建后触发 npm 发行工作流。[建标工作流](.github/workflows/tag-main.yml)
 
 使用已登录的 GitHub CLI 执行 `node scripts/tag-main.mjs vX.Y.Z <提交号>` 可进行只读预检。
 

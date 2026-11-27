@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "@rspress/core";
 
 const origin = "https://community-web.iquji.com";
@@ -18,8 +19,14 @@ export default defineConfig({
   sitemap: { siteUrl: origin },
   builderConfig: {
     resolve: {
-      // Rspress 的本地搜索只使用 Document。使用浏览器入口，避免编入 Node worker 的本机文件地址。
-      alias: { flexsearch$: require.resolve("flexsearch") },
+      alias: {
+        // 本地 Query 包和预览共用同一个 React Query 上下文。
+        "@tanstack/react-query$": fileURLToPath(
+          import.meta.resolve("@tanstack/react-query"),
+        ),
+        // Rspress 的本地搜索只使用 Document。使用浏览器入口，避免编入 Node worker 的本机文件地址。
+        flexsearch$: require.resolve("flexsearch"),
+      },
     },
   },
   locales: [

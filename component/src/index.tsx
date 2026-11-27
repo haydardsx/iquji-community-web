@@ -509,7 +509,6 @@ export * from "./search-dialog.js";
 export * from "./settings-layout.js";
 export * from "./settings-nav.js";
 export * from "./settings-rows.js";
-export * from "./terminal.js";
 export * from "./timeline.js";
 export * from "./tooltip.js";
 export * from "./tour.js";
