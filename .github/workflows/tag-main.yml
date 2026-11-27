@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: 核对主线提交和八个包的版本
+      - name: 核对主线提交和公开包的版本
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
@@ -74,7 +74,7 @@ jobs:
             jq -e --arg head "$REVISION" 'any(.workflow_runs[];
               .event == "push" and .head_sha == $head and .head_branch == "main" and
               .status == "completed" and .conclusion == "success")' >/dev/null
-          for directory in icons theme motion i18n query network component editor; do
+          for directory in icons theme motion i18n query network component editor terminal; do
             gh api -H 'Accept: application/vnd.github.raw+json' "$api/contents/$directory/package.json?ref=$REVISION" |
               jq -es --arg name "@iquji-community/web-$directory" --arg version "${TAG#v}" '
                 length == 1 and (.[0] | .name == $name and .version == $version and

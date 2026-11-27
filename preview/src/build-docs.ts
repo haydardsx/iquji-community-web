@@ -24,6 +24,10 @@ copyFileSync(
   resolve(root, "component/LICENSE"),
   resolve(docs, "public/LICENSE-iquji-community-web-component.txt"),
 );
+copyFileSync(
+  resolve(root, "terminal/LICENSE"),
+  resolve(docs, "public/LICENSE-iquji-community-web-terminal.txt"),
+);
 
 for (const language of ["en", "zh"] as const) {
   const locale = language === "en" ? "en-US" : "zh-CN";

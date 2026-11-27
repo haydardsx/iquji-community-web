@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { isPackageFile } from "./package-content.mjs";
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-export const packages = ["icons", "theme", "motion", "i18n", "query", "network", "component", "editor"];
+export const packages = ["icons", "theme", "motion", "i18n", "query", "network", "component", "editor", "terminal"];
 
 export function packPackages(output) {
   mkdirSync(output, { recursive: true });

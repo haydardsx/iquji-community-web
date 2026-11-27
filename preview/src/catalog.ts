@@ -26,6 +26,7 @@ export const COMMUNITY_PACKAGES = [
   "motion",
   "network",
   "query",
+  "terminal",
   "theme",
 ] as const;
 
@@ -71,7 +72,6 @@ const COMPONENT_PREVIEW_IDS = [
   "skeleton",
   "async-state-frame",
   "log-viewer",
-  "terminal",
   "tooltip",
   "popover",
   "tour",
@@ -118,6 +118,7 @@ const previewCoverage = {
     ".": ["network-transport", "terminal-connection"],
   },
   query: { ".": ["query-client"] },
+  terminal: { ".": ["terminal"], "./styles.css": ["terminal"] },
   theme: {
     ".": ["theme-preferences"],
     "./tokens.css": ["theme-preferences"],

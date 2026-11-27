@@ -27,6 +27,7 @@
     "@iquji-community/web-motion": "file:../motion",
     "@iquji-community/web-network": "file:../network",
     "@iquji-community/web-query": "file:../query",
+    "@iquji-community/web-terminal": "file:../terminal",
     "@iquji-community/web-theme": "file:../theme",
     "@tanstack/react-query": "5.99.2",
     "framer-motion": "12.34.0",
@@ -49,6 +50,7 @@
     "@iquji-community/web-motion": "file:../motion",
     "@iquji-community/web-network": "file:../network",
     "@iquji-community/web-query": "file:../query",
+    "@iquji-community/web-terminal": "file:../terminal",
     "@iquji-community/web-theme": "file:../theme"
   }
 }

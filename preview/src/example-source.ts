@@ -9,6 +9,7 @@ const localePackage = "@iquji-community/web-i18n";
 const themePackage = "@iquji-community/web-theme";
 const componentPackage = "@iquji-community/web-component";
 const editorPackage = "@iquji-community/web-editor";
+const terminalPackage = "@iquji-community/web-terminal";
 
 function exampleEntries(file: ts.SourceFile) {
   const entries: { id: string; component: ts.Identifier }[] = [];
@@ -277,6 +278,9 @@ ${locale}  return (${parameters}) => ${translatedText};
   }
   if (imports.has(editorPackage)) {
     styles.push(`import "${editorPackage}/styles.css";`);
+  }
+  if (imports.has(terminalPackage)) {
+    styles.push(`import "${terminalPackage}/styles.css";`);
   }
   const entryIndex = statements.findIndex(
     (statement) =>

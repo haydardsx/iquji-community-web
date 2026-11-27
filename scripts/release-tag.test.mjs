@@ -8,7 +8,7 @@ import { packages } from "./package.mjs";
 import { verifyReleaseTag } from "./release-tag.mjs";
 import { checkMainTag } from "./tag-main.mjs";
 
-test("发布标签必须固定主线中的提交，并与八个包的版本一致", (context) => {
+test("发布标签必须固定主线中的提交，并与公开包的版本一致", (context) => {
   const cwd = mkdtempSync(join(tmpdir(), "release-tag-"));
   context.after(() => rmSync(cwd, {recursive:true, force:true}));
   const git = (...args) => execFileSync("git", ["-c","user.name=Example","-c","user.email=example@example.invalid",...args], {cwd, stdio:"pipe", encoding:"utf8"}).trim();
@@ -65,7 +65,7 @@ function preflightFixture({ passes = true, protectedMain = true, head = revision
   };
 }
 
-test("建标预检只读取保护主线、该提交的推送检查和八个发布清单", async () => {
+test("建标预检只读取保护主线、该提交的推送检查和公开包的发布清单", async () => {
   for (const existing of [undefined, { type: "commit", sha: revision }]) {
     const { request, requests } = preflightFixture({ existing });
     assert.equal(await checkMainTag(tag, revision, request), revision);

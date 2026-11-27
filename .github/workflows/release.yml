@@ -41,7 +41,7 @@ jobs:
           set -eu
           [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
           git merge-base --is-ancestor "$RELEASE_TAG^{commit}" HEAD
-          git diff --exit-code "$RELEASE_TAG" HEAD -- component editor i18n icons motion network query theme >/dev/null
+          git diff --exit-code "$RELEASE_TAG" HEAD -- component editor i18n icons motion network query terminal theme >/dev/null
           bun run check >/dev/null 2>&1
           node scripts/release.mjs --verify-published >/dev/null 2>&1
 
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: 检查公开源码、八个包和预览
+      - name: 检查公开源码、公开包和预览
         run: |
           if ! bun run check >/dev/null 2>&1; then
             echo "::error::Package or preview checks failed."
@@ -104,6 +104,7 @@ jobs:
             motion/dist/
             network/dist/
             query/dist/
+            terminal/dist/
             theme/dist/
 
   publish:
