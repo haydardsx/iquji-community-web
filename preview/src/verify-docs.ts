@@ -31,6 +31,26 @@ for (const language of ["en", "zh"] as const) {
         ),
         `${url} 缺少 ${item.id}`,
       );
+      assert.ok(
+        html.includes(`data-example="${item.id}"`),
+        `${url} 缺少 ${item.id} 的示例卡片`,
+      );
     }
+    const sources =
+      html.match(/<details class="guide-example__source">/g) ?? [];
+    const expected = componentPreviews.filter(
+      (entry) => (entry.packageId ?? "component") === pkg,
+    ).length;
+    assert.equal(sources.length, expected, `${url} 示例代码数量有误`);
+    assert.equal(
+      [
+        ...html.matchAll(
+          /<details class="guide-example__source">([\s\S]*?)<\/details>/g,
+        ),
+      ].filter(([, source]) => source?.includes("rp-codeblock language-tsx"))
+        .length,
+      expected,
+      `${url} 缺少 TSX 代码块`,
+    );
   }
 }
