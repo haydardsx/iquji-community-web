@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { resolve } from "node:path";
 import { COMMUNITY_PACKAGES, type ComponentPreview } from "./catalog";
+import { getExampleSources } from "./example-source";
 import { getPreviewText } from "./i18n/catalog-text";
 import { componentPreviews } from "./previews";
 
@@ -27,6 +28,7 @@ copyFileSync(
 for (const language of ["en", "zh"] as const) {
   const locale = language === "en" ? "en-US" : "zh-CN";
   const filename = language === "en" ? "README.md" : "README.zh-CN.md";
+  const sources = getExampleSources(language);
   const dir = resolve(docs, language);
   mkdirSync(dir);
   const navigation = [
@@ -36,21 +38,28 @@ for (const language of ["en", "zh"] as const) {
       label: language === "en" ? "Getting started" : "快速开始",
     },
   ];
-  const index = [
-    `---\ntitle: "${language === "en" ? "Getting started" : "快速开始"}"\n---`,
-    "# Iquji Community Web",
-    language === "en"
-      ? "React components and TypeScript utilities for building forms, data tables, editors and application settings. Install each package independently from npm."
-      : "使用 React 组件和 TypeScript 工具构建表单、数据表格、编辑器和应用设置。八个 npm 包均可独立安装。",
-    "```sh\nnpm install @iquji-community/web-component @iquji-community/web-theme\n```",
-    language === "en" ? "## Packages" : "## 组件包",
-  ];
+  const packages = [];
+  const catalog = componentPreviews.map((item) => ({
+    id: item.id,
+    category: item.category,
+    packageId: item.packageId ?? "component",
+    name: getPreviewText(item, locale).name,
+  }));
 
   function example(item: ComponentPreview) {
     const { name, description } = getPreviewText(item, locale);
     const symbol = getPreviewText(item, "en-US").name;
     const title = language === "zh" ? `${name} · ${symbol}` : name;
-    return `## ${title}\n\n${description}\n\n<Example id="${item.id}" language="${language}" />`;
+    const source = sources.get(item.id);
+    if (!source) throw new Error(`缺少示例源码 ${item.id}`);
+    return [
+      `<span id="example-${item.id}" />`,
+      `## ${title}`,
+      description,
+      `<Example id="${item.id}" language="${language}">`,
+      `\`\`\`\`tsx\n${source.trimEnd()}\n\`\`\`\``,
+      "</Example>",
+    ].join("\n\n");
   }
 
   for (const pkg of COMMUNITY_PACKAGES) {
@@ -69,13 +78,18 @@ for (const language of ["en", "zh"] as const) {
       ...examples.map(example),
     ];
     writeFileSync(resolve(dir, `${pkg}.mdx`), content.join("\n\n"));
-    index.push(`- [\`${title}\`](./${pkg}) — ${description}`);
+    packages.push({ id: pkg, description });
     navigation.push({
       type: "file",
       name: pkg,
       label: title.replace("@iquji-community/", ""),
     });
   }
-  writeFileSync(resolve(dir, "index.md"), index.join("\n\n"));
+  const index = [
+    "---\ntitle: Iquji Community Web\npageType: custom\n---",
+    'import HomeShowcase from "../../../src/HomeShowcase";',
+    `<HomeShowcase language="${language}" packages={${JSON.stringify(packages)}} examples={${JSON.stringify(catalog)}} />`,
+  ];
+  writeFileSync(resolve(dir, "index.mdx"), index.join("\n\n"));
   writeFileSync(resolve(dir, "_meta.json"), JSON.stringify(navigation));
 }

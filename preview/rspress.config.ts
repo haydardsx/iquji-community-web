@@ -1,4 +1,5 @@
 import { createRequire } from "node:module";
+import { resolve } from "node:path";
 import { defineConfig } from "@rspress/core";
 
 const origin = "https://community-web.iquji.com";
@@ -7,10 +8,12 @@ const require = createRequire(import.meta.url);
 export default defineConfig({
   root: ".cache/docs",
   title: "Iquji Community Web",
+  logo: { light: "/favicon.svg", dark: "/favicon.svg", width: 28, height: 28 },
   logoText: "Iquji Community Web",
   lang: "en",
   route: { localeRedirect: "never" },
   icon: "/favicon.svg",
+  globalStyles: resolve(import.meta.dirname, "src/site.css"),
   siteOrigin: origin,
   sitemap: { siteUrl: origin },
   builderConfig: {
