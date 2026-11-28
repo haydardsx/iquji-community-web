@@ -158,6 +158,12 @@ const COMPONENT_I18N: Record<ComponentPreviewId, ComponentI18nInfo> = {
     nameEn: "IqujiBadge",
     descEn: "Lightweight category tag or notification count badge.",
   },
+  tag: {
+    nameZh: "标签",
+    nameEn: "IqujiTag",
+    descEn:
+      "Compact tag supporting static display, selectable state, and trigger mode.",
+  },
   alert: {
     nameZh: "行内提示",
     nameEn: "IqujiAlert",
@@ -325,6 +331,17 @@ const COMPONENT_I18N: Record<ComponentPreviewId, ComponentI18nInfo> = {
     nameZh: "桌面标签栏",
     nameEn: "IqujiDesktopTabStrip",
     descEn: "Desktop tab strip with close, add, and dirty state.",
+  },
+  "desktop-new-tab": {
+    nameZh: "新标签页",
+    nameEn: "IqujiDesktopNewTabPage",
+    descEn: "Choose a panel from a grid of available tabs.",
+  },
+  "desktop-workbench": {
+    nameZh: "桌面三栏工作台",
+    nameEn: "IqujiDesktopWorkbench",
+    descEn:
+      "Desktop three-pane workbench supporting split tabs and unified full-view switching.",
   },
   "desktop-rail": {
     nameZh: "桌面图标栏",

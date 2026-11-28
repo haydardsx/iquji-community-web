@@ -50,7 +50,7 @@
 }
 .iquji-dialog__surface {
   background: var(--iquji-color-surface);
-  border: 1px solid var(--iquji-color-border);
+  border: 1px solid color-mix(in srgb, var(--iquji-color-border) 70%, transparent);
   border-radius: var(--iquji-radius-overlay);
   box-shadow: var(--iquji-shadow-overlay);
   max-height: inherit;
@@ -69,6 +69,7 @@
   margin: 0;
   color: var(--iquji-color-text);
   font-size: var(--iquji-font-size-title-sm);
+  line-height: var(--iquji-line-height-title-sm);
   font-weight: 600;
   overflow-wrap: anywhere;
 }
@@ -76,6 +77,7 @@
   margin: var(--iquji-space-1) 0 0;
   color: var(--iquji-color-muted);
   font-size: var(--iquji-font-size-body-sm);
+  line-height: var(--iquji-line-height-body-sm);
   overflow-wrap: anywhere;
 }
 .iquji-dialog__body {

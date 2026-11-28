@@ -1,4 +1,5 @@
 import {
+  IconButton,
   IqujiButton,
   IqujiDesktopAccount,
   IqujiDesktopAccountCard,
@@ -16,10 +17,12 @@ import {
   IqujiSettingsSelectRow,
   IqujiSettingsSwitchRow,
   IqujiTableFrame,
+  IqujiTitleBarActions,
   IqujiWorkbenchLayout,
 } from "@iquji-community/web-component";
 import { IqujiIcon } from "@iquji-community/web-icons";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import type { ComponentPreview } from "../catalog";
 import { usePreviewText } from "../i18n/use-preview-text";
 
@@ -304,19 +307,29 @@ function DesktopShellExample() {
 
 function DesktopTitlebarExample() {
   const text = usePreviewText();
+  const [actionSlot, setActionSlot] = useState<HTMLDivElement | null>(null);
   return (
-    <IqujiDesktopTitleBar
-      leading={
-        <IqujiButton variant="ghost">{text("返回", "Back")}</IqujiButton>
-      }
-      actions={
-        <IqujiButton variant="secondary">
-          {text("更多操作", "More actions")}
-        </IqujiButton>
-      }
-    >
-      {text("标题栏内容", "Title bar content")}
-    </IqujiDesktopTitleBar>
+    <>
+      <IqujiDesktopTitleBar
+        leading={
+          <IqujiButton variant="ghost">{text("返回", "Back")}</IqujiButton>
+        }
+        actions={<div ref={setActionSlot} />}
+      >
+        {text("标题栏内容", "Title bar content")}
+      </IqujiDesktopTitleBar>
+      {actionSlot &&
+        createPortal(
+          <IqujiTitleBarActions>
+            <IconButton
+              compact
+              icon={<IqujiIcon decorative name="more" />}
+              label={text("更多操作", "More actions")}
+            />
+          </IqujiTitleBarActions>,
+          actionSlot,
+        )}
+    </>
   );
 }
 

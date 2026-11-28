@@ -11,6 +11,7 @@ import { IqujiDesktopRail } from "./desktop-rail.js";
 import { IqujiDesktopShell } from "./desktop-shell.js";
 import { IqujiDesktopTabStrip } from "./desktop-tabs.js";
 import { IqujiDesktopTitleBar } from "./desktop-titlebar.js";
+import { IconButton, IqujiButton } from "./index.js";
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 
@@ -62,6 +63,35 @@ async function press(element: HTMLElement, key: string) {
 }
 
 describe("桌面壳正式行为", () => {
+  test("标题栏图标在聚焦后显示同名提示，并保留菜单属性", async () => {
+    await mount(
+      <IqujiDesktopTitleBar
+        actions={
+          <IqujiButton
+            aria-haspopup="menu"
+            aria-label="更多"
+            iconStart={<IqujiIcon decorative name="more" />}
+            title="更多"
+            variant="ghost"
+          />
+        }
+        leading={<IconButton icon={<IqujiIcon decorative name="home" />} label="主页" />}
+      />,
+    );
+    const trigger = required(document.querySelector<HTMLButtonElement>('[aria-label="更多"]'));
+    expect(document.querySelectorAll("[data-iquji-titlebar-icon]")).toHaveLength(2);
+    expect(trigger.hasAttribute("title")).toBe(false);
+    expect(trigger.getAttribute("aria-haspopup")).toBe("menu");
+    await act(async () => {
+      trigger.focus();
+      await tick();
+    });
+    expect(document.querySelector('[role="tooltip"]')?.textContent).toBe("更多");
+    expect(trigger.hasAttribute("data-popup-open")).toBe(false);
+    await press(trigger, "Escape");
+    expect(document.querySelector('[role="tooltip"]')).toBeNull();
+  });
+
   test("渲染动态标题栏、标签条、图标栏与内容区", () => {
     const markup = renderToStaticMarkup(
       <IqujiDesktopShell
@@ -260,5 +290,46 @@ describe("桌面壳正式行为", () => {
     expect(added).toBe(1);
     expect(changes).toContain("one");
     expect(changes).toContain("two");
+  });
+
+  test("标签条支持前导主视图标签及键盘切换", async () => {
+    const events: string[] = [];
+    function Harness() {
+      const [leadingActive, setLeadingActive] = useState(false);
+      const [active, setActive] = useState("right-1");
+      return (
+        <IqujiDesktopTabStrip
+          activeTabId={leadingActive ? null : active}
+          label="Unified tabs"
+          leadingTab={{
+            active: leadingActive,
+            id: "main",
+            label: "主视图",
+            onSelect: () => {
+              events.push("main");
+              setLeadingActive(true);
+            },
+          }}
+          onActiveTabChange={(id) => {
+            events.push(id);
+            setLeadingActive(false);
+            setActive(id);
+          }}
+          tabs={[
+            { id: "right-1", label: "标签一" },
+            { id: "right-2", label: "标签二" },
+          ]}
+        />
+      );
+    }
+
+    await mount(<Harness />);
+    const tabs = () =>
+      Array.from(document.querySelectorAll<HTMLElement>('[role="tab"]'));
+    expect(tabs()).toHaveLength(3);
+    expect(tabs()[1]?.getAttribute("aria-selected")).toBe("true");
+    await press(required(tabs()[1]), "ArrowLeft");
+    expect(tabs()[0]?.getAttribute("aria-selected")).toBe("true");
+    expect(events).toContain("main");
   });
 });

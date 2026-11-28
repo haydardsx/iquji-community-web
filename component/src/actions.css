@@ -180,6 +180,7 @@
 
 /* 图标按钮的边长与文字按钮的高度相同。 */
 .iquji-icon-button {
+  --iquji-icon-button-glyph: 18px;
   align-items: center;
   background: transparent;
   border: 1px solid transparent;
@@ -198,6 +199,7 @@
 }
 
 .iquji-icon-button--compact {
+  --iquji-icon-button-glyph: 16px;
   height: var(--iquji-control-height-compact);
   width: var(--iquji-control-height-compact);
 }
@@ -222,11 +224,23 @@
 .iquji-icon-button__icon {
   align-items: center;
   display: inline-flex;
-  flex: 0 0 16px;
-  height: 16px;
+  flex: 0 0 var(--iquji-icon-button-glyph);
+  height: var(--iquji-icon-button-glyph);
   justify-content: center;
   line-height: 1;
-  width: 16px;
+  width: var(--iquji-icon-button-glyph);
+}
+
+.iquji-desktop-tab__close {
+  --iquji-icon-button-glyph: 12px;
+}
+
+.iquji-desktop-tabstrip__restore {
+  --iquji-icon-button-glyph: 13px;
+}
+
+.iquji-desktop-workbench__history .iquji-icon-button {
+  --iquji-icon-button-glyph: 15px;
 }
 
 .iquji-icon-button__icon > svg,
@@ -271,4 +285,20 @@
 .iquji-icon-button:focus-visible {
   outline: var(--iquji-focus-ring);
   outline-offset: 2px;
+}
+
+/* 中性操作在焦点和按压时逐级加深；品牌色按钮的前景和背景仍同时切换。 */
+:where(.iquji-button--ghost, .iquji-button-link--ghost, .iquji-icon-button--ghost,
+    .iquji-button--secondary, .iquji-button-link--secondary, .iquji-icon-button--secondary
+):not(:disabled, [aria-disabled="true"]) {
+  transition: background-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    border-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+:is(.iquji-button--ghost, .iquji-button-link--ghost, .iquji-icon-button--ghost,
+    .iquji-button--secondary, .iquji-button-link--secondary, .iquji-icon-button--secondary
+):not(:disabled, [aria-disabled="true"]):active {
+  background-color: color-mix(in srgb, var(--iquji-color-text) 12%, var(--iquji-color-surface));
+  color: var(--iquji-color-text);
 }

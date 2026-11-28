@@ -5,16 +5,20 @@
 }
 .iquji-tour__mask {
   position: fixed;
-  background: var(--iquji-color-overlay);
   pointer-events: auto;
+}
+.iquji-tour[data-target-missing] > .iquji-tour__mask {
+  background: var(--iquji-color-overlay);
 }
 .iquji-tour__spotlight {
   position: fixed;
   box-sizing: border-box;
   border: 2px solid var(--iquji-color-accent);
   border-radius: var(--iquji-radius-control);
-  box-shadow: 0 0 0 3px
-    color-mix(in srgb, var(--iquji-color-accent) 18%, transparent);
+  /* 遮罩和描边共用圆角轮廓，外围矩形仅拦截目标外的点击。 */
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--iquji-color-accent) 18%, transparent),
+    0 0 0 100vmax var(--iquji-color-overlay);
   pointer-events: none;
 }
 .iquji-tour__positioner {

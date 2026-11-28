@@ -4,11 +4,11 @@
     Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --iquji-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --iquji-color-canvas: #f4f5f7;
+  --iquji-color-canvas: #f8f9f7;
   --iquji-color-surface: #ffffff;
   --iquji-color-surface-raised: #ffffff;
-  --iquji-color-surface-muted: #f7f7f8;
-  --iquji-color-surface-hover: #f0f1f3;
+  --iquji-color-surface-muted: #f5f5f4;
+  --iquji-color-surface-hover: #eff0ef;
   --iquji-color-text: #222428;
   --iquji-color-muted: #686d76;
   --iquji-color-subtle: #9297a0;
@@ -100,9 +100,9 @@
   --iquji-space-16: 64px;
   --iquji-control-height: 44px;
   --iquji-control-height-compact: 36px;
-  --iquji-radius-control: 6px;
-  --iquji-radius-panel: 8px;
-  --iquji-radius-overlay: 12px;
+  --iquji-radius-control: 8px;
+  --iquji-radius-panel: 12px;
+  --iquji-radius-overlay: 16px;
   /* 浮层阴影。 */
   --iquji-shadow-surface: 0 1px 2px rgb(0 0 0 / 2%);
   --iquji-shadow-raised: 0 4px 16px rgb(0 0 0 / 3%);

@@ -4,6 +4,7 @@ import {
   type ComponentPreview,
 } from "../catalog";
 import { basicPreviews } from "./basic";
+import { desktopWorkbenchPreviews } from "./desktop-workbench";
 import { editorPreviews } from "./editor";
 import { feedbackPreviews } from "./feedback";
 import { formPreviews } from "./forms";
@@ -27,6 +28,7 @@ export const componentPreviews: readonly ComponentPreview[] = [
   ...notificationPreviews,
   ...overlayPreviews,
   ...layoutPreviews,
+  ...desktopWorkbenchPreviews,
   ...editorPreviews,
   ...i18nPreviews,
   ...iconPreviews,

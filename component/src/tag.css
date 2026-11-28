@@ -1,0 +1,163 @@
+.iquji-tag {
+  align-items: center;
+  background: var(--iquji-color-neutral-fill);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  box-sizing: border-box;
+  color: var(--iquji-color-neutral-text);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: var(--iquji-font-size-caption);
+  font-weight: 550;
+  gap: 5px;
+  line-height: 1.35;
+  max-width: 100%;
+  min-height: 24px;
+  min-width: 0;
+  padding: 0 9px;
+  transition:
+    background var(--iquji-motion-control) var(--iquji-ease-standard),
+    border-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.iquji-tag[data-size="md"] {
+  font-size: var(--iquji-font-size-body-sm);
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 11px;
+}
+
+.iquji-tag[data-tone="info"] {
+  background: var(--iquji-color-info-fill);
+  border-color: var(--iquji-color-info-border);
+  color: var(--iquji-color-info-text);
+}
+
+.iquji-tag[data-tone="success"] {
+  background: var(--iquji-color-positive-fill);
+  border-color: var(--iquji-color-positive-border);
+  color: var(--iquji-color-positive-text);
+}
+
+.iquji-tag[data-tone="warning"] {
+  background: var(--iquji-color-warning-fill);
+  border-color: var(--iquji-color-warning-border);
+  color: var(--iquji-color-warning-text);
+}
+
+.iquji-tag[data-tone="danger"] {
+  background: var(--iquji-color-critical-fill);
+  border-color: var(--iquji-color-critical-border);
+  color: var(--iquji-color-critical-text);
+}
+
+.iquji-tag[data-variant="outline"] {
+  background: transparent;
+  border-color: var(--iquji-color-border-strong);
+  color: var(--iquji-color-text);
+}
+
+.iquji-tag[data-variant="outline"][data-tone="info"] {
+  border-color: var(--iquji-color-info-border);
+  color: var(--iquji-color-info-text);
+}
+
+.iquji-tag[data-variant="outline"][data-tone="success"] {
+  border-color: var(--iquji-color-positive-border);
+  color: var(--iquji-color-positive-text);
+}
+
+.iquji-tag[data-variant="outline"][data-tone="warning"] {
+  border-color: var(--iquji-color-warning-border);
+  color: var(--iquji-color-warning-text);
+}
+
+.iquji-tag[data-variant="outline"][data-tone="danger"] {
+  border-color: var(--iquji-color-critical-border);
+  color: var(--iquji-color-critical-text);
+}
+
+.iquji-tag--interactive {
+  cursor: pointer;
+}
+
+.iquji-tag--interactive:not(:disabled):hover {
+  background: var(--iquji-color-surface-hover);
+  border-color: var(--iquji-color-control-hover-border);
+}
+
+.iquji-tag--interactive[data-tone="info"]:not(:disabled):hover {
+  background: var(--iquji-color-info-fill);
+  border-color: var(--iquji-color-info-text);
+}
+
+.iquji-tag--interactive[data-tone="success"]:not(:disabled):hover {
+  background: var(--iquji-color-positive-fill);
+  border-color: var(--iquji-color-positive-text);
+}
+
+.iquji-tag--interactive[data-tone="warning"]:not(:disabled):hover {
+  background: var(--iquji-color-warning-fill);
+  border-color: var(--iquji-color-warning-text);
+}
+
+.iquji-tag--interactive[data-tone="danger"]:not(:disabled):hover {
+  background: var(--iquji-color-critical-fill);
+  border-color: var(--iquji-color-critical-text);
+}
+
+.iquji-tag--interactive[data-selected="true"][data-tone="neutral"] {
+  background: color-mix(in srgb, var(--iquji-color-text) 9%, var(--iquji-color-surface));
+  border-color: var(--iquji-color-border-strong);
+  color: var(--iquji-color-text);
+}
+
+.iquji-tag--interactive[data-selected="true"]:enabled:not([data-tone="neutral"]) {
+  border-color: currentColor;
+}
+
+.iquji-tag--interactive[data-popup-open] {
+  border-color: var(--iquji-color-control-focus-border);
+}
+
+.iquji-tag--interactive:focus-visible {
+  outline: var(--iquji-focus-ring);
+  outline-offset: 2px;
+}
+
+.iquji-tag[data-disabled="true"],
+.iquji-tag:disabled {
+  background: var(--iquji-color-disabled-fill);
+  border-color: transparent;
+  color: var(--iquji-color-disabled-text);
+  cursor: not-allowed;
+  transition: none;
+}
+
+.iquji-tag__icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+}
+
+.iquji-tag__icon > svg {
+  width: 13px;
+  height: 13px;
+}
+
+.iquji-tag__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iquji-tag {
+    transition: none;
+  }
+}

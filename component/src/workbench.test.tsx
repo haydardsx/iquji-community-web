@@ -244,7 +244,8 @@ describe("三栏工作台正式行为", () => {
   });
 
   test("折叠和移除侧栏报告零宽度并清理旧观察器", async () => {
-    const observers = mockLayout({ leftWidth: 240, centerWidth: 600, rightWidth: 420 });
+    const widths = { leftWidth: 240, centerWidth: 600, rightWidth: 420 };
+    const observers = mockLayout(widths);
     const updates: IqujiWorkbenchGeometry[] = [];
     const report = (geometry: IqujiWorkbenchGeometry) => { updates.push(geometry); };
     function Harness() {
@@ -266,6 +267,8 @@ describe("三栏工作台正式行为", () => {
     await mount(<Harness />);
     const original = required(observers[0]);
     const toggle = required(document.querySelector<HTMLButtonElement>("button"));
+    widths.leftWidth = 0;
+    widths.rightWidth = 0;
     await act(async () => { toggle.click(); });
     expect(updates.at(-1)).toEqual({ leftWidth: 0, centerWidth: 600, rightWidth: 0 });
     expect(original.disconnected).toBe(true);
@@ -275,6 +278,8 @@ describe("三栏工作台正式行为", () => {
     await act(async () => { toggle.click(); });
     expect(required(observers.at(-1)).targets.size).toBe(1);
     expect(updates).toHaveLength(count);
+    widths.leftWidth = 240;
+    widths.rightWidth = 420;
     await act(async () => { toggle.click(); });
     expect(updates.at(-1)).toEqual({ leftWidth: 240, centerWidth: 600, rightWidth: 420 });
     const current = required(observers.at(-1));
@@ -285,5 +290,23 @@ describe("三栏工作台正式行为", () => {
     const unmountedCount = updates.length;
     current.notify();
     expect(updates).toHaveLength(unmountedCount);
+  });
+
+  test("支持 split-card 与全屏展示模式并保持另一侧节点挂载", () => {
+    const markup = renderToStaticMarkup(
+      <IqujiWorkbenchLayout
+        center={<span>Center payload</span>}
+        displayMode="fullscreen-right"
+        left={<span>Left payload</span>}
+        right={<span>Right payload</span>}
+        surfaceMode="split-card"
+      />,
+    );
+    expect(markup).toContain('data-surface-mode="split-card"');
+    expect(markup).toContain('data-display-mode="fullscreen-right"');
+    expect(markup).toContain("iquji-workbench__workspace");
+    expect(markup).toContain("Center payload");
+    expect(markup).toContain("Right payload");
+    expect(markup).toContain('aria-hidden="true"');
   });
 });

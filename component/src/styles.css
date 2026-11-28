@@ -2,12 +2,15 @@
 @import "./states.css";
 @import "./forms.css";
 @import "./feedback.css";
+@import "./tag.css";
 @import "./notification.css";
 @import "./content.css";
 @import "./pagination.css";
 @import "./shell.css";
 @import "./desktop-shell.css";
 @import "./desktop-account.css";
+@import "./desktop-new-tab.css";
+@import "./desktop-workbench.css";
 @import "./workbench.css";
 @import "./settings.css";
 

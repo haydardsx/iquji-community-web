@@ -46,6 +46,7 @@ const ICON_NAMES: readonly IqujiIconName[] = [
   "link",
   "loader",
   "list-bulleted",
+  "list-details",
   "list-ordered",
   "lock",
   "log-in",
