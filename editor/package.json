@@ -4,7 +4,7 @@
     "name": "IQuji Community",
     "email": "community@iqu.lol"
   },
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -73,9 +73,9 @@
     "@codemirror/state": "6.7.6",
     "@codemirror/view": "6.43.15",
     "@fig/lezer-bash": "1.2.5",
-    "@iquji-community/web-component": "0.2.2",
-    "@iquji-community/web-icons": "0.2.2",
-    "@iquji-community/web-theme": "0.2.2",
+    "@iquji-community/web-component": "0.3.0",
+    "@iquji-community/web-icons": "0.3.0",
+    "@iquji-community/web-theme": "0.3.0",
     "@lezer/common": "1.5.4",
     "@lezer/highlight": "1.2.5",
     "@lezer/lr": "1.4.11",

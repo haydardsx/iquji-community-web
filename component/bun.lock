@@ -5,8 +5,8 @@
     "": {
       "name": "@iquji-community/web-component",
       "dependencies": {
-        "@iquji-community/web-icons": "0.2.2",
-        "@iquji-community/web-theme": "0.2.2",
+        "@iquji-community/web-icons": "0.3.0",
+        "@iquji-community/web-theme": "0.3.0",
         "@tanstack/react-table": "8.21.3",
       },
       "devDependencies": {
