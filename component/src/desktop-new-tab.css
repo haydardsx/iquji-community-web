@@ -1,0 +1,86 @@
+.iquji-desktop-new-tab {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: clamp(14px, 3%, 28px);
+}
+
+.iquji-desktop-new-tab__content {
+  width: min(100%, 576px);
+  min-width: 0;
+  margin: auto;
+}
+
+.iquji-desktop-new-tab__content:has(.iquji-desktop-new-tab__item:only-child) {
+  max-width: 150px;
+}
+
+.iquji-desktop-new-tab__content:has(.iquji-desktop-new-tab__item:nth-child(2):last-child) {
+  max-width: 308px;
+}
+
+.iquji-desktop-new-tab__content h2 {
+  margin: 0 2px 10px;
+  color: var(--iquji-color-muted);
+  font-size: var(--iquji-font-size-body-sm);
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.iquji-desktop-new-tab__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(118px, 100%), 1fr));
+  gap: 8px;
+}
+
+.iquji-button.iquji-desktop-new-tab__item {
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 82px;
+  height: auto;
+  padding: 13px 15px;
+  border: 1px solid transparent;
+  border-radius: var(--iquji-radius-panel);
+  text-align: start;
+}
+
+.iquji-button.iquji-desktop-new-tab__item:enabled {
+  background: color-mix(in srgb, var(--iquji-color-text) 5%, var(--iquji-color-surface));
+  color: var(--iquji-color-text);
+  transition: background-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    border-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    transform var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-desktop-new-tab__item .iquji-button__label {
+  display: grid;
+  justify-items: start;
+  gap: 9px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+@media (hover: hover) {
+  .iquji-button.iquji-desktop-new-tab__item:enabled:hover {
+    background: color-mix(in srgb, var(--iquji-color-text) 8%, var(--iquji-color-surface));
+    border-color: var(--iquji-color-border);
+  }
+}
+
+.iquji-button.iquji-desktop-new-tab__item:enabled:active {
+  background: color-mix(in srgb, var(--iquji-color-text) 12%, var(--iquji-color-surface));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iquji-desktop-new-tab__item:enabled:active {
+    transform: scale(.985);
+  }
+}
+
+.iquji-desktop-new-tab__icon,
+.iquji-desktop-new-tab__icon svg {
+  display: flex;
+  width: 16px;
+  height: 16px;
+}

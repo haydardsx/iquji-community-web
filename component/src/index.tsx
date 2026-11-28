@@ -6,6 +6,8 @@ import type {
   ReactNode,
 } from "react";
 import { forwardRef } from "react";
+import { TitleBarActionTooltip } from "./titlebar-action-tooltip.js";
+export { IqujiTitleBarActions } from "./titlebar-action-tooltip.js";
 
 export type AppNavigationItem = {
   id: string;
@@ -155,7 +157,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       .filter(Boolean)
       .join(" ");
 
-    return (
+    const button = (
       <button
         {...buttonProps}
         aria-busy={loading || undefined}
@@ -175,6 +177,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         )}
       </button>
     );
+    return <TitleBarActionTooltip button={button} label={label} />;
   },
 );
 
@@ -248,7 +251,7 @@ export const IqujiButton = forwardRef<HTMLButtonElement, IqujiButtonProps>(
         children
       );
 
-    return (
+    const button = (
       <button
         {...buttonProps}
         aria-busy={loading || undefined}
@@ -272,6 +275,10 @@ export const IqujiButton = forwardRef<HTMLButtonElement, IqujiButtonProps>(
         ) : null}
       </button>
     );
+    const iconLabel = buttonProps.title ?? buttonProps["aria-label"];
+    return iconLabel && !children && (iconStart || iconEnd) ? (
+      <TitleBarActionTooltip button={button} label={iconLabel} />
+    ) : button;
   },
 );
 
@@ -485,10 +492,12 @@ export * from "./confirmation.js";
 export * from "./data-table.js";
 export * from "./date-picker.js";
 export * from "./desktop-account.js";
+export * from "./desktop-new-tab.js";
 export * from "./desktop-rail.js";
 export * from "./desktop-shell.js";
 export * from "./desktop-tabs.js";
 export * from "./desktop-titlebar.js";
+export * from "./desktop-workbench.js";
 export * from "./drawer.js";
 export * from "./feedback.js";
 export * from "./floating.js";
@@ -509,6 +518,7 @@ export * from "./search-dialog.js";
 export * from "./settings-layout.js";
 export * from "./settings-nav.js";
 export * from "./settings-rows.js";
+export * from "./tag.js";
 export * from "./timeline.js";
 export * from "./tooltip.js";
 export * from "./tour.js";

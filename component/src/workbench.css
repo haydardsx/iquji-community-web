@@ -15,6 +15,55 @@
   width: 100%;
 }
 
+/* 保持轨道形状一致，展开、折叠和全屏之间可由浏览器连续插值。 */
+.iquji-workbench[data-display-mode="fullscreen-right"]:not([data-surface-mode="split-card"]) {
+  grid-template-columns:
+    minmax(0, var(--iquji-workbench-left-width))
+    minmax(0px, 1fr)
+    minmax(0, calc(100% - var(--iquji-workbench-left-width)));
+}
+
+.iquji-workbench[data-surface-mode="split-card"] {
+  background: var(--iquji-color-canvas);
+  grid-template-columns:
+    minmax(0, var(--iquji-workbench-left-width))
+    minmax(0, 1fr);
+}
+
+.iquji-workbench__workspace {
+  background: var(--iquji-color-surface);
+  border: 1px solid var(--iquji-color-border);
+  border-radius: var(--iquji-radius-overlay);
+  box-shadow: var(--iquji-shadow-surface);
+  display: grid;
+  grid-column: 2;
+  grid-template-columns:
+    minmax(var(--iquji-workbench-center-min-width), 1fr)
+    minmax(0, var(--iquji-workbench-right-width));
+  margin: 0 var(--iquji-space-2) var(--iquji-space-2) 0;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.iquji-workbench[data-surface-mode="split-card"]:not([data-left-visible="true"])
+  .iquji-workbench__workspace {
+  margin-left: var(--iquji-space-1);
+}
+
+.iquji-workbench[data-surface-mode="split-card"][data-display-mode="fullscreen-right"]
+  .iquji-workbench__workspace {
+  grid-template-columns: minmax(0px, 1fr) minmax(0, 100%);
+}
+
+.iquji-workbench[data-surface-mode="split-card"] .iquji-workbench__workspace > .iquji-workbench__pane--center {
+  grid-column: 1;
+}
+
+.iquji-workbench[data-surface-mode="split-card"] .iquji-workbench__workspace > .iquji-workbench__pane--right {
+  grid-column: 2;
+}
+
 .iquji-workbench[data-resizing] {
   cursor: col-resize;
   user-select: none;
@@ -32,6 +81,10 @@
   grid-column: 1;
 }
 
+.iquji-workbench[data-surface-mode="split-card"] .iquji-workbench__pane--left {
+  background: transparent;
+}
+
 .iquji-workbench__pane--center {
   background: var(--iquji-color-surface);
   grid-column: 2;
@@ -40,6 +93,24 @@
 .iquji-workbench__pane--right {
   background: var(--iquji-color-surface);
   grid-column: 3;
+}
+
+.iquji-workbench[data-display-mode="fullscreen-right"] .iquji-workbench__pane--center,
+.iquji-workbench[data-display-mode="fullscreen-center"] .iquji-workbench__pane--right,
+.iquji-workbench--right-collapsed .iquji-workbench__pane--right {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iquji-workbench:not([data-resizing]),
+  .iquji-workbench:not([data-resizing]) > .iquji-workbench__workspace {
+    transition: grid-template-columns var(--iquji-motion-route) var(--iquji-ease-standard);
+  }
+
+  .iquji-workbench__pane {
+    transition: visibility var(--iquji-motion-route) linear;
+  }
 }
 
 .iquji-workbench__resizer {
@@ -73,6 +144,11 @@
     background var(--iquji-motion-control) var(--iquji-ease-standard),
     width var(--iquji-motion-control) var(--iquji-ease-standard);
   width: 1px;
+}
+
+.iquji-workbench[data-surface-mode="split-card"]
+  .iquji-workbench__resizer--left::after {
+  background: transparent;
 }
 
 /* 分隔线本身就是拖拽命中区，悬停/拖动时只加粗同一条线，不再向内偏移。 */

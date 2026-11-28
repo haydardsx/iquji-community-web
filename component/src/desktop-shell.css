@@ -74,6 +74,69 @@
   -webkit-app-region: drag;
 }
 
+.iquji-icon-button[data-iquji-titlebar-icon],
+.iquji-button[data-iquji-titlebar-icon] {
+  border-radius: 50%;
+}
+
+.iquji-desktop-titlebar :is(button, a),
+.iquji-desktop-workbench__center-floating-actions button,
+.iquji-desktop-rail__item,
+.iquji-desktop-tab {
+  transition: background-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard),
+    transform var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+:is(.iquji-icon-button--ghost, .iquji-button--ghost)[data-iquji-titlebar-icon] {
+  color: var(--iquji-color-muted);
+}
+
+:is(.iquji-icon-button--ghost, .iquji-button--ghost)[data-iquji-titlebar-icon]:not(:disabled):is(
+  :hover, [aria-pressed="true"], [aria-expanded="true"], [data-popup-open], [data-active="true"]
+) {
+  background: var(--iquji-color-surface-hover);
+  border-color: transparent;
+  color: var(--iquji-color-text);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-iquji-titlebar-icon]:not(:disabled):active,
+  .iquji-desktop-rail__item:not(:disabled):active {
+    transform: scale(.94);
+  }
+}
+
+.iquji-button[data-iquji-titlebar-icon] {
+  aspect-ratio: 1;
+  padding-inline: 0;
+}
+
+.iquji-desktop-action-tip-positioner {
+  pointer-events: none;
+  z-index: 40;
+}
+
+.iquji-desktop-action-tip {
+  background: var(--iquji-color-sidebar);
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 14%);
+  color: var(--iquji-color-action-contrast);
+  font-family: var(--iquji-font-sans);
+  font-size: var(--iquji-font-size-caption);
+  font-weight: 500;
+  line-height: var(--iquji-line-height-caption);
+  max-width: min(260px, calc(100vw - 12px));
+  overflow-wrap: anywhere;
+  padding: 5px 12px;
+  transition: opacity var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-desktop-action-tip:is([data-starting-style], [data-ending-style]) {
+  opacity: 0;
+}
+
 .iquji-desktop-titlebar[data-iquji-drag-region="true"] button,
 .iquji-desktop-titlebar[data-iquji-drag-region="true"] a,
 .iquji-desktop-titlebar[data-iquji-drag-region="true"] input,
@@ -99,9 +162,10 @@
   align-items: center;
   display: flex;
   flex: 1 1 auto;
-  gap: var(--iquji-space-1);
+  gap: 3px;
   min-width: 0;
   overflow-x: auto;
+  padding: 2px 0;
   scrollbar-width: none;
 }
 
@@ -109,33 +173,64 @@
   display: none;
 }
 
+.iquji-desktop-tabstrip__separator {
+  align-items: center;
+  color: var(--iquji-color-subtle);
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  padding-inline: 2px;
+}
+
 .iquji-desktop-tabstrip__add,
 .iquji-desktop-tabstrip__actions {
   flex: 0 0 auto;
 }
 
-.iquji-desktop-tab {
-  align-items: center;
-  border: 1px solid transparent;
-  border-radius: var(--iquji-radius-control);
-  display: flex;
-  flex: 0 0 auto;
-  height: var(--iquji-control-height-compact);
-  max-width: 240px;
-  min-width: 120px;
+.iquji-desktop-tabstrip .iquji-desktop-tabstrip__restore {
+  height: 24px;
+  width: 24px;
+  margin-inline: 2px;
 }
 
-.iquji-desktop-tab:hover {
-  background: var(--iquji-color-surface-muted);
+.iquji-desktop-tab {
+  align-items: center;
+  border: 0;
+  border-radius: 7px;
+  display: flex;
+  flex: 0 1 auto;
+  height: 32px;
+  max-width: 238px;
+  min-width: 48px;
+  padding-right: 2px;
+}
+
+.iquji-desktop-tab:not([data-active]):has(.iquji-desktop-tab__select:enabled):hover {
+  background: color-mix(in srgb, var(--iquji-color-text) 4%, transparent);
 }
 
 .iquji-desktop-tab[data-active="true"] {
-  background: var(--iquji-color-surface);
-  border-color: var(--iquji-color-border);
-  box-shadow: var(--iquji-shadow-surface);
+  background: color-mix(in srgb, var(--iquji-color-text) 7%, var(--iquji-color-surface));
+}
+
+.iquji-desktop-tab:has(.iquji-desktop-tab__select:enabled:active) {
+  background: color-mix(in srgb, var(--iquji-color-text) 11%, var(--iquji-color-surface));
+  transition-duration: 60ms;
+}
+
+.iquji-desktop-workbench__right-tabstrip .iquji-desktop-tab {
+  flex: 1 1 140px;
+}
+
+.iquji-desktop-tab--leading {
+  flex: 0 1 auto;
+  max-width: min(340px, 48%);
+  min-width: 64px;
+  padding-right: 0;
 }
 
 .iquji-desktop-tab__select {
+  -webkit-app-region: no-drag;
   align-items: center;
   background: transparent;
   border: 0;
@@ -144,12 +239,17 @@
   display: flex;
   flex: 1 1 auto;
   font: inherit;
-  font-size: var(--iquji-font-size-body-sm);
-  gap: var(--iquji-space-2);
+  font-size: var(--iquji-font-size-body-md);
+  font-weight: 500;
+  gap: 6px;
   height: 100%;
   min-width: 0;
-  padding: 0 var(--iquji-space-2);
+  padding: 0 10px;
   text-align: left;
+}
+
+.iquji-desktop-tab[data-active="true"] .iquji-desktop-tab__select {
+  color: var(--iquji-color-text);
 }
 
 .iquji-desktop-tab__select:disabled {
@@ -159,25 +259,26 @@
 
 .iquji-desktop-tab__select:focus-visible {
   outline: var(--iquji-focus-ring);
-  outline-offset: 2px;
+  outline-offset: -2px;
+  border-radius: inherit;
 }
 
-.iquji-desktop-tab[data-active="true"] .iquji-desktop-tab__select {
-  color: var(--iquji-color-text);
+.iquji-desktop-tab__select :is(.iquji-desktop-tab__icon, .iquji-desktop-tab__label) {
+  pointer-events: none;
 }
 
 .iquji-desktop-tab__icon {
   align-items: center;
   display: inline-flex;
-  flex: 0 0 16px;
-  height: 16px;
+  flex: 0 0 15px;
+  height: 15px;
   justify-content: center;
-  width: 16px;
+  width: 15px;
 }
 
 .iquji-desktop-tab__icon > svg {
-  height: 15px;
-  width: 15px;
+  height: 14px;
+  width: 14px;
 }
 
 .iquji-desktop-tab__label {
@@ -196,7 +297,28 @@
 }
 
 .iquji-desktop-tab__close {
+  border-radius: 50%;
+  color: var(--iquji-color-muted);
   flex: 0 0 auto;
+  height: 20px;
+  margin-right: 4px;
+  opacity: 0;
+  width: 20px;
+}
+
+.iquji-desktop-tabstrip .iquji-desktop-tab__close:enabled:hover {
+  background: color-mix(in srgb, var(--iquji-color-text) 10%, transparent);
+}
+
+.iquji-desktop-titlebar .iquji-desktop-tab__close {
+  transition: opacity var(--iquji-motion-control) var(--iquji-ease-standard),
+    background-color var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-desktop-tab[data-active="true"] .iquji-desktop-tab__close,
+.iquji-desktop-tab:is(:hover, :focus-within) .iquji-desktop-tab__close,
+.iquji-desktop-tab__close:focus-visible {
+  opacity: 1;
 }
 
 .iquji-desktop-rail {
@@ -208,8 +330,8 @@
   height: 100%;
   min-height: 0;
   overflow: visible;
-  padding: var(--iquji-space-2) 6px;
-  width: 56px;
+  padding: var(--iquji-space-2) 6px var(--iquji-space-3);
+  width: 52px;
 }
 
 .iquji-desktop-rail[data-show-divider="false"] {
@@ -217,6 +339,7 @@
 }
 
 .iquji-desktop-rail__nav {
+  align-items: center;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -235,33 +358,38 @@
   align-items: center;
   background: transparent;
   border: 0;
-  border-radius: var(--iquji-radius-overlay);
+  border-radius: 10px;
   color: var(--iquji-color-muted);
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 44px;
+  height: 36px;
   justify-content: center;
   padding: 0;
   position: relative;
   text-decoration: none;
-  width: 44px;
+  width: 36px;
 }
 
 .iquji-desktop-rail__item:hover:not(:disabled) {
-  background: var(--iquji-color-surface-hover);
+  background: color-mix(in srgb, var(--iquji-color-text) 4%, transparent);
   color: var(--iquji-color-text);
 }
 
 .iquji-desktop-rail__item[data-active="true"] {
-  background: var(--iquji-color-surface);
-  box-shadow: var(--iquji-shadow-surface);
+  background: color-mix(in srgb, var(--iquji-color-text) 7%, transparent);
   color: var(--iquji-color-text);
 }
 
 .iquji-desktop-rail__item:focus-visible {
   outline: var(--iquji-focus-ring);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iquji-desktop-tab:has(.iquji-desktop-tab__select:enabled:active) {
+    transition: none;
+  }
 }
 
 .iquji-desktop-rail__item:disabled {
@@ -278,8 +406,8 @@
 }
 
 .iquji-desktop-rail__icon > svg {
-  height: 19px;
-  width: 19px;
+  height: 18px;
+  width: 18px;
 }
 
 .iquji-desktop-rail__badge {
@@ -318,6 +446,8 @@
   border-top: 1px solid var(--iquji-color-border);
   display: flex;
   flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--iquji-space-2);
   justify-content: center;
   padding-top: var(--iquji-space-2);
 }

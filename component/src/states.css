@@ -1,9 +1,11 @@
 /* 自定义容器可用 .iquji-surface 应用相同的面板外观。 */
 .iquji-surface,
-.iquji-panel {
+.iquji-panel,
+.iquji-settings-section__rows {
   background: var(--iquji-color-surface);
   border: 1px solid var(--iquji-color-border);
   border-radius: var(--iquji-radius-panel);
+  box-shadow: var(--iquji-shadow-surface);
 }
 
 .iquji-panel__header {
@@ -12,8 +14,8 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
-  min-height: 58px;
-  padding: 0 20px;
+  min-height: 50px;
+  padding: 8px 18px;
 }
 
 .iquji-page-heading {

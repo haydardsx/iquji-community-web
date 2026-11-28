@@ -1,3 +1,19 @@
+.iquji-tabs button,
+.iquji-segmented button {
+  transition: background-color var(--iquji-motion-control) var(--iquji-ease-standard),
+    color var(--iquji-motion-control) var(--iquji-ease-standard);
+}
+
+.iquji-tabs:not(.iquji-tabs--segmented) button:enabled:hover {
+  color: var(--iquji-color-text);
+}
+
+.iquji-tabs--segmented button:enabled:not([aria-selected="true"]):hover,
+.iquji-segmented button:enabled:not([aria-pressed="true"]):hover {
+  background: color-mix(in srgb, var(--iquji-color-text) 4%, transparent);
+  color: var(--iquji-color-text);
+}
+
 .iquji-tabs--segmented {
   background: var(--iquji-color-surface-muted);
   border: 1px solid var(--iquji-color-border);

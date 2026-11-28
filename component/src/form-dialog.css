@@ -7,12 +7,15 @@
   background: color-mix(in srgb, var(--iquji-color-overlay) 60%, transparent);
 }
 
+.iquji-form-dialog {
+  --iquji-form-gutter: clamp(16px, 3vw, 24px);
+}
+
 .iquji-form-dialog .iquji-dialog__surface {
-  border-radius: 20px;
+  border-radius: calc(var(--iquji-radius-overlay) + 6px);
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: min(48dvh, 420px);
   overflow: hidden;
 }
 
@@ -20,7 +23,7 @@
   align-items: center;
   border-bottom: 0;
   flex: 0 0 auto;
-  padding: var(--iquji-space-5);
+  padding: var(--iquji-form-gutter) var(--iquji-form-gutter) var(--iquji-space-4);
 }
 
 .iquji-form-dialog .iquji-dialog__header-actions {
@@ -40,9 +43,9 @@
   .iquji-dialog__header-actions
   > .iquji-icon-button
   .iquji-icon-button__icon {
-  flex-basis: 20px;
-  height: 20px;
-  width: 20px;
+  flex-basis: 18px;
+  height: 18px;
+  width: 18px;
 }
 
 .iquji-form-dialog
@@ -57,21 +60,22 @@
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
+  padding: var(--iquji-space-1) var(--iquji-form-gutter);
+  scrollbar-width: thin;
+}
+
+.iquji-form-dialog .iquji-dialog__body:last-child {
+  padding-bottom: var(--iquji-form-gutter);
 }
 
 .iquji-form-dialog .iquji-dialog__actions {
+  border-top: 0;
   flex: 0 0 auto;
+  justify-content: flex-end;
+  padding: var(--iquji-space-5) var(--iquji-form-gutter) var(--iquji-form-gutter);
 }
 
 .iquji-form-dialog--expanded {
   height: calc(100dvh - 64px);
   max-height: calc(100dvh - 64px);
-}
-
-@media (max-width: 480px) {
-  .iquji-form-dialog .iquji-dialog__header,
-  .iquji-form-dialog .iquji-dialog__body,
-  .iquji-form-dialog .iquji-dialog__actions {
-    padding: var(--iquji-space-4);
-  }
 }

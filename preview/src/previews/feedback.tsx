@@ -5,8 +5,10 @@ import {
   IqujiDiagnosticBanner,
   type IqujiLogEntry,
   IqujiLogViewer,
+  IqujiPopover,
   IqujiProgressBar,
   IqujiSkeleton,
+  IqujiTag,
   IqujiTimeline,
   parseLogLine,
 } from "@iquji-community/web-component";
@@ -24,6 +26,31 @@ function BadgeDemo() {
       <IqujiBadge tone="success">{text("已完成", "Complete")}</IqujiBadge>
       <IqujiBadge tone="warning">{text("待确认", "Pending review")}</IqujiBadge>
       <IqujiBadge tone="danger">{text("已阻塞", "Blocked")}</IqujiBadge>
+    </div>
+  );
+}
+
+function TagDemo() {
+  const text = usePreviewText();
+  const [selected, setSelected] = useState(true);
+  return (
+    <div className="catalog-preview-grid">
+      <IqujiTag>{text("默认标签", "Default")}</IqujiTag>
+      <IqujiTag tone="info" variant="outline">
+        {text("只读", "Read-only")}
+      </IqujiTag>
+      <IqujiTag onSelectedChange={setSelected} selected={selected}>
+        {text("可选中标签", "Selectable")}
+      </IqujiTag>
+      <IqujiPopover
+        trigger={
+          <IqujiTag interactive>{text("查看版本", "View version")}</IqujiTag>
+        }
+      >
+        <p className="catalog-preview-copy">
+          {text("当前文档为已发布版本。", "This document is published.")}
+        </p>
+      </IqujiPopover>
     </div>
   );
 }
@@ -218,6 +245,14 @@ export const feedbackPreviews: readonly ComponentPreview[] = [
     description: "以轻量标签标注状态或分类。",
     keywords: "徽标 状态 标签",
     render: () => <BadgeDemo />,
+  },
+  {
+    id: "tag",
+    name: "IqujiTag",
+    category: "反馈",
+    description: "支持静态展示、点选切换以及弹层触发器的轻量标签。",
+    keywords: "标签 tag chip 可选中",
+    render: () => <TagDemo />,
   },
   {
     id: "alert",

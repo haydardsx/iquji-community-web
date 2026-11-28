@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { IqujiTitleBarActions } from "./titlebar-action-tooltip.js";
 import { classNames } from "./utils.js";
 
 type DataAttributes = { [key: `data-${string}`]: string | undefined };
@@ -61,13 +62,15 @@ export function IqujiDesktopTitleBar({
           {windowControls}
         </div>
       ) : null}
-      {leading ? (
-        <div className="iquji-desktop-titlebar__leading">{leading}</div>
-      ) : null}
-      <div className="iquji-desktop-titlebar__center">{children}</div>
-      {actions ? (
-        <div className="iquji-desktop-titlebar__actions">{actions}</div>
-      ) : null}
+      <IqujiTitleBarActions>
+        {leading ? (
+          <div className="iquji-desktop-titlebar__leading">{leading}</div>
+        ) : null}
+        <div className="iquji-desktop-titlebar__center">{children}</div>
+        {actions ? (
+          <div className="iquji-desktop-titlebar__actions">{actions}</div>
+        ) : null}
+      </IqujiTitleBarActions>
       {windowControlsPlacement === "end" && windowControls ? (
         <div className="iquji-desktop-titlebar__window-controls">
           {windowControls}

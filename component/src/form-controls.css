@@ -17,7 +17,7 @@
 
 .iquji-field {
   display: grid;
-  gap: var(--iquji-space-1);
+  gap: 6px;
   min-width: 0;
 }
 
@@ -55,8 +55,8 @@
 .iquji-select,
 .iquji-date-picker {
   background: var(--iquji-color-surface);
-  border: 1px solid var(--iquji-color-control-border);
-  border-radius: var(--iquji-radius-control);
+  border: 1px solid color-mix(in srgb, var(--iquji-color-control-border) 74%, transparent);
+  border-radius: calc(var(--iquji-radius-control) + 2px);
   box-sizing: border-box;
   color: var(--iquji-color-text);
   font: inherit;
@@ -157,8 +157,8 @@
 
 .iquji-textarea {
   line-height: var(--iquji-line-height-body-md);
-  min-height: 104px;
-  padding: 10px var(--iquji-space-3);
+  min-height: 116px;
+  padding: var(--iquji-space-3) var(--iquji-space-4);
   resize: vertical;
 }
 
@@ -168,11 +168,9 @@
   opacity: 1;
 }
 
-.iquji-input:hover:not(:disabled):not(:focus),
-.iquji-textarea:hover:not(:disabled):not(:focus),
-.iquji-select:hover:not([data-disabled]):not(:focus-visible),
-.iquji-date-picker:hover:not([data-disabled]):not(:disabled):not(
-    :focus-visible
+:is(.iquji-input, .iquji-textarea, .iquji-select, .iquji-date-picker):where(
+    :hover:not(:disabled, [data-disabled], [readonly], :focus-visible, :focus,
+      [aria-invalid="true"], [data-invalid], .is-invalid)
   ) {
   border-color: var(--iquji-color-control-hover-border);
 }
@@ -230,7 +228,7 @@
 .iquji-select__popup {
   backdrop-filter: var(--iquji-blur-md);
   background: var(--iquji-color-glass-surface-raised);
-  border: 1px solid var(--iquji-color-border-strong);
+  border: 1px solid var(--iquji-color-border);
   border-radius: var(--iquji-radius-overlay);
   box-shadow: var(--iquji-shadow-overlay);
   color: var(--iquji-color-text);
@@ -387,16 +385,18 @@
 }
 
 .iquji-switch .iquji-choice__control {
+  background: var(--iquji-color-border-strong);
+  border-color: transparent;
   border-radius: 999px;
   height: 20px;
   justify-content: flex-start;
   padding: 2px;
-  width: 36px;
+  width: 34px;
 }
 
 .iquji-switch .iquji-choice__control::after,
 .iquji-switch input:checked + .iquji-choice__control::after {
-  background: var(--iquji-color-muted);
+  background: var(--iquji-color-surface-raised);
   border: 0;
   border-radius: 50%;
   content: "";
